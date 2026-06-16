@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Simax Cloud — Mesa de Ayuda (Demo)</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --blue:#1c84c6; --blue-d:#1a7bb9; --blue-l:#2a93d5;
+    --sidebar:#2b2f38; --sidebar-h:#23262d; --sidebar-tx:#a4abb6;
+    --bg:#f1f3f5; --line:#e7eaec; --tx:#5e6064; --muted:#a3a8ad;
+    --red:#ed5565; --green:#1ab394; --teal:#23c6c8; --amber:#f8ac59;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:'Open Sans',Helvetica,Arial,sans-serif;font-size:13px;color:var(--tx);background:var(--bg)}
+  a{cursor:pointer;text-decoration:none}
+  .clearfix::after{content:"";display:table;clear:both}
+  .hidden-x{display:none!important}
+
+  /* ===== LOGO ===== */
+  .simax-logo{display:inline-flex;flex-direction:column;align-items:center;line-height:1}
+  .simax-logo .cloud{position:relative;font-weight:800;font-size:26px;letter-spacing:.5px;color:#39a5dc;display:flex;align-items:center;gap:1px}
+  .simax-logo .cloud:before{content:"\f0c2";font-family:FontAwesome;font-size:40px;color:#5bb8e8;margin-right:8px;font-weight:400}
+  .simax-logo .cloud .x{color:#f0883e}
+  .simax-logo small{color:#8a9099;font-size:11px;letter-spacing:6px;margin-top:2px;margin-left:34px}
+
+  /* ===== LOGIN ===== */
+  #login{position:fixed;inset:0;z-index:200;display:flex;align-items:center;justify-content:center;
+    background:linear-gradient(180deg,#5bb3e8 0%,#9fd2f3 45%,#cfe9fb 100%);overflow:hidden}
+  #login:before,#login:after{content:"";position:absolute;border-radius:50%;background:rgba(255,255,255,.5);filter:blur(8px)}
+  #login:before{width:300px;height:120px;left:8%;top:18%}
+  #login:after{width:380px;height:140px;right:6%;bottom:16%}
+  .login-box{position:relative;z-index:2;width:360px;text-align:center}
+  .login-box .simax-logo .cloud{font-size:40px}
+  .login-box .simax-logo .cloud:before{font-size:60px}
+  .login-box .simax-logo small{font-size:13px;letter-spacing:9px;margin-left:50px}
+  .login-box .form-control{height:42px;background:rgba(255,255,255,.85);margin-bottom:12px;border:1px solid #cfe0ee}
+  .login-box .btn{height:42px;font-weight:600}
+  .btn-login{background:var(--blue);color:#fff;width:100%;border:none}
+  .btn-sso{background:#2a93d5;color:#fff;width:100%;border:none;display:flex;align-items:center;justify-content:center;gap:10px;margin-top:10px;font-weight:600}
+  .btn-sso .ic{background:#fff;border-radius:3px;width:30px;height:30px;display:flex;align-items:center;justify-content:center;color:#444}
+  .login-box .forgot{display:block;color:#1a6aa8;margin-top:16px;font-size:12px}
+  .xoft{margin-top:18px;font-weight:800;color:#555;font-size:14px}
+  .xoft b{color:#f0883e}
+
+  /* ===== APP SHELL ===== */
+  #app{display:flex;min-height:100vh}
+  .sidebar{width:225px;background:var(--sidebar);flex:none;color:var(--sidebar-tx);transition:width .2s;overflow:hidden}
+  .sidebar .brand{padding:20px 10px 16px;text-align:center;background:#262a32}
+  .sidebar .brand .simax-logo .cloud{font-size:22px;color:#5bb8e8}
+  .sidebar .brand .simax-logo .cloud:before{font-size:34px}
+  .smenu{list-style:none;margin:0;padding:0}
+  .smenu>li>a{display:flex;align-items:center;gap:10px;padding:13px 18px;color:var(--sidebar-tx);font-weight:600;font-size:13px;border-left:3px solid transparent}
+  .smenu>li>a .fa:first-child{width:16px;text-align:center}
+  .smenu>li>a .caret-r{margin-left:auto;opacity:.5;font-size:10px}
+  .smenu>li>a:hover{background:var(--sidebar-h);color:#fff}
+  .smenu>li.active>a{background:var(--blue);color:#fff;border-left-color:#fff}
+  .content{flex:1;min-width:0;display:flex;flex-direction:column}
+
+  .topbar{height:48px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 16px;position:relative}
+  .burger{width:32px;height:32px;border-radius:50%;background:var(--blue);color:#fff;border:none;display:flex;align-items:center;justify-content:center}
+  .topbar .user-ic{color:var(--blue);font-size:18px;cursor:pointer}
+  .user-pop{position:absolute;right:12px;top:46px;width:240px;background:#fff;border:1px solid var(--line);border-radius:6px;box-shadow:0 10px 30px rgba(0,0,0,.18);padding:18px;text-align:center;z-index:60}
+  .user-pop .av{width:84px;height:84px;border-radius:50%;background:#e6e8eb;color:#b5bbc2;display:flex;align-items:center;justify-content:center;font-size:46px;margin:0 auto 8px}
+  .user-pop .nm{font-weight:700;color:#444}.user-pop .em{color:#999;font-size:12px;margin-bottom:12px}
+  .user-pop .btn{font-size:12px}
+
+  .crumb{padding:14px 22px;color:#9aa0a6;font-size:14px}
+  .crumb b{color:#3a3f44}
+  .body{padding:6px 18px 24px;flex:1}
+
+  .toolbar{display:flex;align-items:center;gap:8px;justify-content:flex-end;padding:0 22px 8px}
+  .tbtn{width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:#fff;color:#9aa0a6;display:flex;align-items:center;justify-content:center;cursor:pointer}
+  .tbtn.blue{background:var(--blue);color:#fff;border-color:var(--blue)}
+
+  /* tabs pill */
+  .tabbar{display:flex;flex-wrap:wrap;gap:0;border-bottom:1px solid var(--line);margin:0 4px}
+  .tabpill{padding:13px 20px;background:#fff;border:1px solid var(--line);border-bottom:none;color:#6a7077;font-weight:600;cursor:pointer;white-space:nowrap;margin-right:2px;border-radius:4px 4px 0 0}
+  .tabpill .dot{color:var(--blue);font-weight:800}
+  .tabpill.active{background:var(--blue);color:#fff}
+  .tabpill.active .dot{color:#fff}
+
+  /* table */
+  .tablewrap{background:#fff;border:1px solid var(--line);border-top:none;overflow-x:auto}
+  table.t{width:100%;border-collapse:collapse;min-width:900px}
+  table.t th{padding:11px 10px;font-size:11px;text-transform:uppercase;letter-spacing:.03em;color:#9aa0a6;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}
+  table.t th .fa{opacity:.4;margin-left:3px}
+  table.t td{padding:10px;border-bottom:1px solid #f2f3f4;vertical-align:middle}
+  table.t tbody tr{cursor:pointer}
+  table.t tbody tr:hover{background:#f7fbfe}
+  .idbadge{display:inline-block;min-width:28px;text-align:center;background:#d3d8de;color:#fff;font-weight:700;border-radius:4px;padding:3px 7px}
+  .idbadge.on{background:var(--blue)}
+  .sla{display:inline-block;border-radius:13px;padding:3px 11px;font-size:11px;font-weight:600;color:#fff;white-space:nowrap}
+  .sla.venc{background:var(--red)} .sla.ok{background:var(--green)} .sla.curso{background:var(--blue)}
+  .sla .fa{margin-right:4px}
+  .tip{color:#6a7077;font-size:12px}
+  .opts{display:flex;gap:6px;justify-content:flex-end}
+  .ob{width:30px;height:30px;border-radius:50%;background:var(--blue);color:#fff;border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:12px}
+  .ob.lock{background:#9fb6c6}
+
+  /* options dropdown */
+  .optmenu{position:fixed;z-index:120;background:#fff;border:1px solid var(--line);border-radius:6px;box-shadow:0 12px 34px rgba(0,0,0,.18);padding:6px 0;min-width:185px;display:none}
+  .optmenu a{display:flex;align-items:center;gap:10px;padding:7px 16px;color:#5e6064;font-size:13px}
+  .optmenu a .fa{width:15px;text-align:center;color:#8a9099}
+  .optmenu a:hover{background:#f3f6f8}
+  .optmenu a.disabled{opacity:.4;pointer-events:none}
+  .optmenu a.danger{color:var(--red)} .optmenu a.danger .fa{color:var(--red)}
+  .optmenu .sep{height:1px;background:var(--line);margin:5px 0}
+
+  /* DETAIL / CREATE shared */
+  .ihead{background:#fff;border:1px solid var(--line);border-bottom:none;padding:14px 16px;display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px}
+  .estado{display:inline-block;padding:7px 16px;border-radius:4px;color:#fff;font-weight:700;font-size:14px}
+  .ihead .fechas{display:flex;gap:18px}
+  .ihead .fechas .f label{display:block;font-size:10px;color:#aaa;text-transform:uppercase}
+  .ihead .fechas .f b{color:#666}
+  .pill-btn{background:var(--blue);color:#fff;border:none;border-radius:4px;padding:7px 16px;font-weight:600}
+  .ghost-btn{background:#fff;border:1px solid var(--line);border-radius:4px;padding:7px 14px;color:#666;font-weight:600}
+  .panel{background:#fff;border:1px solid var(--line);border-top:none;padding:16px}
+  .subbar{background:#fff;border:1px solid var(--line);border-top:none;padding:14px 16px;display:flex;flex-wrap:wrap;align-items:center;gap:14px}
+  .lvl{color:var(--blue);letter-spacing:2px}
+  .lbl-badge{background:var(--blue);color:#fff;border-radius:4px;padding:5px 12px;font-weight:600;font-size:12px}
+  .dtabs{display:flex;margin:0}
+  .dtab{flex:1;text-align:center;padding:13px;background:#fff;border:1px solid var(--line);font-weight:700;color:#7a8086;cursor:pointer}
+  .dtab.active{background:var(--blue);color:#fff;border-color:var(--blue)}
+  .form-readonly{background:#f3f4f6}
+  .actions{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+  .actbtn{flex:1;min-width:120px;background:var(--blue);color:#fff;border:none;border-radius:4px;padding:11px;font-weight:600;position:relative;cursor:pointer}
+  .actbtn .badge{position:absolute;top:-6px;right:-6px;background:var(--red);border-radius:50%;font-size:10px;padding:3px 6px}
+  .actbtn.light{background:#7fbbe0}
+  .actbtn:hover{background:var(--blue-d)}
+  .wbtn{width:100%;background:#7fbbe0;color:#fff;border:none;border-radius:4px;padding:13px;font-weight:700;margin-top:6px}
+  .field label{font-size:11px;text-transform:uppercase;letter-spacing:.03em;color:#9aa0a6}
+
+  /* dashboard */
+  .dash-cards{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+  @media(max-width:800px){.dash-cards{grid-template-columns:1fr}}
+  .msgcard{border-radius:5px;overflow:hidden;border:1px solid var(--line);background:#fff}
+  .msgcard .top{height:120px;position:relative;color:#fff;padding:14px}
+  .msgcard .top .badge2{position:absolute;top:10px;right:10px;background:rgba(0,0,0,.25);border-radius:12px;padding:3px 10px;font-size:11px}
+  .msgcard .top h4{position:absolute;bottom:10px;left:14px;margin:0;font-weight:700}
+  .msgcard .desc{padding:12px 14px;color:#777;font-size:12px;max-height:70px;overflow:hidden}
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+  @media(max-width:900px){.stats{grid-template-columns:1fr 1fr}}
+  .stat{border-radius:5px;padding:22px;color:#fff;min-height:150px;display:flex;flex-direction:column;justify-content:center;text-align:center}
+  .stat .lab{font-weight:700;opacity:.95}.stat .num{font-size:42px;font-weight:800;margin-top:6px}
+  .chartcard{background:#9b8fd6;border-radius:5px;padding:18px;color:#fff}
+  .bars{display:flex;align-items:flex-end;gap:30px;height:120px;justify-content:center;padding:0 10px}
+  .bars .bar{width:70px;border-radius:2px 2px 0 0}
+  .bars .leg{display:flex;gap:18px;justify-content:center;margin-top:10px;font-size:12px}
+  .bars .leg i{display:inline-block;width:18px;height:10px;margin-right:5px;vertical-align:middle}
+
+  /* footer */
+  .foot{background:#fff;border-top:1px solid var(--line);padding:9px 18px;font-size:12px;color:#aaa;display:flex;align-items:center;gap:8px}
+  .foot .label{font-size:10px}
+  .foot .pwr{margin-left:auto;font-weight:800;color:#777}.foot .pwr b{color:#f0883e}
+
+  .demo-banner{background:var(--blue);color:#fff;text-align:center;font-size:12px;font-weight:600;padding:5px}
+  .demo-banner a{color:#fff;text-decoration:underline}
+
+  #toast{position:fixed;top:14px;right:14px;z-index:300;display:flex;flex-direction:column;gap:8px}
+  .toast-item{background:var(--blue);color:#fff;padding:11px 15px;border-radius:4px;box-shadow:0 6px 18px rgba(0,0,0,.25);font-size:13px;min-width:210px;animation:tin .3s}
+  .toast-item.err{background:var(--red)} .toast-item.ok{background:var(--green)}
+  @keyframes tin{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:none}}
+
+  @media(max-width:768px){
+    .sidebar{width:54px}.sidebar .brand .simax-logo small,.smenu .lbl{display:none}
+    .smenu>li>a{justify-content:center;padding:14px 0}.smenu>li>a .caret-r{display:none}
+    .hide-sm{display:none}
+  }
+</style>
+</head>
+<body>
+<div class="demo-banner">Demo navegable · datos de ejemplo — recreación de <b>Simax Cloud</b> (mesa de ayuda) · <a href="../../index.html">← volver al portfolio</a></div>
+
+<!-- ===== LOGIN ===== -->
+<div id="login">
+  <div class="login-box">
+    <div class="simax-logo"><span class="cloud">sima<span class="x">x</span></span><small>CLOUD</small></div>
+    <div style="margin-top:26px">
+      <input class="form-control" id="lg-user" value="eugenio" />
+      <input class="form-control" type="password" id="lg-pass" value="1234" />
+      <button class="btn btn-login" onclick="entrar()">Login</button>
+      <button class="btn btn-sso" onclick="entrar()"><span class="ic"><i class="fa fa-google" style="color:#ea4335"></i></span> Iniciar sesión con Google</button>
+      <button class="btn btn-sso" onclick="entrar()"><span class="ic"><i class="fa fa-windows" style="color:#0078d4"></i></span> Iniciar sesión con Microsoft</button>
+      <a class="forgot">¿Olvidó su contraseña?</a>
+      <div class="xoft"><b>X</b>oft<sup style="font-size:8px">TECH</sup></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== APP ===== -->
+<div id="app" class="hidden-x">
+  <nav class="sidebar">
+    <div class="brand"><div class="simax-logo"><span class="cloud">sima<span class="x">x</span></span><small>CLOUD</small></div></div>
+    <ul class="smenu">
+      <li class="active" id="m-crear"><a onclick="go('crear')"><i class="fa fa-plus"></i> <span class="lbl">Nuevo Incidente</span></a></li>
+      <li id="m-consola"><a onclick="go('consola')"><i class="fa fa-table"></i> <span class="lbl">Consola</span></a></li>
+      <li id="m-mis"><a onclick="go('consola')"><i class="fa fa-th-large"></i> <span class="lbl">Mis Incidencias</span></a></li>
+      <li id="m-buscar"><a onclick="buscarFocus()"><i class="fa fa-search"></i> <span class="lbl">Buscar Incidentes</span></a></li>
+      <li><a onclick="go('clientes')"><i class="fa fa-user"></i> <span class="lbl">Solicitantes</span> <i class="fa fa-chevron-left caret-r"></i></a></li>
+      <li><a onclick="demo()"><i class="fa fa-book"></i> <span class="lbl">Base de Conocimientos</span> <i class="fa fa-chevron-left caret-r"></i></a></li>
+      <li><a onclick="demo()"><i class="fa fa-question-circle"></i> <span class="lbl">Consultas</span> <i class="fa fa-chevron-left caret-r"></i></a></li>
+      <li><a onclick="demo()"><i class="fa fa-envelope"></i> <span class="lbl">Difusión</span> <i class="fa fa-chevron-left caret-r"></i></a></li>
+      <li><a onclick="demo()"><i class="fa fa-lock"></i> <span class="lbl">Acceso &amp; Seguridad</span> <i class="fa fa-chevron-left caret-r"></i></a></li>
+      <li><a onclick="demo()"><i class="fa fa-cog"></i> <span class="lbl">Configuración</span> <i class="fa fa-chevron-left caret-r"></i></a></li>
+    </ul>
+  </nav>
+
+  <div class="content">
+    <div class="topbar">
+      <button class="burger" onclick="toggleSide()"><i class="fa fa-bars"></i></button>
+      <i class="fa fa-user-circle user-ic" onclick="toggleUser()"></i>
+    </div>
+    <div class="user-pop hidden-x" id="userpop">
+      <div class="av"><i class="fa fa-user"></i></div>
+      <div class="nm"><i class="fa fa-user" style="color:var(--blue)"></i> Eugenio Alonso</div>
+      <div class="em">valenpais@gmail.com</div>
+      <div style="display:flex;gap:6px"><button class="btn btn-primary btn-sm" style="flex:1" onclick="demo()"><i class="fa fa-asterisk"></i> Cambiar Clave</button><button class="btn btn-primary btn-sm" style="flex:1" onclick="logout()"><i class="fa fa-sign-out"></i> Logout</button></div>
+    </div>
+
+    <!-- DASHBOARD -->
+    <div id="v-dashboard">
+      <div class="body">
+        <div class="dash-cards">
+          <div class="msgcard"><div class="top" style="background:linear-gradient(120deg,#0e4d75,#1c84c6)"><span class="badge2"><i class="fa fa-info-circle"></i> mensaje</span><h4>SIMAX</h4></div><div class="desc">En caso de que encuentren alguna falla u error en este sistema, cargar un incidente reportándolo para que sea solucionado a la brevedad…</div></div>
+          <div class="msgcard"><div class="top" style="background:linear-gradient(120deg,#3a4a5a,#6b7b8c)"><span class="badge2"><i class="fa fa-info-circle"></i> mensaje</span><h4>Bienvenido a Simax !</h4></div><div class="desc">Estimado colaborador, utilice esta herramienta para gestionar los incidentes que le sean asignados, como así también los que ud. registre como parte de sus funciones…</div></div>
+        </div>
+        <div class="stats">
+          <div class="stat" style="background:#5d8a66"><div class="lab">Incidentes registrados<br>2025</div><div class="num">0</div></div>
+          <div class="stat" style="background:#e4577f"><div class="lab">Incidentes Registrados<br>2026</div><div class="num">141</div></div>
+          <div class="stat" style="background:#8e79c9"><div class="lab">Incidentes Pendientes<br>Eugenio Alonso</div><div class="num">24</div></div>
+          <div class="chartcard">
+            <div class="bars">
+              <div class="bar" style="height:48px;background:#23c6c8"></div>
+              <div class="bar" style="height:104px;background:#cb52c9"></div>
+            </div>
+            <div class="leg"><span><i style="background:#23c6c8"></i>pendientes</span><span><i style="background:#cb52c9"></i>solucionados</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONSOLA -->
+    <div id="v-consola" class="hidden-x">
+      <div class="crumb clearfix"><span class="pull-left"><i>Mesa de Ayuda</i> &rsaquo; <b>Consola</b></span>
+        <span class="toolbar pull-right" style="padding:0">
+          <span class="tbtn"><input id="buscar" placeholder="" style="border:none;width:0;padding:0;outline:none" onblur="this.style.width='0'" /><i class="fa fa-search" onclick="buscarFocus()"></i></span>
+          <span class="tbtn" onclick="demo()" title="Colores SLA"><i class="fa fa-eyedropper"></i></span>
+          <span class="tbtn" onclick="demo()" title="Columnas"><i class="fa fa-th"></i></span>
+          <span class="tbtn" onclick="demo()" title="Filtros"><i class="fa fa-filter"></i></span>
+          <span class="tbtn blue" onclick="go('crear')"><i class="fa fa-plus"></i></span>
+        </span>
+      </div>
+      <div class="body" style="padding-top:0">
+        <div class="tabbar" id="tabbar"></div>
+        <div class="tablewrap">
+          <table class="t">
+            <thead><tr>
+              <th>ID</th><th>SLA</th><th>Asunto</th><th>Fecha Ingreso</th><th>Cliente</th>
+              <th>Solicitante</th><th>Responsable</th><th>Tipificación</th><th style="text-align:right">Opciones</th>
+            </tr></thead>
+            <tbody id="rows"></tbody>
+          </table>
+          <div id="empty" style="display:none;padding:30px;text-align:center;color:#bbb">No hay incidentes en esta vista.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DETALLE -->
+    <div id="v-detalle" class="hidden-x"><div class="body" id="detalle"></div></div>
+
+    <!-- CREAR -->
+    <div id="v-crear" class="hidden-x">
+      <div class="crumb"><i>Mesa de Ayuda</i> &rsaquo; <b>Nuevo Incidente</b></div>
+      <div class="body" style="padding-top:0">
+        <div class="ihead">
+          <span class="estado" style="background:var(--teal)">Pendiente</span>
+          <div class="fechas"><div class="f"><label>Fecha de Ingreso</label><b id="cr-fecha"></b></div><div class="f"><label>Fecha Límite</label><b>---</b></div></div>
+          <button class="pill-btn">Solicitud <i class="fa fa-caret-down"></i></button>
+          <span class="ghost-btn"><i class="fa fa-user"></i> Eugenio Alonso</span>
+          <span class="ghost-btn" style="color:var(--red)">Masivo <i class="fa fa-times"></i></span>
+        </div>
+        <div class="subbar">
+          <span class="lbl-badge">Solicitante</span>
+          <select class="form-control" id="cr-sol" style="max-width:320px"></select>
+          <span class="lvl">●●●●●</span>
+          <span style="margin-left:auto">Sitio</span>
+          <select class="form-control" style="max-width:150px"><option>Bolívar</option><option>Casa Central</option></select>
+          <span>Vía</span>
+          <select class="form-control" style="max-width:110px"><option>WEB</option><option>Teléfono</option><option>Email</option></select>
+        </div>
+        <div class="dtabs"><div class="dtab active">Detalle</div><div class="dtab" onclick="demo()">Info. Adicional</div><div class="dtab" onclick="demo()">Solución</div></div>
+        <div class="panel">
+          <div class="row"><div class="col-sm-12 field form-group"><label>Asunto</label><input id="cr-asunto" class="form-control" maxlength="50" autofocus /></div></div>
+          <div class="row"><div class="col-sm-12 field form-group"><label>Descripción</label><textarea id="cr-descri" class="form-control" rows="5"></textarea></div></div>
+          <hr style="border-top:1px dashed var(--line)" />
+          <div class="row">
+            <div class="col-sm-3 field form-group"><label>Grupo</label><select id="cr-grupo" class="form-control"></select></div>
+            <div class="col-sm-3 field form-group"><label>Subgrupo</label><select class="form-control form-readonly"><option>Seleccione un Grupo</option></select></div>
+            <div class="col-sm-3 field form-group"><label>Item</label><select class="form-control form-readonly"><option>Seleccione un Subgrupo</option></select></div>
+            <div class="col-sm-3 field form-group"><label>Gru.Res.</label><select class="form-control form-readonly"><option>Seleccione un item</option></select></div>
+          </div>
+          <div class="row">
+            <div class="col-sm-3 field form-group"><label>Prioridad</label><select id="cr-prio" class="form-control"><option>Muy Alta</option><option>Alta</option><option selected>Media</option><option>Baja</option></select></div>
+            <div class="col-sm-3 field form-group"><label>Severidad</label><select class="form-control"><option selected>Baja</option><option>Mayor</option><option>Crítica</option></select></div>
+            <div class="col-sm-3 field form-group"><label>Contexto</label><select class="form-control"><option>Sin contexto</option><option>Puesto de Trabajo</option><option>Producción</option></select></div>
+            <div class="col-sm-3 field form-group"><label>Impacto</label><select class="form-control"><option selected>Bajo</option><option>Medio</option><option>Alto</option></select></div>
+          </div>
+          <div class="actions" style="margin-top:14px">
+            <button class="actbtn" onclick="demo()">Escalamientos</button>
+            <button class="actbtn" onclick="demo()">Historial</button>
+            <button class="actbtn" onclick="demo()">Equipos</button>
+            <button class="actbtn" onclick="demo()">Soluc. Sim.</button>
+            <button class="actbtn" onclick="demo()">Base Con.</button>
+            <button class="ghost-btn" style="min-width:110px" onclick="go('consola')">Consola</button>
+            <button class="actbtn" style="flex:0 0 130px" onclick="crearInc()"><i class="fa fa-check"></i> Agregar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CLIENTES -->
+    <div id="v-clientes" class="hidden-x">
+      <div class="crumb clearfix"><span class="pull-left"><i>Mesa de Ayuda</i> &rsaquo; <b>Solicitantes / Clientes</b></span>
+        <button class="btn btn-primary btn-sm pull-right" onclick="toggleAlta()"><i class="fa fa-plus"></i> Nuevo Cliente</button></div>
+      <div class="body" style="padding-top:0">
+        <div id="alta" class="panel hidden-x" style="border-top:1px solid var(--line);margin-bottom:14px">
+          <div class="row">
+            <div class="col-sm-4 form-group"><label>Razón Social</label><input id="cl-nom" class="form-control" /></div>
+            <div class="col-sm-3 form-group"><label>CUIT</label><input id="cl-cuit" class="form-control" placeholder="30-xxxxxxxx-x" /></div>
+            <div class="col-sm-3 form-group"><label>Contacto</label><input id="cl-cont" class="form-control" /></div>
+            <div class="col-sm-2 form-group"><label>Nivel</label><select id="cl-niv" class="form-control"><option>1</option><option selected>2</option><option>3</option></select></div>
+          </div>
+          <div class="text-right"><button class="ghost-btn" onclick="toggleAlta()">Cancelar</button> <button class="btn btn-primary" onclick="crearCli()"><i class="fa fa-check"></i> Guardar</button></div>
+        </div>
+        <div class="tablewrap" style="border-top:1px solid var(--line)">
+          <table class="t"><thead><tr><th>#</th><th>Razón Social</th><th>CUIT</th><th>Contacto</th><th>Nivel</th><th>Incidentes</th><th>Estado</th></tr></thead>
+          <tbody id="cli-rows"></tbody></table>
+        </div>
+      </div>
+    </div>
+
+    <div class="foot">
+      <span class="label label-info">v.41</span>
+      <span class="label" style="background:#23c6c8">DB:12</span>
+      <span class="label" style="background:#6c757d">db: Simax-Demo</span>
+      <span class="pwr">Powered by <b>X</b>oft</span>
+    </div>
+  </div>
+</div>
+
+<div class="optmenu" id="optmenu"></div>
+<div id="toast"></div>
+
+<script>
+/* ===== DATA ===== */
+const TABS = [
+  {k:'prueba',  n:'Prueba de Solución', c:4},
+  {k:'espera',  n:'En espera', c:1},
+  {k:'escalado',n:'Escalado', c:26},
+  {k:'asignado',n:'Asignado', c:12},
+  {k:'pendiente',n:'Pendiente', c:1},
+  {k:'rechazada',n:'Prueba Solución Rechazada', c:1},
+  {k:'cerradas',n:'Cerradas', c:340}
+];
+const EST = {
+  prueba:{t:'Prueba de Solución',c:'#1ab394'}, espera:{t:'En espera',c:'#f8ac59'},
+  escalado:{t:'Escalado',c:'#34404e'}, asignado:{t:'Asignado',c:'#1c84c6'},
+  pendiente:{t:'Pendiente',c:'#23c6c8'}, rechazada:{t:'Rechazada',c:'#ed5565'}, cerradas:{t:'Cerrado',c:'#7b8896'}
+};
+const GRUPOS=['Infraestructura','Aplicaciones de Negocio','Puesto de Trabajo','Seguridad Física','Redes y Conectividad'];
+const SOLICITANTES=['Luis Di Natale','Anabel, Berisso','Damián, Nepomnaschy','Sandra, Gregoric','Carlos Avaca','Javier, Vázquez'];
+const RESP=['Carlos Avaca','Carlos Farias','Eugenio Alonso','Luis Di Natale','Franco Martín Sebastián'];
+
+let SEQ = 142;
+let inc = [
+  {id:4, tab:'escalado', sla:{k:'curso',t:'En curso (5h 12m)'}, asunto:'Portal de accesos wifi', descri:'Implementar un portal para autorizar/renovar los accesos al wifi.', ingreso:'21/04/2026 13:32', cierre:'—', cliente:'Org. Demo', sol:'Luis Di Natale', resp:'Carlos Avaca', tip:'Infraestructura - Redes - Portal de accesos', prio:'Media',
+    eventos:[{f:'21/04 13:32',tipo:'Apertura',desc:'Incidente creado',obs:'Pedido del área de redes.',ag:'Mesa de Ayuda'},{f:'21/04 14:10',tipo:'Escalamiento',desc:'Escalado a Infraestructura',obs:'Requiere desarrollo del portal.',ag:'Eugenio Alonso'}]},
+  {id:10, tab:'escalado', sla:{k:'curso',t:'En curso (2d 1h)'}, asunto:'Acceso ERP Worknet', descri:'Solicito acceso al entorno productivo del ERP Worknet con acceso total al mismo.', ingreso:'24/04/2026 13:48', cierre:'—', cliente:'Org. Demo', sol:'Luis Di Natale', resp:'Carlos Avaca', tip:'Aplicaciones de Negocio - ERP - Alta de acceso', prio:'Media',
+    eventos:[{f:'24/04 13:48',tipo:'Apertura',desc:'Incidente creado',obs:'Solicita acceso total al ERP.',ag:'Mesa de Ayuda'}]},
+  {id:26, tab:'escalado', sla:{k:'curso',t:'En curso (8h 40m)'}, asunto:'Validación USB Token ePass2000', descri:'Validación USB Token físico ePass2000 en entorno Windows 10.', ingreso:'05/05/2026 15:40', cierre:'—', cliente:'Org. Demo', sol:'Damián, Nepomnaschy', resp:'Carlos Avaca', tip:'Seguridad - Firma Digital - Token ePass', prio:'Media',
+    eventos:[{f:'05/05 15:40',tipo:'Apertura',desc:'Incidente creado',obs:'Probar firma con token en Win10.',ag:'Mesa de Ayuda'},{f:'05/05 16:20',tipo:'Escalamiento',desc:'Escalado a Aplicaciones',obs:'Revisar middleware del token.',ag:'Eugenio Alonso'}]},
+  {id:55, tab:'asignado', sla:{k:'curso',t:'En curso (3h 02m)'}, asunto:'Alta de usuario nuevo', descri:'Alta de usuario para el área de administración con permisos de consulta.', ingreso:'16/06/2026 09:05', cierre:'—', cliente:'Org. Demo', sol:'Sandra, Gregoric', resp:'Eugenio Alonso', tip:'Puesto de Trabajo - Usuarios - Alta', prio:'Media',
+    eventos:[{f:'16/06 09:05',tipo:'Apertura',desc:'Incidente creado',obs:'Adjunta planilla de alta.',ag:'Mesa de Ayuda'}]},
+  {id:54, tab:'asignado', sla:{k:'curso',t:'En curso (1h 18m)'}, asunto:'No imprime recetas', descri:'Al imprimir recetas desde el módulo de afiliados no sale nada por la impresora de red.', ingreso:'16/06/2026 10:22', cierre:'—', cliente:'Org. Demo', sol:'Javier, Vázquez', resp:'Eugenio Alonso', tip:'Puesto de Trabajo - Impresoras - Driver', prio:'Alta',
+    eventos:[{f:'16/06 10:22',tipo:'Apertura',desc:'Incidente creado',obs:'Reportado por teléfono.',ag:'Mesa de Ayuda'}]},
+  {id:1, tab:'pendiente', sla:{k:'curso',t:'En curso (40m)'}, asunto:'Lentitud en la red del 2° piso', descri:'Varios usuarios del segundo piso reportan lentitud al acceder a los sistemas.', ingreso:'16/06/2026 11:40', cierre:'—', cliente:'Org. Demo', sol:'Carlos Avaca', resp:'—', tip:'Redes y Conectividad - Switch - Lentitud', prio:'Media',
+    eventos:[{f:'16/06 11:40',tipo:'Apertura',desc:'Incidente creado',obs:'Afecta a ~10 puestos.',ag:'Mesa de Ayuda'}]},
+  {id:14, tab:'prueba', sla:{k:'curso',t:'En curso (6h 05m)'}, asunto:'Error sistema compras - testing', descri:'No puedo visualizar el listado de procesos de compras; cargué los datos pero no muestra el listado. Probé con distintos roles internos y pasa lo mismo.', ingreso:'04/05/2026 13:25', cierre:'—', cliente:'Org. Demo', sol:'Anabel, Berisso', resp:'Carlos Farias', tip:'Aplicaciones de Negocio - Compras - Error en funcionalidad', prio:'Muy Alta',
+    eventos:[{f:'04/05 13:25',tipo:'Apertura',desc:'Incidente creado',obs:'Error al listar procesos de compras.',ag:'Mesa de Ayuda'},{f:'04/05 15:00',tipo:'Prueba Solución',desc:'Enviada prueba de solución',obs:'Se aplicó fix en el filtro de procesos. Validar.',ag:'Carlos Farias'}]},
+  {id:8, tab:'cerradas', sla:{k:'venc',t:'Cerrado vencido (30d 23h 50m)'}, asunto:'Error en Worknet', descri:'No funciona enviar_a_erp.', ingreso:'23/04/2026 13:57', cierre:'28/05/2026 13:48', cliente:'Org. Demo', sol:'Cecilia, Chueke', resp:'Ruiz Vanesa Jesica', tip:'Aplicaciones de Negocio - Sistema de Pautas - Error', prio:'Media',
+    eventos:[{f:'23/04 13:57',tipo:'Apertura',desc:'Incidente creado',obs:'Falla en envío a ERP.',ag:'Mesa de Ayuda'},{f:'28/05 13:48',tipo:'Cierre',desc:'Incidente cerrado',obs:'Se corrigió el job de integración.',ag:'Ruiz Vanesa Jesica'}]},
+  {id:12, tab:'cerradas', sla:{k:'ok',t:'Cerrado a tiempo (23h 56m)'}, asunto:'No puede ingresar a la PC', descri:'No puede ingresar con su clave de dominio.', ingreso:'04/05/2026 12:14', cierre:'04/05/2026 12:17', cliente:'Org. Demo', sol:'Javier, Vázquez', resp:'Franco Martín Sebastián', tip:'Puesto de Trabajo - Sistema Operativo - Perfil de usuario dañado', prio:'Media',
+    eventos:[{f:'04/05 12:14',tipo:'Apertura',desc:'Incidente creado',obs:'No accede con su clave.',ag:'Mesa de Ayuda'},{f:'04/05 12:17',tipo:'Solución',desc:'Perfil reconstruido',obs:'Se regeneró el perfil local del usuario.',ag:'Franco Martín Sebastián'}]},
+  {id:2, tab:'cerradas', sla:{k:'venc',t:'Cerrado vencido (9h 44m)'}, asunto:'Relevamiento ARSAT', descri:'Revisar las 13 VM y hacer un informe de lo que se está corriendo en cada una.', ingreso:'21/04/2026 13:21', cierre:'22/04/2026 23:06', cliente:'Org. Demo', sol:'Luis Di Natale', resp:'Carlos Farias', tip:'Infraestructura - Datacenter - Relevamiento', prio:'Media',
+    eventos:[{f:'21/04 13:21',tipo:'Apertura',desc:'Incidente creado',obs:'Relevar VMs.',ag:'Mesa de Ayuda'},{f:'22/04 23:06',tipo:'Cierre',desc:'Incidente cerrado',obs:'Informe entregado.',ag:'Carlos Farias'}]},
+  {id:7, tab:'espera', sla:{k:'curso',t:'En espera (—)'}, asunto:'Grupo de compras', descri:'Se necesita un grupo para compras para poder testear esa página.', ingreso:'21/04/2026 18:35', cierre:'—', cliente:'Org. Demo', sol:'Luis Di Natale', resp:'Lorenzo Radunsky', tip:'Infraestructura - Datacenter - Mantenimiento', prio:'Baja',
+    eventos:[{f:'21/04 18:35',tipo:'Apertura',desc:'Incidente creado',obs:'A la espera de definición.',ag:'Mesa de Ayuda'}]},
+  {id:31, tab:'rechazada', sla:{k:'venc',t:'Prueba rechazada'}, asunto:'Reporte año 2023 incompleto', descri:'Al generar el reporte del año 2023 faltan facturas en una columna. La prueba enviada no resolvió el caso.', ingreso:'07/05/2026 08:59', cierre:'—', cliente:'Org. Demo', sol:'Sandra, Gregoric', resp:'Nepomnaschy Damián', tip:'Aplicaciones de Negocio - Reportes - Datos faltantes', prio:'Media',
+    eventos:[{f:'07/05 08:59',tipo:'Apertura',desc:'Incidente creado',obs:'Faltan facturas en el reporte.',ag:'Mesa de Ayuda'},{f:'08/05 10:00',tipo:'Prueba Rechazada',desc:'Prueba de solución rechazada',obs:'El usuario indica que el problema persiste.',ag:'Sandra, Gregoric'}]}
+];
+let clientes=[
+  {id:1,nombre:'Organización Demo S.A.',cuit:'30-54668121-7',cont:'Dir. de Sistemas',niv:3,n:128,act:true},
+  {id:2,nombre:'Distribuidora KanuSur',cuit:'30-71044589-2',cont:'J. Ramírez',niv:2,n:54,act:true},
+  {id:3,nombre:'Estudio Torres',cuit:'27-28991034-5',cont:'A. Torres',niv:1,n:12,act:true},
+  {id:4,nombre:'Logística del Sur SRL',cuit:'30-70991245-8',cont:'Depósito Central',niv:2,n:37,act:false}
+];
+
+/* ===== NAV ===== */
+let tab='escalado';
+function entrar(){ document.getElementById('login').classList.add('hidden-x'); document.getElementById('app').classList.remove('hidden-x'); go('dashboard'); }
+function logout(){ document.getElementById('userpop').classList.add('hidden-x'); document.getElementById('app').classList.add('hidden-x'); document.getElementById('login').classList.remove('hidden-x'); }
+function go(v){
+  ['dashboard','consola','detalle','crear','clientes'].forEach(x=>document.getElementById('v-'+x).classList.toggle('hidden-x', x!==v));
+  document.getElementById('m-crear').classList.toggle('active', v==='crear');
+  document.getElementById('m-consola').classList.toggle('active', v==='consola');
+  if(v==='consola') renderConsola();
+  if(v==='crear') resetCrear();
+  if(v==='clientes') renderCli();
+  closeOpt(); document.getElementById('userpop').classList.add('hidden-x'); window.scrollTo(0,0);
+}
+function toggleSide(){ document.querySelector('.sidebar').classList.toggle('mini'); }
+function toggleUser(){ document.getElementById('userpop').classList.toggle('hidden-x'); }
+function buscarFocus(){ go('consola'); const b=document.getElementById('buscar'); b.style.width='150px'; b.focus(); }
+function demo(){ toast('Sección no incluida en la demo.', 'err'); }
+
+/* ===== CONSOLA ===== */
+function renderConsola(){
+  document.getElementById('tabbar').innerHTML = TABS.map(t=>{
+    const real = inc.filter(i=>i.tab===t.k).length;
+    return `<div class="tabpill ${t.k===tab?'active':''}" onclick="setTab('${t.k}')">${t.n} <span class="dot">• ${t.c}</span></div>`;
+  }).join('');
+  const q=(document.getElementById('buscar').value||'').toLowerCase();
+  let list=inc.filter(i=>i.tab===tab);
+  if(q) list=list.filter(i=>(i.asunto+i.descri+i.sol+i.resp+i.tip+i.id).toLowerCase().includes(q));
+  document.getElementById('rows').innerHTML=list.map(i=>`
+    <tr onclick="abrir(${i.id})">
+      <td><span class="idbadge ${['escalado','asignado'].includes(i.tab)?'on':''}">${i.id}</span></td>
+      <td><span class="sla ${i.sla.k}"><i class="fa fa-${i.sla.k==='venc'?'exclamation-circle':i.sla.k==='ok'?'check-circle':'clock-o'}"></i>${i.sla.t}</span></td>
+      <td><strong>${i.asunto}</strong></td>
+      <td class="tip">${i.ingreso}</td>
+      <td>${i.cliente}</td>
+      <td>${i.sol}</td>
+      <td>${i.resp==='—'?'<span style="color:#bbb">Sin asignar</span>':i.resp}</td>
+      <td class="tip">${i.tip}</td>
+      <td onclick="event.stopPropagation()"><div class="opts">
+        <button class="ob lock" title="Permisos"><i class="fa fa-lock"></i></button>
+        <button class="ob" title="Opciones" onclick="openOpt(event,${i.id})"><i class="fa fa-cog"></i></button>
+        <button class="ob" title="Asignar" onclick="tomar(${i.id})"><i class="fa fa-user-plus"></i></button>
+      </div></td>
+    </tr>`).join('');
+  document.getElementById('empty').style.display=list.length?'none':'block';
+}
+function setTab(k){ tab=k; renderConsola(); }
+
+/* options dropdown */
+function openOpt(e,id){
+  e.stopPropagation();
+  const m=document.getElementById('optmenu');
+  const cerrada = inc.find(x=>x.id===id).tab==='cerradas';
+  m.innerHTML=`
+    <a onclick="abrir(${id})"><i class="fa fa-pencil"></i> Editar</a>
+    <a onclick="abrir(${id})"><i class="fa fa-calendar"></i> Eventos</a>
+    <a onclick="demo()"><i class="fa fa-paperclip"></i> Adjuntos</a>
+    <a onclick="demo()"><i class="fa fa-question-circle"></i> Autorizaciones</a>
+    <a onclick="demo()"><i class="fa fa-list"></i> Log</a>
+    <a onclick="demo()"><i class="fa fa-clock-o"></i> Reloj</a>
+    <div class="sep"></div>
+    <a class="disabled"><i class="fa fa-puzzle-piece"></i> Prueba Solución</a>
+    <a onclick="tomar(${id})"><i class="fa fa-hand-paper-o"></i> Tomar</a>
+    <a onclick="demo()"><i class="fa fa-globe"></i> Masivo</a>
+    <a onclick="demo()"><i class="fa fa-share"></i> Avanzar Fase</a>
+    <a onclick="demo()"><i class="fa fa-tags"></i> Recatalogar</a>
+    <a onclick="demo()"><i class="fa fa-refresh"></i> Repactar</a>
+    ${cerrada?`<a onclick="reabrir(${id})"><i class="fa fa-folder-open"></i> Reabrir</a>`:`<a class="danger" onclick="cerrarInc(${id})"><i class="fa fa-times-circle"></i> Cerrar / Cancelar</a>`}`;
+  m.style.display='block';
+  const r=e.currentTarget.getBoundingClientRect();
+  let left=r.left-160; if(left<8)left=8;
+  m.style.left=left+'px'; m.style.top=(r.bottom+4)+'px';
+}
+function closeOpt(){ document.getElementById('optmenu').style.display='none'; }
+document.addEventListener('click', e=>{ if(!e.target.closest('.optmenu') && !e.target.closest('.ob')) closeOpt(); });
+
+/* ===== DETALLE ===== */
+function abrir(id){
+  closeOpt();
+  const i=inc.find(x=>x.id===id); if(!i)return;
+  const e=EST[i.tab];
+  const cerrada=i.tab==='cerradas';
+  document.getElementById('detalle').innerHTML=`
+    <div class="crumb clearfix" style="padding:0 0 12px"><span class="lbl-badge">Incidente N° ${i.id}</span><span class="pull-right" style="color:#9aa0a6"><i>Mesa de Ayuda</i> &rsaquo; <b>Abrir Incidente</b></span></div>
+    <div class="ihead">
+      <span class="estado" style="background:${e.c}">${e.t}</span>
+      <div class="fechas"><div class="f"><label>Fecha de Ingreso</label><b>${i.ingreso}</b></div><div class="f"><label>Fecha Cierre</label><b>${i.cierre}</b></div></div>
+      <button class="pill-btn">Solicitud <i class="fa fa-caret-down"></i></button>
+      <span class="ghost-btn"><i class="fa fa-user"></i> ${i.resp==='—'?'Sin asignar':i.resp}</span>
+      <span style="margin-left:auto">
+        <button class="ghost-btn" onclick="go('consola')"><i class="fa fa-arrow-left"></i> Consola</button>
+      </span>
+    </div>
+    <div class="subbar">
+      <span class="lbl-badge">Solicitante</span>
+      <select class="form-control" style="max-width:340px"><option>${i.sol} | ${i.cliente}</option></select>
+      <span class="lvl">●●●●●</span>
+      <span style="margin-left:auto">Sitio</span><select class="form-control" style="max-width:140px"><option>Bolívar</option></select>
+      <span>Vía</span><select class="form-control" style="max-width:100px"><option>WEB</option></select>
+    </div>
+    <div class="dtabs"><div class="dtab active">Detalle</div><div class="dtab" onclick="demo()">Info. Adicional</div><div class="dtab" onclick="demo()">Solución</div></div>
+    <div class="panel">
+      <div class="row"><div class="col-sm-12 field form-group"><label>Asunto</label><input class="form-control form-readonly" value="${i.asunto.replace(/"/g,'&quot;')}" readonly /></div></div>
+      <div class="row"><div class="col-sm-12 field form-group"><label>Descripción</label><textarea class="form-control form-readonly" rows="4" readonly>${i.descri}</textarea></div></div>
+      <hr style="border-top:1px dashed var(--line)" />
+      <div class="row">
+        <div class="col-sm-3 field form-group"><label>Grupo</label><input class="form-control form-readonly" value="${i.tip.split(' - ')[0]||''}" readonly /></div>
+        <div class="col-sm-3 field form-group"><label>Subgrupo</label><input class="form-control form-readonly" value="${i.tip.split(' - ')[1]||'---'}" readonly /></div>
+        <div class="col-sm-3 field form-group"><label>Item</label><input class="form-control form-readonly" value="${i.tip.split(' - ')[2]||'---'}" readonly /></div>
+        <div class="col-sm-3 field form-group"><label>Prioridad</label><input class="form-control form-readonly" value="${i.prio}" readonly /></div>
+      </div>
+      <div class="actions">
+        <button class="actbtn" onclick="demo()">Editar</button>
+        <button class="actbtn" onclick="scrollHist()">Escalamientos<span class="badge">${i.eventos.filter(x=>x.tipo.includes('Escal')).length||2}</span></button>
+        <button class="actbtn" onclick="scrollHist()">Eventos</button>
+        <button class="actbtn" onclick="demo()">Log<span class="badge">4</span></button>
+        <button class="actbtn" onclick="demo()">Adjuntos<span class="badge">1</span></button>
+        <button class="actbtn" onclick="demo()">Tiempos</button>
+        <button class="actbtn" onclick="demo()">Soluc. Sim.<span class="badge">39</span></button>
+      </div>
+      ${cerrada
+        ? `<button class="wbtn" onclick="reabrir(${i.id})">Reabrir</button>`
+        : `<button class="wbtn" style="background:var(--blue)" onclick="cerrarInc(${i.id})">Cerrar</button>`}
+    </div>
+
+    <!-- HISTORIAL -->
+    <div class="panel" id="hist" style="border-top:none;margin-top:14px">
+      <div class="dtabs" style="margin:-16px -16px 14px"><div class="dtab active">Historial &amp; Eventos <span style="opacity:.7">(${i.eventos.length})</span></div></div>
+      ${i.eventos.map(ev=>`
+        <div style="border-left:2px solid var(--line);padding:0 0 14px 16px;position:relative;margin-left:6px">
+          <span style="position:absolute;left:-7px;top:2px;width:12px;height:12px;border-radius:50%;background:var(--blue);border:2px solid #fff;box-shadow:0 0 0 1px var(--blue)"></span>
+          <div style="font-size:11px;color:#9aa0a6"><i class="fa fa-clock-o"></i> ${ev.f} · ${ev.ag}</div>
+          <div style="margin:2px 0"><span style="background:#eef1f3;border-radius:3px;padding:1px 8px;font-size:11px;margin-right:6px;font-weight:600">${ev.tipo}</span><strong>${ev.desc}</strong></div>
+          <div style="color:#777">${ev.obs}</div>
+        </div>`).join('')}
+      <hr style="border-top:1px dashed var(--line)" />
+      <div class="row">
+        <div class="col-sm-3 form-group"><label class="field">Tipo</label><select id="ev-tipo" class="form-control"><option>Comentario</option><option>Gestión</option><option>Llamado</option><option>Escalamiento</option></select></div>
+        <div class="col-sm-9 form-group"><label class="field">Observación</label>
+          <div style="display:flex;gap:8px"><input id="ev-obs" class="form-control" placeholder="Agregar nota al historial..." onkeydown="if(event.key==='Enter')nuevoEvento(${i.id})" /><button class="btn btn-primary" onclick="nuevoEvento(${i.id})"><i class="fa fa-plus"></i></button></div>
+        </div>
+      </div>
+    </div>`;
+  go('detalle');
+}
+function scrollHist(){ document.getElementById('hist').scrollIntoView({behavior:'smooth'}); }
+function nuevoEvento(id){
+  const i=inc.find(x=>x.id===id), o=document.getElementById('ev-obs').value.trim(), t=document.getElementById('ev-tipo').value;
+  if(!o){toast('Escribí una observación.','err');return;}
+  i.eventos.push({f:now(),tipo:t,desc:t+' agregado',obs:o,ag:'Eugenio Alonso'}); toast('Evento agregado.','ok'); abrir(id);
+}
+function tomar(id){ const i=inc.find(x=>x.id===id); i.resp='Eugenio Alonso'; if(i.tab==='pendiente')i.tab='asignado'; i.eventos.push({f:now(),tipo:'Asignación',desc:'Incidente tomado',obs:'Tomado por el agente.',ag:'Eugenio Alonso'}); toast('Tomaste el incidente #'+id+'.','ok'); closeOpt(); if(!document.getElementById('v-detalle').classList.contains('hidden-x'))abrir(id); else renderConsola(); }
+function cerrarInc(id){ const i=inc.find(x=>x.id===id); i.tab='cerradas'; i.cierre=now(); i.sla={k:'ok',t:'Cerrado a tiempo'}; i.eventos.push({f:now(),tipo:'Cierre',desc:'Incidente cerrado',obs:'Resuelto y cerrado por el agente.',ag:'Eugenio Alonso'}); toast('Incidente #'+id+' cerrado.','ok'); closeOpt(); abrir(id); }
+function reabrir(id){ const i=inc.find(x=>x.id===id); i.tab='asignado'; i.cierre='—'; i.sla={k:'curso',t:'En curso (0m)'}; i.eventos.push({f:now(),tipo:'Reapertura',desc:'Incidente reabierto',obs:'Reabierto por el agente.',ag:'Eugenio Alonso'}); toast('Incidente #'+id+' reabierto.','ok'); closeOpt(); abrir(id); }
+
+/* ===== CREAR ===== */
+function resetCrear(){
+  document.getElementById('cr-fecha').textContent=now();
+  document.getElementById('cr-sol').innerHTML='<option>Solicitantes</option>'+SOLICITANTES.map(s=>`<option>${s} | Org. Demo</option>`).join('');
+  document.getElementById('cr-grupo').innerHTML='<option>---</option>'+GRUPOS.map(g=>`<option>${g}</option>`).join('');
+  document.getElementById('cr-asunto').value=''; document.getElementById('cr-descri').value='';
+}
+function crearInc(){
+  const a=document.getElementById('cr-asunto').value.trim();
+  if(!a){toast("El campo 'Asunto' es obligatorio.",'err');return;}
+  const id=SEQ++;
+  const solSel=document.getElementById('cr-sol').value; const sol=solSel.split(' | ')[0]==='Solicitantes'?SOLICITANTES[0]:solSel.split(' | ')[0];
+  inc.unshift({id,tab:'pendiente',sla:{k:'curso',t:'En curso (0m)'},asunto:a,descri:document.getElementById('cr-descri').value||'(sin descripción)',ingreso:now(),cierre:'—',cliente:'Org. Demo',sol,resp:'Eugenio Alonso',tip:(document.getElementById('cr-grupo').value||'General')+' - General - General',prio:document.getElementById('cr-prio').value,
+    eventos:[{f:now(),tipo:'Apertura',desc:'Incidente creado',obs:'Cargado desde la consola.',ag:'Eugenio Alonso'}]});
+  toast('Incidente #'+id+' creado.','ok'); tab='pendiente'; go('consola');
+}
+
+/* ===== CLIENTES ===== */
+function renderCli(){ document.getElementById('cli-rows').innerHTML=clientes.map(c=>`
+  <tr><td><span class="idbadge">${c.id}</span></td><td><strong>${c.nombre}</strong></td><td class="tip">${c.cuit}</td><td>${c.cont}</td>
+  <td><span class="label label-info">Nivel ${c.niv}</span></td><td>${c.n}</td>
+  <td>${c.act?'<span class="sla ok">Activo</span>':'<span class="sla" style="background:#9aa0a6">Inactivo</span>'}</td></tr>`).join(''); }
+function toggleAlta(){ document.getElementById('alta').classList.toggle('hidden-x'); }
+function crearCli(){ const n=document.getElementById('cl-nom').value.trim(); if(!n){toast("La 'Razón Social' es obligatoria.",'err');return;}
+  clientes.unshift({id:clientes.length+1,nombre:n,cuit:document.getElementById('cl-cuit').value||'—',cont:document.getElementById('cl-cont').value||'—',niv:document.getElementById('cl-niv').value,n:0,act:true});
+  document.getElementById('cl-nom').value='';document.getElementById('cl-cuit').value='';document.getElementById('cl-cont').value='';
+  toggleAlta(); renderCli(); toast('Cliente dado de alta.','ok'); }
+
+/* ===== UTILS ===== */
+function now(){ const d=new Date(),p=n=>String(n).padStart(2,'0'); return p(d.getDate())+'/'+p(d.getMonth()+1)+'/'+d.getFullYear()+' '+p(d.getHours())+':'+p(d.getMinutes()); }
+function toast(m,kind){ const t=document.createElement('div'); t.className='toast-item'+(kind?' '+kind:''); t.textContent=m; document.getElementById('toast').appendChild(t); setTimeout(()=>{t.style.transition='opacity .3s';t.style.opacity='0';setTimeout(()=>t.remove(),300);},2600); }
+</script>
+</body>
+</html>
