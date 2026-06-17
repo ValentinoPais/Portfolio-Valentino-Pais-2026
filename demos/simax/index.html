@@ -9,13 +9,14 @@
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet" />
 <style>
   :root{
-    --blue:#1c84c6; --blue-d:#1a7bb9; --blue-l:#2a93d5;
+    --blue:#1c84c6; --blue-d:#1a7bb9; --blue-l:#3aa8e8; --blue-h:#3aa8e8;
     --sidebar:#2b2f38; --sidebar-h:#23262d; --sidebar-tx:#a4abb6;
-    --bg:#f1f3f5; --line:#e7eaec; --tx:#5e6064; --muted:#a3a8ad;
+    --bg:#f5f6f8; --line:#eceef1; --tx:#5e6064; --muted:#a3a8ad; --rad:12px; --shadow:0 1px 4px rgba(25,35,55,.06),0 1px 2px rgba(25,35,55,.04);
     --red:#ed5565; --green:#1ab394; --teal:#23c6c8; --amber:#f8ac59;
   }
   *{box-sizing:border-box}
-  body{margin:0;font-family:'Open Sans',Helvetica,Arial,sans-serif;font-size:13px;color:var(--tx);background:var(--bg)}
+  html,body{height:100%;overflow:hidden}
+  body{margin:0;font-family:'Open Sans',Helvetica,Arial,sans-serif;font-size:13px;color:var(--tx);background:var(--bg);display:flex;flex-direction:column;height:100vh}
   a{cursor:pointer;text-decoration:none}
   .clearfix::after{content:"";display:table;clear:both}
   .hidden-x{display:none!important}
@@ -28,28 +29,37 @@
   .simax-logo small{color:#8a9099;font-size:11px;letter-spacing:6px;margin-top:2px;margin-left:34px}
 
   /* ===== LOGIN ===== */
-  #login{position:fixed;inset:0;z-index:200;display:flex;align-items:center;justify-content:center;
-    background:linear-gradient(180deg,#5bb3e8 0%,#9fd2f3 45%,#cfe9fb 100%);overflow:hidden}
-  #login:before,#login:after{content:"";position:absolute;border-radius:50%;background:rgba(255,255,255,.5);filter:blur(8px)}
-  #login:before{width:300px;height:120px;left:8%;top:18%}
-  #login:after{width:380px;height:140px;right:6%;bottom:16%}
+  #login{position:fixed;top:34px;left:0;right:0;bottom:0;z-index:200;display:flex;align-items:center;justify-content:center;
+    background:#bfe3fb url('simax-bg.jpg') center/cover no-repeat;overflow:hidden}
   .login-box{position:relative;z-index:2;width:360px;text-align:center}
+  .login-logo{width:300px;max-width:82%;display:block;margin:0 auto}
+  .pass-wrap{position:relative;margin-bottom:12px}
+  .pass-wrap .form-control{margin-bottom:0;padding-right:44px}
+  .eye{position:absolute;right:5px;top:5px;width:34px;height:32px;border:none;background:transparent;color:#7a8a99;cursor:pointer}
+  .eye:hover{color:var(--blue)}
   .login-box .simax-logo .cloud{font-size:40px}
   .login-box .simax-logo .cloud:before{font-size:60px}
   .login-box .simax-logo small{font-size:13px;letter-spacing:9px;margin-left:50px}
   .login-box .form-control{height:42px;background:rgba(255,255,255,.85);margin-bottom:12px;border:1px solid #cfe0ee}
   .login-box .btn{height:42px;font-weight:600}
-  .btn-login{background:var(--blue);color:#fff;width:100%;border:none}
+  .btn-login{background:var(--blue);color:#fff;width:100%;border:none;border-radius:8px;box-shadow:0 4px 12px rgba(28,132,198,.3);transition:background .15s,transform .15s,color .15s}
+  .btn-login:hover{background:var(--blue-h);color:#fff;transform:scale(1.03)}
   .btn-sso{background:#2a93d5;color:#fff;width:100%;border:none;display:flex;align-items:center;justify-content:center;gap:10px;margin-top:10px;font-weight:600}
   .btn-sso .ic{background:#fff;border-radius:3px;width:30px;height:30px;display:flex;align-items:center;justify-content:center;color:#444}
   .login-box .forgot{display:block;color:#1a6aa8;margin-top:16px;font-size:12px}
   .xoft{margin-top:18px;font-weight:800;color:#555;font-size:14px}
   .xoft b{color:#f0883e}
+  .xoft-link{display:inline-block;margin-top:18px}
+  .xoft-logo{height:34px;width:auto;transition:transform .15s,opacity .15s;opacity:.9}
+  .xoft-link:hover .xoft-logo{transform:scale(1.05);opacity:1}
 
   /* ===== APP SHELL ===== */
-  #app{display:flex;min-height:100vh}
-  .sidebar{width:225px;background:var(--sidebar);flex:none;color:var(--sidebar-tx);transition:width .2s;overflow:hidden}
-  .sidebar .brand{padding:20px 10px 16px;text-align:center;background:#262a32}
+  #app{display:flex;flex:1;min-height:0;overflow:hidden}
+  .sidebar{width:225px;background:var(--sidebar);flex:none;color:var(--sidebar-tx);transition:width .2s;overflow-y:auto;overflow-x:hidden}
+  .sidebar .brand{padding:18px 10px 16px;text-align:center;background:#262a32}
+  .brand-link{display:inline-block;cursor:pointer}
+  .brand-logo{max-width:165px;width:88%;transition:transform .15s,filter .15s}
+  .brand-link:hover .brand-logo{transform:scale(1.05);filter:brightness(1.12)}
   .sidebar .brand .simax-logo .cloud{font-size:22px;color:#5bb8e8}
   .sidebar .brand .simax-logo .cloud:before{font-size:34px}
   .smenu{list-style:none;margin:0;padding:0}
@@ -58,10 +68,11 @@
   .smenu>li>a .caret-r{margin-left:auto;opacity:.5;font-size:10px}
   .smenu>li>a:hover{background:var(--sidebar-h);color:#fff}
   .smenu>li.active>a{background:var(--blue);color:#fff;border-left-color:#fff}
-  .content{flex:1;min-width:0;display:flex;flex-direction:column}
+  .content{flex:1;min-width:0;display:flex;flex-direction:column;overflow:hidden}
 
-  .topbar{height:48px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 16px;position:relative}
-  .burger{width:32px;height:32px;border-radius:50%;background:var(--blue);color:#fff;border:none;display:flex;align-items:center;justify-content:center}
+  .topbar{height:52px;background:#fff;border-bottom:1px solid var(--line);box-shadow:0 1px 3px rgba(0,0,0,.04);display:flex;align-items:center;justify-content:space-between;padding:0 18px;position:relative}
+  .burger{width:32px;height:32px;border-radius:50%;background:var(--blue);color:#fff;border:none;display:flex;align-items:center;justify-content:center;transition:background .15s,transform .15s}
+  .burger:hover{background:var(--blue-h);color:#fff;transform:scale(1.08)}
   .topbar .user-ic{color:var(--blue);font-size:18px;cursor:pointer}
   .user-pop{position:absolute;right:12px;top:46px;width:240px;background:#fff;border:1px solid var(--line);border-radius:6px;box-shadow:0 10px 30px rgba(0,0,0,.18);padding:18px;text-align:center;z-index:60}
   .user-pop .av{width:84px;height:84px;border-radius:50%;background:#e6e8eb;color:#b5bbc2;display:flex;align-items:center;justify-content:center;font-size:46px;margin:0 auto 8px}
@@ -70,35 +81,40 @@
 
   .crumb{padding:14px 22px;color:#9aa0a6;font-size:14px}
   .crumb b{color:#3a3f44}
-  .body{padding:6px 18px 24px;flex:1}
+  .views-wrap{flex:1;overflow-y:auto;min-height:0}
+  .body{padding:6px 18px 24px}
 
   .toolbar{display:flex;align-items:center;gap:8px;justify-content:flex-end;padding:0 22px 8px}
   .tbtn{width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:#fff;color:#9aa0a6;display:flex;align-items:center;justify-content:center;cursor:pointer}
-  .tbtn.blue{background:var(--blue);color:#fff;border-color:var(--blue)}
+  .tbtn.blue{background:var(--blue);color:#fff;border-color:var(--blue);transition:background .15s,transform .15s}
+  .tbtn.blue:hover{background:var(--blue-h);color:#fff;border-color:var(--blue-h);transform:scale(1.08)}
 
   /* tabs pill */
-  .tabbar{display:flex;flex-wrap:wrap;gap:0;border-bottom:1px solid var(--line);margin:0 4px}
-  .tabpill{padding:13px 20px;background:#fff;border:1px solid var(--line);border-bottom:none;color:#6a7077;font-weight:600;cursor:pointer;white-space:nowrap;margin-right:2px;border-radius:4px 4px 0 0}
+  .tabbar{display:flex;flex-wrap:wrap;gap:8px;border-bottom:none;margin:0 0 14px}
+  .tabpill{padding:9px 16px;background:#fff;border:1px solid var(--line);color:#6a7077;font-weight:600;cursor:pointer;white-space:nowrap;border-radius:9px;box-shadow:0 1px 2px rgba(0,0,0,.04);transition:all .15s}
+  .tabpill:hover{border-color:#cfd6dd}
   .tabpill .dot{color:var(--blue);font-weight:800}
-  .tabpill.active{background:var(--blue);color:#fff}
+  .tabpill.active{background:var(--blue);color:#fff;border-color:var(--blue);box-shadow:0 3px 8px rgba(28,132,198,.28)}
   .tabpill.active .dot{color:#fff}
 
   /* table */
-  .tablewrap{background:#fff;border:1px solid var(--line);border-top:none;overflow-x:auto}
+  .tablewrap{background:#fff;border:1px solid var(--line);border-radius:var(--rad);box-shadow:var(--shadow);overflow:hidden;overflow-x:auto}
   table.t{width:100%;border-collapse:collapse;min-width:900px}
-  table.t th{padding:11px 10px;font-size:11px;text-transform:uppercase;letter-spacing:.03em;color:#9aa0a6;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}
+  table.t th{padding:14px;font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:#9aa0a6;background:#fafbfc;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}
   table.t th .fa{opacity:.4;margin-left:3px}
-  table.t td{padding:10px;border-bottom:1px solid #f2f3f4;vertical-align:middle}
-  table.t tbody tr{cursor:pointer}
-  table.t tbody tr:hover{background:#f7fbfe}
-  .idbadge{display:inline-block;min-width:28px;text-align:center;background:#d3d8de;color:#fff;font-weight:700;border-radius:4px;padding:3px 7px}
+  table.t td{padding:13px 14px;border-bottom:1px solid #f2f3f4;vertical-align:middle}
+  table.t tbody tr:last-child td{border-bottom:none}
+  table.t tbody tr{cursor:pointer;transition:background .12s}
+  table.t tbody tr:hover{background:#f6fafe}
+  .idbadge{display:inline-block;min-width:28px;text-align:center;background:#d3d8de;color:#fff;font-weight:700;border-radius:8px;padding:3px 7px}
   .idbadge.on{background:var(--blue)}
   .sla{display:inline-block;border-radius:13px;padding:3px 11px;font-size:11px;font-weight:600;color:#fff;white-space:nowrap}
   .sla.venc{background:var(--red)} .sla.ok{background:var(--green)} .sla.curso{background:var(--blue)}
   .sla .fa{margin-right:4px}
   .tip{color:#6a7077;font-size:12px}
   .opts{display:flex;gap:6px;justify-content:flex-end}
-  .ob{width:30px;height:30px;border-radius:50%;background:var(--blue);color:#fff;border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:12px}
+  .ob{width:30px;height:30px;border-radius:50%;background:var(--blue);color:#fff;border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:12px;transition:background .15s,transform .15s}
+  .ob:hover{background:var(--blue-h);color:#fff;transform:scale(1.1)}
   .ob.lock{background:#9fb6c6}
 
   /* options dropdown */
@@ -111,57 +127,124 @@
   .optmenu .sep{height:1px;background:var(--line);margin:5px 0}
 
   /* DETAIL / CREATE shared */
-  .ihead{background:#fff;border:1px solid var(--line);border-bottom:none;padding:14px 16px;display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px}
-  .estado{display:inline-block;padding:7px 16px;border-radius:4px;color:#fff;font-weight:700;font-size:14px}
+  .ihead{background:#fff;border:1px solid var(--line);border-bottom:none;border-radius:var(--rad) var(--rad) 0 0;padding:16px 18px;display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px}
+  .estado{display:inline-block;padding:7px 16px;border-radius:8px;color:#fff;font-weight:700;font-size:14px}
   .ihead .fechas{display:flex;gap:18px}
   .ihead .fechas .f label{display:block;font-size:10px;color:#aaa;text-transform:uppercase}
   .ihead .fechas .f b{color:#666}
-  .pill-btn{background:var(--blue);color:#fff;border:none;border-radius:4px;padding:7px 16px;font-weight:600}
-  .ghost-btn{background:#fff;border:1px solid var(--line);border-radius:4px;padding:7px 14px;color:#666;font-weight:600}
-  .panel{background:#fff;border:1px solid var(--line);border-top:none;padding:16px}
+  .pill-btn{background:var(--blue);color:#fff;border:none;border-radius:8px;padding:7px 16px;font-weight:600;transition:background .15s,transform .15s,color .15s}
+  .pill-btn:hover{background:var(--blue-h);color:#fff;transform:scale(1.04)}
+  .ghost-btn{background:#fff;border:1px solid var(--line);border-radius:8px;padding:7px 14px;color:#666;font-weight:600}
+  .panel{background:#fff;border:1px solid var(--line);border-top:none;border-radius:0 0 var(--rad) var(--rad);padding:18px}
+  .panel#hist{border-top:1px solid var(--line);border-radius:var(--rad);box-shadow:var(--shadow)}
   .subbar{background:#fff;border:1px solid var(--line);border-top:none;padding:14px 16px;display:flex;flex-wrap:wrap;align-items:center;gap:14px}
   .lvl{color:var(--blue);letter-spacing:2px}
-  .lbl-badge{background:var(--blue);color:#fff;border-radius:4px;padding:5px 12px;font-weight:600;font-size:12px}
+  .lbl-badge{background:var(--blue);color:#fff;border-radius:8px;padding:5px 12px;font-weight:600;font-size:12px}
   .dtabs{display:flex;margin:0}
   .dtab{flex:1;text-align:center;padding:13px;background:#fff;border:1px solid var(--line);font-weight:700;color:#7a8086;cursor:pointer}
   .dtab.active{background:var(--blue);color:#fff;border-color:var(--blue)}
   .form-readonly{background:#f3f4f6}
   .actions{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
-  .actbtn{flex:1;min-width:120px;background:var(--blue);color:#fff;border:none;border-radius:4px;padding:11px;font-weight:600;position:relative;cursor:pointer}
+  .actbtn{flex:1;min-width:120px;background:var(--blue);color:#fff;border:none;border-radius:8px;padding:11px;font-weight:600;position:relative;cursor:pointer;transition:background .15s,transform .15s,color .15s}
   .actbtn .badge{position:absolute;top:-6px;right:-6px;background:var(--red);border-radius:50%;font-size:10px;padding:3px 6px}
   .actbtn.light{background:#7fbbe0}
-  .actbtn:hover{background:var(--blue-d)}
-  .wbtn{width:100%;background:#7fbbe0;color:#fff;border:none;border-radius:4px;padding:13px;font-weight:700;margin-top:6px}
+  .actbtn:hover{background:var(--blue-h);color:#fff;transform:scale(1.03)}
+  .wbtn{width:100%;background:#7fbbe0;color:#fff;border:none;border-radius:8px;padding:13px;font-weight:700;margin-top:6px}
   .field label{font-size:11px;text-transform:uppercase;letter-spacing:.03em;color:#9aa0a6}
 
   /* dashboard */
   .dash-cards{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
   @media(max-width:800px){.dash-cards{grid-template-columns:1fr}}
-  .msgcard{border-radius:5px;overflow:hidden;border:1px solid var(--line);background:#fff}
+  .msgcard{border-radius:var(--rad);overflow:hidden;border:1px solid var(--line);background:#fff;box-shadow:var(--shadow);cursor:pointer;transition:transform .15s,box-shadow .15s}
+  .msgcard:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.13)}
   .msgcard .top{height:120px;position:relative;color:#fff;padding:14px}
   .msgcard .top .badge2{position:absolute;top:10px;right:10px;background:rgba(0,0,0,.25);border-radius:12px;padding:3px 10px;font-size:11px}
   .msgcard .top h4{position:absolute;bottom:10px;left:14px;margin:0;font-weight:700}
   .msgcard .desc{padding:12px 14px;color:#777;font-size:12px;max-height:70px;overflow:hidden}
   .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
   @media(max-width:900px){.stats{grid-template-columns:1fr 1fr}}
-  .stat{border-radius:5px;padding:22px;color:#fff;min-height:150px;display:flex;flex-direction:column;justify-content:center;text-align:center}
+  .stat{border-radius:var(--rad);padding:22px;color:#fff;min-height:150px;display:flex;flex-direction:column;justify-content:center;text-align:center;box-shadow:var(--shadow)}
   .stat .lab{font-weight:700;opacity:.95}.stat .num{font-size:42px;font-weight:800;margin-top:6px}
-  .chartcard{background:#9b8fd6;border-radius:5px;padding:18px;color:#fff}
+  .chartcard{background:#9b8fd6;border-radius:var(--rad);padding:18px;color:#fff;box-shadow:var(--shadow)}
   .bars{display:flex;align-items:flex-end;gap:30px;height:120px;justify-content:center;padding:0 10px}
   .bars .bar{width:70px;border-radius:2px 2px 0 0}
   .bars .leg{display:flex;gap:18px;justify-content:center;margin-top:10px;font-size:12px}
   .bars .leg i{display:inline-block;width:18px;height:10px;margin-right:5px;vertical-align:middle}
 
+  /* ===== DASHBOARD v2 ===== */
+  .dcard{background:#fff;border:1px solid var(--line);border-radius:var(--rad);box-shadow:var(--shadow);padding:18px}
+  .dcard h5{margin:0 0 2px;font-size:15px;font-weight:700;color:#3a3f44}
+  .dcard .sub{color:#9aa0a6;font-size:12px;margin-bottom:14px}
+  .drow1{display:grid;grid-template-columns:1.1fr 1.7fr 1.1fr;gap:16px;margin-bottom:16px}
+  @media(max-width:1050px){.drow1{grid-template-columns:1fr}}
+  .drow3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-top:16px}
+  @media(max-width:1050px){.drow3{grid-template-columns:1fr}}
+  .statgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
+  @media(max-width:1100px){.statgrid{grid-template-columns:repeat(2,1fr)}}
+  .scard{background:#fff;border:1px solid var(--line);border-radius:var(--rad);box-shadow:var(--shadow);padding:16px}
+  .scard .top{display:flex;align-items:center;justify-content:space-between}
+  .scard .ic{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;color:#fff}
+  .scard .b2{font-size:11px;font-weight:700;border-radius:10px;padding:2px 9px}
+  .scard .num{font-size:26px;font-weight:800;color:#34404e;margin-top:12px;line-height:1}
+  .scard .lab{color:#9aa0a6;font-size:12px;margin-top:2px}
+  .scard .foot{display:flex;justify-content:space-between;border-top:1px solid var(--line);margin-top:12px;padding-top:8px;font-size:12px;color:#9aa0a6}
+  .actfeed .it{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid #f3f4f6}
+  .actfeed .it:last-child{border-bottom:none}
+  .actfeed .n{width:24px;height:24px;border-radius:7px;color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex:none}
+  .actfeed .tx{flex:1;font-size:13px;color:#5e6064}
+  .actfeed .tm{color:#aab0b6;font-size:11px}
+  .growth{display:inline-block;border:1px solid var(--line);border-radius:10px;padding:7px 13px;text-align:left}
+  .growth .g{font-size:19px;font-weight:800;color:var(--green)}
+  .growth small{color:#9aa0a6;text-transform:uppercase;font-size:10px;letter-spacing:.05em;display:block}
+  .legend{display:flex;gap:18px;justify-content:center;margin-top:8px;font-size:12px;color:#777}
+  .legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px;vertical-align:middle}
+  .brk .r{display:flex;align-items:center;justify-content:space-between;font-size:13px;margin-bottom:3px;color:#5e6064}
+  .brk .r b{color:#34404e}
+  .pbar{height:8px;background:#eef1f4;border-radius:6px;overflow:hidden;margin-bottom:13px}
+  .pbar>i{display:block;height:100%;width:0;border-radius:6px;transition:width 1.1s cubic-bezier(.3,0,.2,1)}
+  .area-line{fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1600;stroke-dashoffset:1600;transition:stroke-dashoffset 1.5s ease}
+  .area-line.draw{stroke-dashoffset:0}
+  .area-fill{opacity:0;transition:opacity 1s ease .35s}
+  .area-fill.draw{opacity:1}
+  .donut{width:152px;height:152px;border-radius:50%;position:relative;animation:donutin .9s cubic-bezier(.3,0,.2,1)}
+  .donut::after{content:"";position:absolute;inset:24%;background:#fff;border-radius:50%}
+  @keyframes donutin{from{transform:rotate(-110deg) scale(.85);opacity:0}to{transform:rotate(0) scale(1);opacity:1}}
+
+  /* news carousel */
+  .news{position:relative;margin-bottom:16px}
+  .narr{position:absolute;top:50%;transform:translateY(-50%);z-index:6;width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:#fff;color:#5e6064;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.16);font-size:16px;display:flex;align-items:center;justify-content:center;transition:all .15s}
+  .narr:hover:not(:disabled){border-color:var(--blue);color:var(--blue);transform:translateY(-50%) scale(1.06)}
+  .narr:disabled{opacity:.3;cursor:default;box-shadow:0 2px 6px rgba(0,0,0,.08)}
+  .narr-l{left:-15px} .narr-r{right:-15px}
+  .news-vp{overflow:hidden}
+  .news-track{display:flex;gap:16px;transition:transform .4s cubic-bezier(.3,0,.2,1)}
+  .news-track .msgcard{flex:0 0 calc((100% - 32px)/3);min-width:0}
+  @media(max-width:900px){.news-track .msgcard{flex:0 0 calc((100% - 16px)/2)}}
+  @media(max-width:600px){.news-track .msgcard{flex:0 0 100%}}
+
   /* footer */
-  .foot{background:#fff;border-top:1px solid var(--line);padding:9px 18px;font-size:12px;color:#aaa;display:flex;align-items:center;gap:8px}
+  .foot{background:#fff;border-top:1px solid var(--line);padding:9px 18px;font-size:12px;color:#aaa;display:flex;align-items:center;gap:8px;flex:none}
   .foot .label{font-size:10px}
   .foot .pwr{margin-left:auto;font-weight:800;color:#777}.foot .pwr b{color:#f0883e}
 
-  .demo-banner{background:var(--blue);color:#fff;text-align:center;font-size:12px;font-weight:600;padding:5px}
-  .demo-banner a{color:#fff;text-decoration:underline}
+  /* cambiar contraseña modal */
+  .sx-modal-ov{position:fixed;inset:0;z-index:260;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;padding:20px}
+  .sx-modal-ov.open{display:flex}
+  .sx-modal{background:#fff;border-radius:6px;width:390px;max-width:100%;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,.35)}
+  .sx-modal-head{background:var(--blue);color:#fff;padding:12px 16px;font-weight:700;display:flex;justify-content:space-between;align-items:center}
+  .sx-x{background:none;border:none;color:#fff;font-size:22px;line-height:1;cursor:pointer}
+  .sx-modal-body{padding:18px 16px}
+  .sx-modal-body label{font-size:11px;color:#888;text-transform:uppercase;letter-spacing:.03em}
+  .sx-modal-foot{padding:12px 16px;border-top:1px solid var(--line);display:flex;justify-content:flex-end;gap:8px}
+  .demo-banner{background:var(--blue);color:#fff;height:34px;display:flex;align-items:center;justify-content:center;gap:10px;font-size:12px;font-weight:600;flex:none}
+  .db-btn{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.45);color:#fff;padding:3px 13px;border-radius:6px;font-weight:600;transition:background .15s}
+  .db-btn:hover{background:rgba(255,255,255,.32)}
+  .btn-primary:hover,.btn-primary:focus{background-color:var(--blue-h)!important;border-color:var(--blue-h)!important;color:#fff!important;transform:scale(1.03)}
+  button:focus,button:active,.btn:focus,.btn:active,.btn:focus-visible,a:focus,a:active{outline:none!important;box-shadow:none!important}
+  .db-sep{opacity:.55}
 
   #toast{position:fixed;top:14px;right:14px;z-index:300;display:flex;flex-direction:column;gap:8px}
-  .toast-item{background:var(--blue);color:#fff;padding:11px 15px;border-radius:4px;box-shadow:0 6px 18px rgba(0,0,0,.25);font-size:13px;min-width:210px;animation:tin .3s}
+  .toast-item{background:var(--blue);color:#fff;padding:11px 15px;border-radius:8px;box-shadow:0 6px 18px rgba(0,0,0,.25);font-size:13px;min-width:210px;animation:tin .3s}
   .toast-item.err{background:var(--red)} .toast-item.ok{background:var(--green)}
   @keyframes tin{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:none}}
 
@@ -173,28 +256,68 @@
 </style>
 </head>
 <body>
-<div class="demo-banner">Demo navegable · datos de ejemplo — recreación de <b>Simax Cloud</b> (mesa de ayuda) · <a href="../../index.html">← volver al portfolio</a></div>
+<div class="demo-banner">
+  <a href="../../index.html" class="db-btn"><i class="fa fa-arrow-left"></i> Portfolio</a>
+  <span class="db-sep">—</span>
+  <span>Demo navegable</span>
+</div>
 
 <!-- ===== LOGIN ===== -->
 <div id="login">
   <div class="login-box">
-    <div class="simax-logo"><span class="cloud">sima<span class="x">x</span></span><small>CLOUD</small></div>
+    <img src="simax-logo.png" alt="Simax Cloud" class="login-logo" onerror="this.style.display='none';document.getElementById('logo-fb').style.display='inline-flex'" />
+    <div id="logo-fb" class="simax-logo" style="display:none"><span class="cloud">sima<span class="x">x</span></span><small>CLOUD</small></div>
     <div style="margin-top:26px">
-      <input class="form-control" id="lg-user" value="eugenio" />
-      <input class="form-control" type="password" id="lg-pass" value="1234" />
+      <input class="form-control" id="lg-user" value="admin" />
+      <div class="pass-wrap">
+        <input class="form-control" type="password" id="lg-pass" value="test123" />
+        <button class="eye" type="button" onclick="togglePass()" title="Ver contraseña"><i class="fa fa-eye" id="eye-ic"></i></button>
+      </div>
       <button class="btn btn-login" onclick="entrar()">Login</button>
-      <button class="btn btn-sso" onclick="entrar()"><span class="ic"><i class="fa fa-google" style="color:#ea4335"></i></span> Iniciar sesión con Google</button>
-      <button class="btn btn-sso" onclick="entrar()"><span class="ic"><i class="fa fa-windows" style="color:#0078d4"></i></span> Iniciar sesión con Microsoft</button>
-      <a class="forgot">¿Olvidó su contraseña?</a>
-      <div class="xoft"><b>X</b>oft<sup style="font-size:8px">TECH</sup></div>
+      <a class="forgot" onclick="openCambiar()">¿Olvidó su contraseña?</a>
+      <a href="https://www.xoft.com.ar/" target="_blank" rel="noopener" class="xoft-link" title="Xoft">
+        <img src="xoft-logo.png" alt="Xoft" class="xoft-logo" onerror="this.style.display='none';this.parentNode.innerHTML='<span class=&quot;xoft&quot;><b>X</b>oft</span>'" />
+      </a>
     </div>
+  </div>
+</div>
+
+<!-- ===== CAMBIAR CONTRASEÑA ===== -->
+<div class="sx-modal-ov" id="cambiarModal">
+  <div class="sx-modal">
+    <div class="sx-modal-head"><span>Cambiar Contraseña</span><button class="sx-x" onclick="cerrarCambiar()">&times;</button></div>
+    <div class="sx-modal-body">
+      <div class="form-group"><label>Contraseña actual</label><input type="password" id="cc-act" class="form-control" /></div>
+      <div class="form-group"><label>Nueva contraseña</label><input type="password" id="cc-new1" class="form-control" /></div>
+      <div class="form-group" style="margin-bottom:0"><label>Repetir nueva contraseña</label><input type="password" id="cc-new2" class="form-control" /></div>
+    </div>
+    <div class="sx-modal-foot">
+      <button class="ghost-btn" onclick="cerrarCambiar()">Cancelar</button>
+      <button class="btn btn-login" style="width:auto;padding:8px 22px" onclick="guardarCambiar()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MODAL NOTICIA ===== -->
+<div class="sx-modal-ov" id="newsModal" onclick="closeNewsModal(event)">
+  <div class="sx-modal" style="width:620px;max-width:95vw">
+    <div id="newsModalTop" style="height:72px;position:relative;padding:12px 14px;border-radius:6px 6px 0 0">
+      <span id="newsModalBadge" style="position:absolute;top:10px;right:12px;background:rgba(0,0,0,.25);border-radius:12px;padding:3px 10px;font-size:11px;color:#fff"></span>
+      <h4 id="newsModalTitle" style="position:absolute;bottom:12px;left:14px;margin:0;font-weight:700;color:#fff;font-size:16px"></h4>
+    </div>
+    <div class="sx-modal-body" style="padding:20px 18px;font-size:13px;color:#555;line-height:1.75;white-space:pre-line" id="newsModalDesc"></div>
   </div>
 </div>
 
 <!-- ===== APP ===== -->
 <div id="app" class="hidden-x">
   <nav class="sidebar">
-    <div class="brand"><div class="simax-logo"><span class="cloud">sima<span class="x">x</span></span><small>CLOUD</small></div></div>
+    <div class="brand">
+      <a class="brand-link" onclick="go('dashboard')" title="Inicio">
+        <img src="simax-logo.png" alt="Simax Cloud" class="brand-logo" onerror="this.style.display='none';document.getElementById('brand-fb').style.display='inline-flex'" />
+        <span id="brand-fb" class="simax-logo" style="display:none"><span class="cloud">sima<span class="x">x</span></span><small>CLOUD</small></span>
+      </a>
+    </div>
     <ul class="smenu">
       <li class="active" id="m-crear"><a onclick="go('crear')"><i class="fa fa-plus"></i> <span class="lbl">Nuevo Incidente</span></a></li>
       <li id="m-consola"><a onclick="go('consola')"><i class="fa fa-table"></i> <span class="lbl">Consola</span></a></li>
@@ -216,28 +339,137 @@
     </div>
     <div class="user-pop hidden-x" id="userpop">
       <div class="av"><i class="fa fa-user"></i></div>
-      <div class="nm"><i class="fa fa-user" style="color:var(--blue)"></i> Eugenio Alonso</div>
-      <div class="em">valenpais@gmail.com</div>
+      <div class="nm"><i class="fa fa-user" style="color:var(--blue)"></i> Nicolás Ferreyra</div>
+      <div class="em">nferreyra@simax.com.ar</div>
       <div style="display:flex;gap:6px"><button class="btn btn-primary btn-sm" style="flex:1" onclick="demo()"><i class="fa fa-asterisk"></i> Cambiar Clave</button><button class="btn btn-primary btn-sm" style="flex:1" onclick="logout()"><i class="fa fa-sign-out"></i> Logout</button></div>
     </div>
 
+    <div class="views-wrap">
     <!-- DASHBOARD -->
     <div id="v-dashboard">
       <div class="body">
-        <div class="dash-cards">
-          <div class="msgcard"><div class="top" style="background:linear-gradient(120deg,#0e4d75,#1c84c6)"><span class="badge2"><i class="fa fa-info-circle"></i> mensaje</span><h4>SIMAX</h4></div><div class="desc">En caso de que encuentren alguna falla u error en este sistema, cargar un incidente reportándolo para que sea solucionado a la brevedad…</div></div>
-          <div class="msgcard"><div class="top" style="background:linear-gradient(120deg,#3a4a5a,#6b7b8c)"><span class="badge2"><i class="fa fa-info-circle"></i> mensaje</span><h4>Bienvenido a Simax !</h4></div><div class="desc">Estimado colaborador, utilice esta herramienta para gestionar los incidentes que le sean asignados, como así también los que ud. registre como parte de sus funciones…</div></div>
-        </div>
-        <div class="stats">
-          <div class="stat" style="background:#5d8a66"><div class="lab">Incidentes registrados<br>2025</div><div class="num">0</div></div>
-          <div class="stat" style="background:#e4577f"><div class="lab">Incidentes Registrados<br>2026</div><div class="num">141</div></div>
-          <div class="stat" style="background:#8e79c9"><div class="lab">Incidentes Pendientes<br>Eugenio Alonso</div><div class="num">24</div></div>
-          <div class="chartcard">
-            <div class="bars">
-              <div class="bar" style="height:48px;background:#23c6c8"></div>
-              <div class="bar" style="height:104px;background:#cb52c9"></div>
+        <!-- NOTICIAS (carrusel) -->
+        <div class="news">
+          <button class="narr narr-l" id="nPrev" onclick="newsGo(-1)" disabled><i class="fa fa-chevron-left"></i></button>
+          <button class="narr narr-r" id="nNext" onclick="newsGo(1)"><i class="fa fa-chevron-right"></i></button>
+          <div class="news-vp">
+            <div class="news-track" id="newsTrack">
+              <div class="msgcard" onclick="openNewsModal(this)" data-desc="En caso de que encuentren alguna falla u error en este sistema, deben cargar un incidente reportándolo de forma detallada para que el equipo técnico pueda analizarlo y solucionarlo a la brevedad.
+
+Incluyan en la descripción:
+• Captura de pantalla del error
+• Mensaje de error exacto
+• Pasos para reproducir el problema
+
+Cualquier información adicional es de gran ayuda para acelerar la resolución."><div class="top" style="background:url(data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='120'%3E%3Ccircle cx='108' cy='18' r='48' fill='none' stroke='white' stroke-opacity='0.13' stroke-width='1.5'/%3E%3Ccircle cx='128' cy='100' r='62' fill='none' stroke='white' stroke-opacity='0.07' stroke-width='1'/%3E%3C/svg%3E) right top / 140px 120px no-repeat,linear-gradient(120deg,#0e4d75,#1c84c6)"><span class="badge2"><i class="fa fa-info-circle"></i> mensaje</span><h4>SIMAX</h4></div><div class="desc">En caso de que encuentren alguna falla u error en este sistema, cargar un incidente reportándolo para que sea solucionado a la brevedad…</div></div>
+              <div class="msgcard" onclick="openNewsModal(this)" data-desc="Estimado colaborador, bienvenido a Simax.
+
+Utilice esta herramienta para gestionar los incidentes que le sean asignados, como así también los que usted registre como parte de sus funciones diarias.
+
+Al cargar un incidente, recuerde completar siempre:
+• Tipificación correcta del caso
+• Nivel de prioridad
+• Descripción detallada del problema
+
+Ante cualquier consulta sobre el uso del sistema, comuníquese con la Mesa de Ayuda."><div class="top" style="background:linear-gradient(120deg,#3a4a5a,#6b7b8c)"><span class="badge2"><i class="fa fa-info-circle"></i> mensaje</span><h4>Bienvenido a Simax !</h4></div><div class="desc">Estimado colaborador, utilice esta herramienta para gestionar los incidentes que le sean asignados, como así también los que ud. registre como parte de sus funciones…</div></div>
+              <div class="msgcard" onclick="openNewsModal(this)" data-desc="La versión 41 de Simax está disponible con las siguientes novedades:
+
+Novedades principales:
+• Escalamientos automáticos por SLA vencido
+• Nuevos reportes de cumplimiento exportables en Excel y PDF
+• Consola optimizada: hasta 40% más rápida
+
+Correcciones:
+• Error en búsqueda avanzada con filtros combinados
+• Fallo en el módulo de difusión masiva al adjuntar archivos
+
+¡Contanos qué te parece y reportá cualquier inconveniente!"><div class="top" style="background:url(data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20'%3E%3Cpath d='M-2,22 L22,-2' stroke='white' stroke-opacity='0.1' stroke-width='1.2'/%3E%3C/svg%3E) repeat,linear-gradient(120deg,#0f8a6f,#1ab394)"><span class="badge2"><i class="fa fa-rocket"></i> novedad</span><h4>Nueva versión v.41</h4></div><div class="desc">Mejoras en el módulo de escalamientos, nuevos reportes de SLA y una consola más rápida. ¡Contanos qué te parece!</div></div>
+              <div class="msgcard" onclick="openNewsModal(this)" data-desc="Aviso de mantenimiento programado
+
+Fecha: sábado próximo
+Horario: 02:00 a 04:00 hs
+
+Durante esa ventana horaria pueden presentarse intermitencias o indisponibilidad total de los sistemas.
+
+Recomendaciones:
+• No programar tareas críticas en ese horario
+• Guardar el trabajo pendiente antes de las 02:00 hs
+• En caso de urgencia, contactar a Infraestructura por el canal de guardia
+
+El equipo estará disponible durante toda la ventana para monitorear y resolver inconvenientes."><div class="top" style="background:linear-gradient(120deg,#c07b16,#f8ac59)"><span class="badge2"><i class="fa fa-wrench"></i> aviso</span><h4>Mantenimiento programado</h4></div><div class="desc">El sábado de 02 a 04 hs se realizará mantenimiento del datacenter. Pueden presentarse intermitencias durante la ventana.</div></div>
+              <div class="msgcard" onclick="openNewsModal(this)" data-desc="Se incorporaron 12 nuevos artículos a la Base de Conocimientos.
+
+Temas incluidos:
+• Recuperación de perfiles de usuario dañados
+• Errores comunes en el módulo de compras
+• Configuración de impresoras de red
+• Validación de tokens de firma digital (ePass2000)
+• Alta y baja de usuarios en el dominio
+
+Recordá consultar la KB antes de escalar un caso al segundo nivel. Esto reduce los tiempos de resolución y mejora los indicadores de SLA del equipo."><div class="top" style="background:url(data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='90' height='80'%3E%3Crect x='8' y='20' width='56' height='4' rx='2' fill='white' fill-opacity='0.14'/%3E%3Crect x='8' y='32' width='40' height='3' rx='1.5' fill='white' fill-opacity='0.09'/%3E%3Crect x='8' y='43' width='50' height='3' rx='1.5' fill='white' fill-opacity='0.11'/%3E%3Crect x='8' y='54' width='30' height='3' rx='1.5' fill='white' fill-opacity='0.07'/%3E%3C/svg%3E) right center / 90px 80px no-repeat,linear-gradient(120deg,#138a9c,#23c6c8)"><span class="badge2"><i class="fa fa-book"></i> kb</span><h4>Base de Conocimientos</h4></div><div class="desc">Sumamos 12 artículos nuevos para resolución de incidentes frecuentes. Consultalos antes de escalar un caso.</div></div>
             </div>
-            <div class="leg"><span><i style="background:#23c6c8"></i>pendientes</span><span><i style="background:#cb52c9"></i>solucionados</span></div>
+          </div>
+        </div>
+
+        <!-- ROW 1 -->
+        <div class="drow1">
+          <div class="dcard">
+            <h5>Bienvenido, Nicolás</h5>
+            <div class="sub">Tenés <b style="color:#f8ac59">24</b> pendientes y <b style="color:var(--blue)">6</b> escalados hoy.</div>
+            <div class="actfeed">
+              <div class="it"><span class="n" style="background:#1ab394">1</span><span class="tx">Tomaste el incidente #54</span><span class="tm">09:30</span></div>
+              <div class="it"><span class="n" style="background:#1c84c6">2</span><span class="tx">Respondiste a "Error compras"</span><span class="tm">10:12</span></div>
+              <div class="it"><span class="n" style="background:#34404e">3</span><span class="tx">Escalaste el #26 a Aplicaciones</span><span class="tm">11:40</span></div>
+              <div class="it"><span class="n" style="background:#23c6c8">4</span><span class="tx">Cerraste el #12</span><span class="tm">12:17</span></div>
+              <div class="it"><span class="n" style="background:#f8ac59">5</span><span class="tx">Creaste el incidente #142</span><span class="tm">13:05</span></div>
+            </div>
+            <button class="btn btn-login" style="width:auto;padding:8px 18px;margin-top:14px" onclick="go('consola')">Ver incidentes</button>
+          </div>
+
+          <div class="dcard">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+              <div><h5 style="margin-bottom:2px">Incidentes</h5><div class="sub" style="margin-bottom:0">Últimos 15 días · ingresados vs. resueltos</div></div>
+              <div class="growth" style="padding:5px 12px;border-radius:8px"><div class="g" id="dashGrowth" style="font-size:17px;line-height:1">0%</div></div>
+            </div>
+            <div id="dashChart" style="position:relative;overflow:visible"></div>
+            <div class="legend">
+              <span style="cursor:default" onmouseenter="dashFade(2)" onmouseleave="dashFade(0)"><i style="background:#1c84c6"></i>Ingresados</span>
+              <span style="cursor:default" onmouseenter="dashFade(1)" onmouseleave="dashFade(0)"><i style="background:#1ab394"></i>Resueltos</span>
+            </div>
+          </div>
+
+          <div class="dcard">
+            <h5>Por estado</h5><div class="sub">Distribución actual</div>
+            <div id="dashDonut" style="display:flex;justify-content:center;margin:12px 0 18px"></div>
+            <div id="donutLeg"></div>
+          </div>
+        </div>
+
+        <!-- STAT CARDS -->
+        <div class="statgrid">
+          <div class="scard"><div class="top"><div class="ic" style="background:#1c84c6"><i class="fa fa-inbox"></i></div><span class="b2" style="background:#e3f6ee;color:#1ab394">+6 nuevos</span></div><div class="num count" data-count="18">0</div><div class="lab">Incidentes hoy</div><div class="foot"><span>Total 2026</span><b style="color:#5e6064">141</b></div></div>
+          <div class="scard"><div class="top"><div class="ic" style="background:#f8ac59"><i class="fa fa-clock-o"></i></div><span class="b2" style="background:#fff3e0;color:#e08e2a">en cola</span></div><div class="num count" data-count="24">0</div><div class="lab">Pendientes</div><div class="foot"><span>Sin asignar</span><b style="color:#5e6064">3</b></div></div>
+          <div class="scard"><div class="top"><div class="ic" style="background:#34404e"><i class="fa fa-level-up"></i></div><span class="b2" style="background:#ecedf0;color:#5e6570">críticos 4</span></div><div class="num count" data-count="26">0</div><div class="lab">Escalados</div><div class="foot"><span>Esta semana</span><b style="color:#5e6064">+9</b></div></div>
+          <div class="scard"><div class="top"><div class="ic" style="background:#1ab394"><i class="fa fa-check"></i></div><span class="b2" style="background:#e3f6ee;color:#1ab394">+12</span></div><div class="num count" data-count="97">0</div><div class="lab">Resueltos (mes)</div><div class="foot"><span>Reabiertos</span><b style="color:#5e6064">2</b></div></div>
+          <div class="scard"><div class="top"><div class="ic" style="background:#23c6c8"><i class="fa fa-tachometer"></i></div><span class="b2" style="background:#e3f6ee;color:#1ab394">↑ 3%</span></div><div class="num count" data-count="92" data-suf="%">0</div><div class="lab">Cumplimiento SLA</div><div class="foot"><span>Vencidos</span><b style="color:#ed5565">8</b></div></div>
+        </div>
+
+        <!-- ROW 3 -->
+        <div class="drow3">
+          <div class="dcard brk" id="tipBrk">
+            <h5>Tipificación frecuente</h5><div class="sub">Top categorías del mes</div>
+          </div>
+          <div class="dcard">
+            <h5>Últimas actualizaciones</h5><div class="sub">Actividad reciente del equipo</div>
+            <div class="actfeed">
+              <div class="it"><span class="n" style="background:#34404e"><i class="fa fa-level-up"></i></span><span class="tx"><b>#14</b> Error compras · escalado a Aplicaciones</span><span class="tm">3:45</span></div>
+              <div class="it"><span class="n" style="background:#1ab394"><i class="fa fa-check"></i></span><span class="tx"><b>#12</b> Acceso PC · resuelto por Franco</span><span class="tm">2:00</span></div>
+              <div class="it"><span class="n" style="background:#1c84c6"><i class="fa fa-comment"></i></span><span class="tx"><b>#26</b> Token ePass · nuevo evento</span><span class="tm">1:20</span></div>
+              <div class="it"><span class="n" style="background:#f8ac59"><i class="fa fa-plus"></i></span><span class="tx"><b>#142</b> Lentitud red · creado</span><span class="tm">0:40</span></div>
+            </div>
+          </div>
+          <div class="dcard brk" id="agentBrk">
+            <h5>Carga por agente</h5><div class="sub">Incidentes asignados</div>
           </div>
         </div>
       </div>
@@ -280,7 +512,7 @@
           <span class="estado" style="background:var(--teal)">Pendiente</span>
           <div class="fechas"><div class="f"><label>Fecha de Ingreso</label><b id="cr-fecha"></b></div><div class="f"><label>Fecha Límite</label><b>---</b></div></div>
           <button class="pill-btn">Solicitud <i class="fa fa-caret-down"></i></button>
-          <span class="ghost-btn"><i class="fa fa-user"></i> Eugenio Alonso</span>
+          <span class="ghost-btn"><i class="fa fa-user"></i> Nicolás Ferreyra</span>
           <span class="ghost-btn" style="color:var(--red)">Masivo <i class="fa fa-times"></i></span>
         </div>
         <div class="subbar">
@@ -342,6 +574,7 @@
         </div>
       </div>
     </div>
+    </div><!-- /views-wrap -->
 
     <div class="foot">
       <span class="label label-info">v.41</span>
@@ -356,6 +589,24 @@
 <div id="toast"></div>
 
 <script>
+/* ===== MODAL NOTICIA ===== */
+function openNewsModal(card){
+  const top = card.querySelector('.top');
+  const badge = card.querySelector('.badge2');
+  const title = card.querySelector('h4');
+  const desc = card.dataset.desc;
+  document.getElementById('newsModalTop').style.background = top.style.background;
+  document.getElementById('newsModalBadge').innerHTML = badge.innerHTML;
+  document.getElementById('newsModalTitle').textContent = title.textContent;
+  document.getElementById('newsModalDesc').textContent = desc;
+  document.getElementById('newsModal').classList.add('open');
+}
+function closeNewsModal(e){
+  if(e && e.target !== document.getElementById('newsModal')) return;
+  document.getElementById('newsModal').classList.remove('open');
+}
+document.addEventListener('keydown', e => { if(e.key==='Escape') document.getElementById('newsModal').classList.remove('open'); });
+
 /* ===== DATA ===== */
 const TABS = [
   {k:'prueba',  n:'Prueba de Solución', c:4},
@@ -372,35 +623,35 @@ const EST = {
   pendiente:{t:'Pendiente',c:'#23c6c8'}, rechazada:{t:'Rechazada',c:'#ed5565'}, cerradas:{t:'Cerrado',c:'#7b8896'}
 };
 const GRUPOS=['Infraestructura','Aplicaciones de Negocio','Puesto de Trabajo','Seguridad Física','Redes y Conectividad'];
-const SOLICITANTES=['Luis Di Natale','Anabel, Berisso','Damián, Nepomnaschy','Sandra, Gregoric','Carlos Avaca','Javier, Vázquez'];
-const RESP=['Carlos Avaca','Carlos Farias','Eugenio Alonso','Luis Di Natale','Franco Martín Sebastián'];
+const SOLICITANTES=['Rodrigo Mansilla','Anabela Bustos','Damián Leiva','Sandra Ruiz','Sergio Palomino','Javier Peralta'];
+const RESP=['Sergio Palomino','Martín Giordano','Nicolás Ferreyra','Rodrigo Mansilla','Diego Torricelli'];
 
 let SEQ = 142;
 let inc = [
-  {id:4, tab:'escalado', sla:{k:'curso',t:'En curso (5h 12m)'}, asunto:'Portal de accesos wifi', descri:'Implementar un portal para autorizar/renovar los accesos al wifi.', ingreso:'21/04/2026 13:32', cierre:'—', cliente:'Org. Demo', sol:'Luis Di Natale', resp:'Carlos Avaca', tip:'Infraestructura - Redes - Portal de accesos', prio:'Media',
-    eventos:[{f:'21/04 13:32',tipo:'Apertura',desc:'Incidente creado',obs:'Pedido del área de redes.',ag:'Mesa de Ayuda'},{f:'21/04 14:10',tipo:'Escalamiento',desc:'Escalado a Infraestructura',obs:'Requiere desarrollo del portal.',ag:'Eugenio Alonso'}]},
-  {id:10, tab:'escalado', sla:{k:'curso',t:'En curso (2d 1h)'}, asunto:'Acceso ERP Worknet', descri:'Solicito acceso al entorno productivo del ERP Worknet con acceso total al mismo.', ingreso:'24/04/2026 13:48', cierre:'—', cliente:'Org. Demo', sol:'Luis Di Natale', resp:'Carlos Avaca', tip:'Aplicaciones de Negocio - ERP - Alta de acceso', prio:'Media',
+  {id:4, tab:'escalado', sla:{k:'curso',t:'En curso (5h 12m)'}, asunto:'Portal de accesos wifi', descri:'Implementar un portal para autorizar/renovar los accesos al wifi.', ingreso:'21/04/2026 13:32', cierre:'—', cliente:'Org. Demo', sol:'Rodrigo Mansilla', resp:'Sergio Palomino', tip:'Infraestructura - Redes - Portal de accesos', prio:'Media',
+    eventos:[{f:'21/04 13:32',tipo:'Apertura',desc:'Incidente creado',obs:'Pedido del área de redes.',ag:'Mesa de Ayuda'},{f:'21/04 14:10',tipo:'Escalamiento',desc:'Escalado a Infraestructura',obs:'Requiere desarrollo del portal.',ag:'Nicolás Ferreyra'}]},
+  {id:10, tab:'escalado', sla:{k:'curso',t:'En curso (2d 1h)'}, asunto:'Acceso ERP Worknet', descri:'Solicito acceso al entorno productivo del ERP Worknet con acceso total al mismo.', ingreso:'24/04/2026 13:48', cierre:'—', cliente:'Org. Demo', sol:'Rodrigo Mansilla', resp:'Sergio Palomino', tip:'Aplicaciones de Negocio - ERP - Alta de acceso', prio:'Media',
     eventos:[{f:'24/04 13:48',tipo:'Apertura',desc:'Incidente creado',obs:'Solicita acceso total al ERP.',ag:'Mesa de Ayuda'}]},
-  {id:26, tab:'escalado', sla:{k:'curso',t:'En curso (8h 40m)'}, asunto:'Validación USB Token ePass2000', descri:'Validación USB Token físico ePass2000 en entorno Windows 10.', ingreso:'05/05/2026 15:40', cierre:'—', cliente:'Org. Demo', sol:'Damián, Nepomnaschy', resp:'Carlos Avaca', tip:'Seguridad - Firma Digital - Token ePass', prio:'Media',
-    eventos:[{f:'05/05 15:40',tipo:'Apertura',desc:'Incidente creado',obs:'Probar firma con token en Win10.',ag:'Mesa de Ayuda'},{f:'05/05 16:20',tipo:'Escalamiento',desc:'Escalado a Aplicaciones',obs:'Revisar middleware del token.',ag:'Eugenio Alonso'}]},
-  {id:55, tab:'asignado', sla:{k:'curso',t:'En curso (3h 02m)'}, asunto:'Alta de usuario nuevo', descri:'Alta de usuario para el área de administración con permisos de consulta.', ingreso:'16/06/2026 09:05', cierre:'—', cliente:'Org. Demo', sol:'Sandra, Gregoric', resp:'Eugenio Alonso', tip:'Puesto de Trabajo - Usuarios - Alta', prio:'Media',
+  {id:26, tab:'escalado', sla:{k:'curso',t:'En curso (8h 40m)'}, asunto:'Validación USB Token ePass2000', descri:'Validación USB Token físico ePass2000 en entorno Windows 10.', ingreso:'05/05/2026 15:40', cierre:'—', cliente:'Org. Demo', sol:'Damián Leiva', resp:'Sergio Palomino', tip:'Seguridad - Firma Digital - Token ePass', prio:'Media',
+    eventos:[{f:'05/05 15:40',tipo:'Apertura',desc:'Incidente creado',obs:'Probar firma con token en Win10.',ag:'Mesa de Ayuda'},{f:'05/05 16:20',tipo:'Escalamiento',desc:'Escalado a Aplicaciones',obs:'Revisar middleware del token.',ag:'Nicolás Ferreyra'}]},
+  {id:55, tab:'asignado', sla:{k:'curso',t:'En curso (3h 02m)'}, asunto:'Alta de usuario nuevo', descri:'Alta de usuario para el área de administración con permisos de consulta.', ingreso:'16/06/2026 09:05', cierre:'—', cliente:'Org. Demo', sol:'Sandra Ruiz', resp:'Nicolás Ferreyra', tip:'Puesto de Trabajo - Usuarios - Alta', prio:'Media',
     eventos:[{f:'16/06 09:05',tipo:'Apertura',desc:'Incidente creado',obs:'Adjunta planilla de alta.',ag:'Mesa de Ayuda'}]},
-  {id:54, tab:'asignado', sla:{k:'curso',t:'En curso (1h 18m)'}, asunto:'No imprime recetas', descri:'Al imprimir recetas desde el módulo de afiliados no sale nada por la impresora de red.', ingreso:'16/06/2026 10:22', cierre:'—', cliente:'Org. Demo', sol:'Javier, Vázquez', resp:'Eugenio Alonso', tip:'Puesto de Trabajo - Impresoras - Driver', prio:'Alta',
+  {id:54, tab:'asignado', sla:{k:'curso',t:'En curso (1h 18m)'}, asunto:'No imprime recetas', descri:'Al imprimir recetas desde el módulo de afiliados no sale nada por la impresora de red.', ingreso:'16/06/2026 10:22', cierre:'—', cliente:'Org. Demo', sol:'Javier Peralta', resp:'Nicolás Ferreyra', tip:'Puesto de Trabajo - Impresoras - Driver', prio:'Alta',
     eventos:[{f:'16/06 10:22',tipo:'Apertura',desc:'Incidente creado',obs:'Reportado por teléfono.',ag:'Mesa de Ayuda'}]},
-  {id:1, tab:'pendiente', sla:{k:'curso',t:'En curso (40m)'}, asunto:'Lentitud en la red del 2° piso', descri:'Varios usuarios del segundo piso reportan lentitud al acceder a los sistemas.', ingreso:'16/06/2026 11:40', cierre:'—', cliente:'Org. Demo', sol:'Carlos Avaca', resp:'—', tip:'Redes y Conectividad - Switch - Lentitud', prio:'Media',
+  {id:1, tab:'pendiente', sla:{k:'curso',t:'En curso (40m)'}, asunto:'Lentitud en la red del 2° piso', descri:'Varios usuarios del segundo piso reportan lentitud al acceder a los sistemas.', ingreso:'16/06/2026 11:40', cierre:'—', cliente:'Org. Demo', sol:'Sergio Palomino', resp:'—', tip:'Redes y Conectividad - Switch - Lentitud', prio:'Media',
     eventos:[{f:'16/06 11:40',tipo:'Apertura',desc:'Incidente creado',obs:'Afecta a ~10 puestos.',ag:'Mesa de Ayuda'}]},
-  {id:14, tab:'prueba', sla:{k:'curso',t:'En curso (6h 05m)'}, asunto:'Error sistema compras - testing', descri:'No puedo visualizar el listado de procesos de compras; cargué los datos pero no muestra el listado. Probé con distintos roles internos y pasa lo mismo.', ingreso:'04/05/2026 13:25', cierre:'—', cliente:'Org. Demo', sol:'Anabel, Berisso', resp:'Carlos Farias', tip:'Aplicaciones de Negocio - Compras - Error en funcionalidad', prio:'Muy Alta',
-    eventos:[{f:'04/05 13:25',tipo:'Apertura',desc:'Incidente creado',obs:'Error al listar procesos de compras.',ag:'Mesa de Ayuda'},{f:'04/05 15:00',tipo:'Prueba Solución',desc:'Enviada prueba de solución',obs:'Se aplicó fix en el filtro de procesos. Validar.',ag:'Carlos Farias'}]},
-  {id:8, tab:'cerradas', sla:{k:'venc',t:'Cerrado vencido (30d 23h 50m)'}, asunto:'Error en Worknet', descri:'No funciona enviar_a_erp.', ingreso:'23/04/2026 13:57', cierre:'28/05/2026 13:48', cliente:'Org. Demo', sol:'Cecilia, Chueke', resp:'Ruiz Vanesa Jesica', tip:'Aplicaciones de Negocio - Sistema de Pautas - Error', prio:'Media',
-    eventos:[{f:'23/04 13:57',tipo:'Apertura',desc:'Incidente creado',obs:'Falla en envío a ERP.',ag:'Mesa de Ayuda'},{f:'28/05 13:48',tipo:'Cierre',desc:'Incidente cerrado',obs:'Se corrigió el job de integración.',ag:'Ruiz Vanesa Jesica'}]},
-  {id:12, tab:'cerradas', sla:{k:'ok',t:'Cerrado a tiempo (23h 56m)'}, asunto:'No puede ingresar a la PC', descri:'No puede ingresar con su clave de dominio.', ingreso:'04/05/2026 12:14', cierre:'04/05/2026 12:17', cliente:'Org. Demo', sol:'Javier, Vázquez', resp:'Franco Martín Sebastián', tip:'Puesto de Trabajo - Sistema Operativo - Perfil de usuario dañado', prio:'Media',
-    eventos:[{f:'04/05 12:14',tipo:'Apertura',desc:'Incidente creado',obs:'No accede con su clave.',ag:'Mesa de Ayuda'},{f:'04/05 12:17',tipo:'Solución',desc:'Perfil reconstruido',obs:'Se regeneró el perfil local del usuario.',ag:'Franco Martín Sebastián'}]},
-  {id:2, tab:'cerradas', sla:{k:'venc',t:'Cerrado vencido (9h 44m)'}, asunto:'Relevamiento ARSAT', descri:'Revisar las 13 VM y hacer un informe de lo que se está corriendo en cada una.', ingreso:'21/04/2026 13:21', cierre:'22/04/2026 23:06', cliente:'Org. Demo', sol:'Luis Di Natale', resp:'Carlos Farias', tip:'Infraestructura - Datacenter - Relevamiento', prio:'Media',
-    eventos:[{f:'21/04 13:21',tipo:'Apertura',desc:'Incidente creado',obs:'Relevar VMs.',ag:'Mesa de Ayuda'},{f:'22/04 23:06',tipo:'Cierre',desc:'Incidente cerrado',obs:'Informe entregado.',ag:'Carlos Farias'}]},
-  {id:7, tab:'espera', sla:{k:'curso',t:'En espera (—)'}, asunto:'Grupo de compras', descri:'Se necesita un grupo para compras para poder testear esa página.', ingreso:'21/04/2026 18:35', cierre:'—', cliente:'Org. Demo', sol:'Luis Di Natale', resp:'Lorenzo Radunsky', tip:'Infraestructura - Datacenter - Mantenimiento', prio:'Baja',
+  {id:14, tab:'prueba', sla:{k:'curso',t:'En curso (6h 05m)'}, asunto:'Error sistema compras - testing', descri:'No puedo visualizar el listado de procesos de compras; cargué los datos pero no muestra el listado. Probé con distintos roles internos y pasa lo mismo.', ingreso:'04/05/2026 13:25', cierre:'—', cliente:'Org. Demo', sol:'Anabela Bustos', resp:'Martín Giordano', tip:'Aplicaciones de Negocio - Compras - Error en funcionalidad', prio:'Muy Alta',
+    eventos:[{f:'04/05 13:25',tipo:'Apertura',desc:'Incidente creado',obs:'Error al listar procesos de compras.',ag:'Mesa de Ayuda'},{f:'04/05 15:00',tipo:'Prueba Solución',desc:'Enviada prueba de solución',obs:'Se aplicó fix en el filtro de procesos. Validar.',ag:'Martín Giordano'}]},
+  {id:8, tab:'cerradas', sla:{k:'venc',t:'Cerrado vencido (30d 23h 50m)'}, asunto:'Error en Worknet', descri:'No funciona enviar_a_erp.', ingreso:'23/04/2026 13:57', cierre:'28/05/2026 13:48', cliente:'Org. Demo', sol:'Cecilia Prieto', resp:'Vanesa Molina', tip:'Aplicaciones de Negocio - Sistema de Pautas - Error', prio:'Media',
+    eventos:[{f:'23/04 13:57',tipo:'Apertura',desc:'Incidente creado',obs:'Falla en envío a ERP.',ag:'Mesa de Ayuda'},{f:'28/05 13:48',tipo:'Cierre',desc:'Incidente cerrado',obs:'Se corrigió el job de integración.',ag:'Vanesa Molina'}]},
+  {id:12, tab:'cerradas', sla:{k:'ok',t:'Cerrado a tiempo (23h 56m)'}, asunto:'No puede ingresar a la PC', descri:'No puede ingresar con su clave de dominio.', ingreso:'04/05/2026 12:14', cierre:'04/05/2026 12:17', cliente:'Org. Demo', sol:'Javier Peralta', resp:'Diego Torricelli', tip:'Puesto de Trabajo - Sistema Operativo - Perfil de usuario dañado', prio:'Media',
+    eventos:[{f:'04/05 12:14',tipo:'Apertura',desc:'Incidente creado',obs:'No accede con su clave.',ag:'Mesa de Ayuda'},{f:'04/05 12:17',tipo:'Solución',desc:'Perfil reconstruido',obs:'Se regeneró el perfil local del usuario.',ag:'Diego Torricelli'}]},
+  {id:2, tab:'cerradas', sla:{k:'venc',t:'Cerrado vencido (9h 44m)'}, asunto:'Relevamiento ARSAT', descri:'Revisar las 13 VM y hacer un informe de lo que se está corriendo en cada una.', ingreso:'21/04/2026 13:21', cierre:'22/04/2026 23:06', cliente:'Org. Demo', sol:'Rodrigo Mansilla', resp:'Martín Giordano', tip:'Infraestructura - Datacenter - Relevamiento', prio:'Media',
+    eventos:[{f:'21/04 13:21',tipo:'Apertura',desc:'Incidente creado',obs:'Relevar VMs.',ag:'Mesa de Ayuda'},{f:'22/04 23:06',tipo:'Cierre',desc:'Incidente cerrado',obs:'Informe entregado.',ag:'Martín Giordano'}]},
+  {id:7, tab:'espera', sla:{k:'curso',t:'En espera (—)'}, asunto:'Grupo de compras', descri:'Se necesita un grupo para compras para poder testear esa página.', ingreso:'21/04/2026 18:35', cierre:'—', cliente:'Org. Demo', sol:'Rodrigo Mansilla', resp:'Lorenzo Petrone', tip:'Infraestructura - Datacenter - Mantenimiento', prio:'Baja',
     eventos:[{f:'21/04 18:35',tipo:'Apertura',desc:'Incidente creado',obs:'A la espera de definición.',ag:'Mesa de Ayuda'}]},
-  {id:31, tab:'rechazada', sla:{k:'venc',t:'Prueba rechazada'}, asunto:'Reporte año 2023 incompleto', descri:'Al generar el reporte del año 2023 faltan facturas en una columna. La prueba enviada no resolvió el caso.', ingreso:'07/05/2026 08:59', cierre:'—', cliente:'Org. Demo', sol:'Sandra, Gregoric', resp:'Nepomnaschy Damián', tip:'Aplicaciones de Negocio - Reportes - Datos faltantes', prio:'Media',
-    eventos:[{f:'07/05 08:59',tipo:'Apertura',desc:'Incidente creado',obs:'Faltan facturas en el reporte.',ag:'Mesa de Ayuda'},{f:'08/05 10:00',tipo:'Prueba Rechazada',desc:'Prueba de solución rechazada',obs:'El usuario indica que el problema persiste.',ag:'Sandra, Gregoric'}]}
+  {id:31, tab:'rechazada', sla:{k:'venc',t:'Prueba rechazada'}, asunto:'Reporte año 2023 incompleto', descri:'Al generar el reporte del año 2023 faltan facturas en una columna. La prueba enviada no resolvió el caso.', ingreso:'07/05/2026 08:59', cierre:'—', cliente:'Org. Demo', sol:'Sandra Ruiz', resp:'Damián Leiva', tip:'Aplicaciones de Negocio - Reportes - Datos faltantes', prio:'Media',
+    eventos:[{f:'07/05 08:59',tipo:'Apertura',desc:'Incidente creado',obs:'Faltan facturas en el reporte.',ag:'Mesa de Ayuda'},{f:'08/05 10:00',tipo:'Prueba Rechazada',desc:'Prueba de solución rechazada',obs:'El usuario indica que el problema persiste.',ag:'Sandra Ruiz'}]}
 ];
 let clientes=[
   {id:1,nombre:'Organización Demo S.A.',cuit:'30-54668121-7',cont:'Dir. de Sistemas',niv:3,n:128,act:true},
@@ -412,11 +663,24 @@ let clientes=[
 /* ===== NAV ===== */
 let tab='escalado';
 function entrar(){ document.getElementById('login').classList.add('hidden-x'); document.getElementById('app').classList.remove('hidden-x'); go('dashboard'); }
+function togglePass(){ const p=document.getElementById('lg-pass'), ic=document.getElementById('eye-ic'); const show=p.type==='password'; p.type=show?'text':'password'; ic.className='fa '+(show?'fa-eye-slash':'fa-eye'); }
+function openCambiar(){ ['cc-act','cc-new1','cc-new2'].forEach(id=>document.getElementById(id).value=''); document.getElementById('cambiarModal').classList.add('open'); }
+function cerrarCambiar(){ document.getElementById('cambiarModal').classList.remove('open'); }
+function guardarCambiar(){
+  const a=document.getElementById('cc-act').value.trim();
+  const n1=document.getElementById('cc-new1').value.trim();
+  const n2=document.getElementById('cc-new2').value.trim();
+  if(!a||!n1||!n2){ toast('Completá todos los campos.','err'); return; }
+  if(n1!==n2){ toast('Las contraseñas nuevas no coinciden.','err'); return; }
+  document.getElementById('lg-pass').value=n1;
+  cerrarCambiar(); toast('Contraseña actualizada.','ok');
+}
 function logout(){ document.getElementById('userpop').classList.add('hidden-x'); document.getElementById('app').classList.add('hidden-x'); document.getElementById('login').classList.remove('hidden-x'); }
 function go(v){
   ['dashboard','consola','detalle','crear','clientes'].forEach(x=>document.getElementById('v-'+x).classList.toggle('hidden-x', x!==v));
   document.getElementById('m-crear').classList.toggle('active', v==='crear');
   document.getElementById('m-consola').classList.toggle('active', v==='consola');
+  if(v==='dashboard') initDashboard();
   if(v==='consola') renderConsola();
   if(v==='crear') resetCrear();
   if(v==='clientes') renderCli();
@@ -426,6 +690,100 @@ function toggleSide(){ document.querySelector('.sidebar').classList.toggle('mini
 function toggleUser(){ document.getElementById('userpop').classList.toggle('hidden-x'); }
 function buscarFocus(){ go('consola'); const b=document.getElementById('buscar'); b.style.width='150px'; b.focus(); }
 function demo(){ toast('Sección no incluida en la demo.', 'err'); }
+
+/* ===== DASHBOARD ===== */
+function animCount(el){
+  const target=+el.dataset.count, suf=el.dataset.suf||'', dur=1000, t0=performance.now();
+  function step(t){ const p=Math.min(1,(t-t0)/dur); el.textContent=Math.round(target*(1-Math.pow(1-p,3)))+suf; if(p<1)requestAnimationFrame(step); else el.textContent=target+suf; }
+  requestAnimationFrame(step);
+}
+function buildArea(){
+  const W=600,H=210,s1=[6,8,7,10,9,12,11,14,13,16,15,19,17,21,22],s2=[4,5,6,7,7,9,10,11,10,13,12,16,15,18,19],max=24,pad=20;
+  const X=i=>pad+i*((W-pad*2)/(s1.length-1)), Y=v=>H-22-(v/max)*(H-50);
+  const line=a=>a.map((v,i)=>(i?'L':'M')+X(i).toFixed(1)+' '+Y(v).toFixed(1)).join(' ');
+  const area=a=>line(a)+` L ${X(a.length-1).toFixed(1)} ${H-22} L ${X(0).toFixed(1)} ${H-22} Z`;
+  const ct=document.getElementById('dashChart');
+  ct.innerHTML=`
+    <svg id="dashSvg" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" style="width:100%;height:210px;display:block;overflow:visible">
+      <defs>
+        <linearGradient id="g1" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#1c84c6" stop-opacity=".26"/><stop offset="1" stop-color="#1c84c6" stop-opacity="0"/></linearGradient>
+        <linearGradient id="g2" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#1ab394" stop-opacity=".26"/><stop offset="1" stop-color="#1ab394" stop-opacity="0"/></linearGradient>
+      </defs>
+      <path class="area-fill" id="dc-f1" d="${area(s1)}" fill="url(#g1)" style="transition:opacity .2s"/>
+      <path class="area-fill" id="dc-f2" d="${area(s2)}" fill="url(#g2)" style="transition:opacity .2s"/>
+      <path class="area-line" id="dc-l1" d="${line(s1)}" stroke="#1c84c6" style="transition:opacity .2s"/>
+      <path class="area-line" id="dc-l2" d="${line(s2)}" stroke="#1ab394" style="transition:opacity .2s"/>
+      <line id="dc-cross" x1="0" y1="0" x2="0" y2="${H-22}" stroke="#c0c8d0" stroke-width="1" stroke-dasharray="4 3" opacity="0" pointer-events="none"/>
+      <circle id="dc-d1" r="4.5" fill="#1c84c6" stroke="white" stroke-width="2" opacity="0" pointer-events="none"/>
+      <circle id="dc-d2" r="4.5" fill="#1ab394" stroke="white" stroke-width="2" opacity="0" pointer-events="none"/>
+      <rect x="0" y="0" width="${W}" height="${H}" fill="transparent" id="dc-ov"/>
+    </svg>
+    <div id="dc-tip" style="position:absolute;pointer-events:none;display:none;flex-direction:column;gap:4px;align-items:flex-start;z-index:20"></div>`;
+  const svg=ct.querySelector('#dashSvg'), ov=ct.querySelector('#dc-ov');
+  const cross=ct.querySelector('#dc-cross'), d1=ct.querySelector('#dc-d1'), d2=ct.querySelector('#dc-d2'), tip=ct.querySelector('#dc-tip');
+  ov.addEventListener('mousemove',e=>{
+    const r=svg.getBoundingClientRect();
+    const mx=(e.clientX-r.left)/r.width*W;
+    const step=(W-pad*2)/(s1.length-1);
+    const idx=Math.max(0,Math.min(s1.length-1,Math.round((mx-pad)/step)));
+    const cx=X(idx);
+    cross.setAttribute('x1',cx); cross.setAttribute('x2',cx); cross.setAttribute('opacity','1');
+    d1.setAttribute('cx',cx); d1.setAttribute('cy',Y(s1[idx])); d1.setAttribute('opacity','1');
+    d2.setAttribute('cx',cx); d2.setAttribute('cy',Y(s2[idx])); d2.setAttribute('opacity','1');
+    const px=(cx/W)*r.width, tipW=110;
+    const left=px+r.width>r.width-tipW ? px-tipW-6 : px+8;
+    const topPx=Math.min((Y(s1[idx])/H)*r.height,(Y(s2[idx])/H)*r.height)-52;
+    tip.style.cssText=`position:absolute;pointer-events:none;display:flex;flex-direction:column;gap:4px;align-items:flex-start;z-index:20;left:${left}px;top:${topPx}px`;
+    tip.innerHTML=`<span style="background:#1c84c6;color:#fff;border-radius:10px;padding:3px 10px;font-size:11px;font-weight:700;white-space:nowrap">${s1[idx]} ingresados</span><span style="background:#1ab394;color:#fff;border-radius:10px;padding:3px 10px;font-size:11px;font-weight:700;white-space:nowrap">${s2[idx]} resueltos</span>`;
+  });
+  ov.addEventListener('mouseleave',()=>{
+    cross.setAttribute('opacity','0'); d1.setAttribute('opacity','0'); d2.setAttribute('opacity','0'); tip.style.display='none';
+  });
+  requestAnimationFrame(()=>requestAnimationFrame(()=>document.querySelectorAll('#dashChart .area-line,#dashChart .area-fill').forEach(e=>e.classList.add('draw'))));
+}
+function dashFade(hide){
+  [['dc-l1','dc-f1'],['dc-l2','dc-f2']].forEach(([l,f],i)=>{
+    const op=(hide===0||hide!==i+1)?'':'0.1';
+    [l,f].forEach(id=>{const el=document.getElementById(id);if(el)el.style.opacity=op;});
+  });
+}
+function buildDonut(){
+  const data=[{l:'Cerradas',v:97,c:'#7b8896'},{l:'Escalado',v:26,c:'#34404e'},{l:'Asignado',v:12,c:'#1c84c6'},{l:'Prueba Sol.',v:4,c:'#1ab394'},{l:'Pendiente',v:3,c:'#f8ac59'}];
+  const tot=data.reduce((a,b)=>a+b.v,0); let acc=0;
+  const stops=data.map(d=>{const a=acc/tot*100; acc+=d.v; const b=acc/tot*100; return `${d.c} ${a.toFixed(1)}% ${b.toFixed(1)}%`;}).join(',');
+  document.getElementById('dashDonut').innerHTML=`<div class="donut" style="background:conic-gradient(${stops})"></div>`;
+  document.getElementById('donutLeg').innerHTML=data.map(d=>`<div style="display:flex;align-items:center;justify-content:space-between;font-size:12px;margin-bottom:5px"><span><i style="display:inline-block;width:10px;height:10px;border-radius:3px;background:${d.c};margin-right:7px"></i>${d.l}</span><b style="color:#5e6064">${d.v}</b></div>`).join('');
+}
+function buildBars(){
+  const tip=[{l:'Puesto de Trabajo',v:38,c:'#1c84c6'},{l:'Aplicaciones de Negocio',v:27,c:'#1ab394'},{l:'Infraestructura',v:19,c:'#34404e'},{l:'Redes y Conectividad',v:9,c:'#f8ac59'},{l:'Seguridad',v:7,c:'#23c6c8'}];
+  document.getElementById('tipBrk').insertAdjacentHTML('beforeend', tip.map(t=>`<div class="r"><span>${t.l}</span><b>${t.v}%</b></div><div class="pbar"><i data-w="${t.v}%" style="background:${t.c}"></i></div>`).join(''));
+  const ag=[{l:'Sergio Palomino',v:32},{l:'Nicolás Ferreyra',v:24},{l:'Martín Giordano',v:18},{l:'Diego Torricelli',v:12}], mx=32;
+  document.getElementById('agentBrk').insertAdjacentHTML('beforeend', ag.map(a=>`<div class="r"><span>${a.l}</span><b>${a.v}</b></div><div class="pbar"><i data-w="${Math.round(a.v/mx*100)}%" style="background:#1c84c6"></i></div>`).join(''));
+}
+let dashDone=false;
+function initDashboard(){
+  // rebuild dynamic parts each entry so animations replay
+  document.querySelectorAll('#tipBrk .r,#tipBrk .pbar,#agentBrk .r,#agentBrk .pbar').forEach(e=>e.remove());
+  document.querySelectorAll('#v-dashboard .count').forEach(animCount);
+  buildArea(); buildDonut(); buildBars();
+  const g=document.getElementById('dashGrowth'); g.innerHTML='92% <i class="fa fa-arrow-up" style="font-size:12px"></i>';
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{ document.querySelectorAll('#v-dashboard .pbar>i').forEach(i=>i.style.width=i.dataset.w); }));
+  newsIdx=0; requestAnimationFrame(renderNews);
+}
+/* news carousel */
+let newsIdx=0;
+function renderNews(){
+  const track=document.getElementById('newsTrack'); if(!track||!track.children.length) return;
+  const gap=16, cardW=track.children[0].getBoundingClientRect().width, vpW=track.parentElement.clientWidth;
+  const visible=Math.max(1,Math.round((vpW+gap)/(cardW+gap)));
+  const maxIdx=Math.max(0, track.children.length - visible);
+  if(newsIdx>maxIdx) newsIdx=maxIdx; if(newsIdx<0) newsIdx=0;
+  track.style.transform='translateX(-'+(newsIdx*(cardW+gap))+'px)';
+  document.getElementById('nPrev').disabled = newsIdx<=0;
+  document.getElementById('nNext').disabled = newsIdx>=maxIdx;
+}
+function newsGo(d){ newsIdx+=d; renderNews(); }
+window.addEventListener('resize', ()=>{ if(!document.getElementById('v-dashboard').classList.contains('hidden-x')) renderNews(); });
 
 /* ===== CONSOLA ===== */
 function renderConsola(){
@@ -557,11 +915,11 @@ function scrollHist(){ document.getElementById('hist').scrollIntoView({behavior:
 function nuevoEvento(id){
   const i=inc.find(x=>x.id===id), o=document.getElementById('ev-obs').value.trim(), t=document.getElementById('ev-tipo').value;
   if(!o){toast('Escribí una observación.','err');return;}
-  i.eventos.push({f:now(),tipo:t,desc:t+' agregado',obs:o,ag:'Eugenio Alonso'}); toast('Evento agregado.','ok'); abrir(id);
+  i.eventos.push({f:now(),tipo:t,desc:t+' agregado',obs:o,ag:'Nicolás Ferreyra'}); toast('Evento agregado.','ok'); abrir(id);
 }
-function tomar(id){ const i=inc.find(x=>x.id===id); i.resp='Eugenio Alonso'; if(i.tab==='pendiente')i.tab='asignado'; i.eventos.push({f:now(),tipo:'Asignación',desc:'Incidente tomado',obs:'Tomado por el agente.',ag:'Eugenio Alonso'}); toast('Tomaste el incidente #'+id+'.','ok'); closeOpt(); if(!document.getElementById('v-detalle').classList.contains('hidden-x'))abrir(id); else renderConsola(); }
-function cerrarInc(id){ const i=inc.find(x=>x.id===id); i.tab='cerradas'; i.cierre=now(); i.sla={k:'ok',t:'Cerrado a tiempo'}; i.eventos.push({f:now(),tipo:'Cierre',desc:'Incidente cerrado',obs:'Resuelto y cerrado por el agente.',ag:'Eugenio Alonso'}); toast('Incidente #'+id+' cerrado.','ok'); closeOpt(); abrir(id); }
-function reabrir(id){ const i=inc.find(x=>x.id===id); i.tab='asignado'; i.cierre='—'; i.sla={k:'curso',t:'En curso (0m)'}; i.eventos.push({f:now(),tipo:'Reapertura',desc:'Incidente reabierto',obs:'Reabierto por el agente.',ag:'Eugenio Alonso'}); toast('Incidente #'+id+' reabierto.','ok'); closeOpt(); abrir(id); }
+function tomar(id){ const i=inc.find(x=>x.id===id); i.resp='Nicolás Ferreyra'; if(i.tab==='pendiente')i.tab='asignado'; i.eventos.push({f:now(),tipo:'Asignación',desc:'Incidente tomado',obs:'Tomado por el agente.',ag:'Nicolás Ferreyra'}); toast('Tomaste el incidente #'+id+'.','ok'); closeOpt(); if(!document.getElementById('v-detalle').classList.contains('hidden-x'))abrir(id); else renderConsola(); }
+function cerrarInc(id){ const i=inc.find(x=>x.id===id); i.tab='cerradas'; i.cierre=now(); i.sla={k:'ok',t:'Cerrado a tiempo'}; i.eventos.push({f:now(),tipo:'Cierre',desc:'Incidente cerrado',obs:'Resuelto y cerrado por el agente.',ag:'Nicolás Ferreyra'}); toast('Incidente #'+id+' cerrado.','ok'); closeOpt(); abrir(id); }
+function reabrir(id){ const i=inc.find(x=>x.id===id); i.tab='asignado'; i.cierre='—'; i.sla={k:'curso',t:'En curso (0m)'}; i.eventos.push({f:now(),tipo:'Reapertura',desc:'Incidente reabierto',obs:'Reabierto por el agente.',ag:'Nicolás Ferreyra'}); toast('Incidente #'+id+' reabierto.','ok'); closeOpt(); abrir(id); }
 
 /* ===== CREAR ===== */
 function resetCrear(){
@@ -575,8 +933,8 @@ function crearInc(){
   if(!a){toast("El campo 'Asunto' es obligatorio.",'err');return;}
   const id=SEQ++;
   const solSel=document.getElementById('cr-sol').value; const sol=solSel.split(' | ')[0]==='Solicitantes'?SOLICITANTES[0]:solSel.split(' | ')[0];
-  inc.unshift({id,tab:'pendiente',sla:{k:'curso',t:'En curso (0m)'},asunto:a,descri:document.getElementById('cr-descri').value||'(sin descripción)',ingreso:now(),cierre:'—',cliente:'Org. Demo',sol,resp:'Eugenio Alonso',tip:(document.getElementById('cr-grupo').value||'General')+' - General - General',prio:document.getElementById('cr-prio').value,
-    eventos:[{f:now(),tipo:'Apertura',desc:'Incidente creado',obs:'Cargado desde la consola.',ag:'Eugenio Alonso'}]});
+  inc.unshift({id,tab:'pendiente',sla:{k:'curso',t:'En curso (0m)'},asunto:a,descri:document.getElementById('cr-descri').value||'(sin descripción)',ingreso:now(),cierre:'—',cliente:'Org. Demo',sol,resp:'Nicolás Ferreyra',tip:(document.getElementById('cr-grupo').value||'General')+' - General - General',prio:document.getElementById('cr-prio').value,
+    eventos:[{f:now(),tipo:'Apertura',desc:'Incidente creado',obs:'Cargado desde la consola.',ag:'Nicolás Ferreyra'}]});
   toast('Incidente #'+id+' creado.','ok'); tab='pendiente'; go('consola');
 }
 
