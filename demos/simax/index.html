@@ -56,6 +56,7 @@
   /* ===== APP SHELL ===== */
   #app{display:flex;flex:1;min-height:0;overflow:hidden}
   .sidebar{width:225px;background:var(--sidebar);flex:none;color:var(--sidebar-tx);transition:width .2s;overflow-y:auto;overflow-x:hidden}
+  .sidebar.mini{width:0;overflow:hidden}
   .sidebar .brand{padding:18px 10px 16px;text-align:center;background:#262a32}
   .brand-link{display:inline-block;cursor:pointer}
   .brand-logo{max-width:165px;width:88%;transition:transform .15s,filter .15s}
@@ -63,14 +64,16 @@
   .sidebar .brand .simax-logo .cloud{font-size:22px;color:#5bb8e8}
   .sidebar .brand .simax-logo .cloud:before{font-size:34px}
   .smenu{list-style:none;margin:0;padding:0}
-  .smenu>li>a{display:flex;align-items:center;gap:10px;padding:13px 18px;color:var(--sidebar-tx);font-weight:600;font-size:13px;border-left:3px solid transparent}
+  .smenu>li>a{display:flex;align-items:center;gap:10px;padding:13px 18px;color:var(--sidebar-tx);font-weight:600;font-size:13px;border-left:3px solid transparent;text-decoration:none}
   .smenu>li>a .fa:first-child{width:16px;text-align:center}
   .smenu>li>a .caret-r{margin-left:auto;opacity:.5;font-size:10px}
   .smenu>li>a:hover{background:var(--sidebar-h);color:#fff}
-  .smenu>li.active>a{background:var(--blue);color:#fff;border-left-color:#fff}
+  .smenu-off>a{opacity:.45;cursor:pointer}
+  .smenu-off>a:hover{background:transparent!important;color:var(--sidebar-tx)!important;opacity:.55}
+  .smenu>li.active>a{background:#1a1d23;color:#fff;border-left-color:#fff}
   .content{flex:1;min-width:0;display:flex;flex-direction:column;overflow:hidden}
 
-  .topbar{height:52px;background:#fff;border-bottom:1px solid var(--line);box-shadow:0 1px 3px rgba(0,0,0,.04);display:flex;align-items:center;justify-content:space-between;padding:0 18px;position:relative}
+  .topbar{height:52px;background:transparent;border-bottom:none;box-shadow:none;display:flex;align-items:center;justify-content:space-between;padding:0 18px;position:relative}
   .burger{width:32px;height:32px;border-radius:50%;background:var(--blue);color:#fff;border:none;display:flex;align-items:center;justify-content:center;transition:background .15s,transform .15s}
   .burger:hover{background:var(--blue-h);color:#fff;transform:scale(1.08)}
   .topbar .user-ic{color:var(--blue);font-size:18px;cursor:pointer}
@@ -79,10 +82,17 @@
   .user-pop .nm{font-weight:700;color:#444}.user-pop .em{color:#999;font-size:12px;margin-bottom:12px}
   .user-pop .btn{font-size:12px}
 
-  .crumb{padding:14px 22px;color:#9aa0a6;font-size:14px}
+  .crumb{padding:10px 16px;color:#9aa0a6;font-size:14px;background:#fff;border-bottom:1px solid var(--line);box-shadow:0 1px 3px rgba(0,0,0,.04);text-align:right}
   .crumb b{color:#3a3f44}
   .views-wrap{flex:1;overflow-y:auto;min-height:0}
-  .body{padding:6px 18px 24px}
+  .body{padding:16px}
+  /* dashboard: llena el viewport, drow1 ocupa el espacio restante */
+  #v-dashboard .body{display:flex;flex-direction:column;gap:16px;min-height:calc(100vh - 124px)}
+  #v-dashboard .news{margin-bottom:0;flex-shrink:0}
+  #v-dashboard .drow1{flex:1;margin-bottom:0;min-height:280px;align-items:stretch}
+  #v-dashboard .drow1 .dcard{display:flex;flex-direction:column}
+  #dashChart{flex:1;min-height:160px}
+  #dashSvg{width:100%;height:100%;min-height:160px;display:block}
 
   .toolbar{display:flex;align-items:center;gap:8px;justify-content:flex-end;padding:0 22px 8px}
   .tbtn{width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:#fff;color:#9aa0a6;display:flex;align-items:center;justify-content:center;cursor:pointer}
@@ -139,7 +149,8 @@
   .panel#hist{border-top:1px solid var(--line);border-radius:var(--rad);box-shadow:var(--shadow)}
   .subbar{background:#fff;border:1px solid var(--line);border-top:none;padding:14px 16px;display:flex;flex-wrap:wrap;align-items:center;gap:14px}
   .lvl{color:var(--blue);letter-spacing:2px}
-  .lbl-badge{background:var(--blue);color:#fff;border-radius:8px;padding:5px 12px;font-weight:600;font-size:12px}
+  .lbl-badge{background:var(--blue);color:#fff;border-radius:8px;padding:5px 12px;font-weight:600;font-size:12px;transition:background .15s,color .15s,transform .15s}
+  button.lbl-badge:hover{background:var(--blue-h);color:#fff;transform:scale(1.03)}
   .dtabs{display:flex;margin:0}
   .dtab{flex:1;text-align:center;padding:13px;background:#fff;border:1px solid var(--line);font-weight:700;color:#7a8086;cursor:pointer}
   .dtab.active{background:var(--blue);color:#fff;border-color:var(--blue)}
@@ -161,6 +172,12 @@
   .msgcard .top .badge2{position:absolute;top:10px;right:10px;background:rgba(0,0,0,.25);border-radius:12px;padding:3px 10px;font-size:11px}
   .msgcard .top h4{position:absolute;bottom:10px;left:14px;margin:0;font-weight:700}
   .msgcard .desc{padding:12px 14px;color:#777;font-size:12px;max-height:70px;overflow:hidden}
+  /* colores fijos por tipo de noticia */
+  .nc-mensaje { background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='120'%3E%3Ccircle cx='108' cy='18' r='48' fill='none' stroke='white' stroke-opacity='0.13' stroke-width='1.5'/%3E%3Ccircle cx='128' cy='100' r='62' fill='none' stroke='white' stroke-opacity='0.07' stroke-width='1'/%3E%3C/svg%3E") right top / 140px 120px no-repeat, linear-gradient(135deg,#1456a0,#2290c8); }
+  .nc-info    { background: linear-gradient(135deg,#2c3d4d,#496070); }
+  .nc-novedad { background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20'%3E%3Cpath d='M-2,22 L22,-2' stroke='white' stroke-opacity='0.1' stroke-width='1.2'/%3E%3C/svg%3E") repeat, linear-gradient(135deg,#0b6e57,#17b08e); }
+  .nc-aviso   { background: linear-gradient(135deg,#9c5e0d,#d08830); }
+  .nc-kb      { background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='90' height='80'%3E%3Crect x='8' y='20' width='56' height='4' rx='2' fill='white' fill-opacity='0.14'/%3E%3Crect x='8' y='32' width='40' height='3' rx='1.5' fill='white' fill-opacity='0.09'/%3E%3Crect x='8' y='43' width='50' height='3' rx='1.5' fill='white' fill-opacity='0.11'/%3E%3Crect x='8' y='54' width='30' height='3' rx='1.5' fill='white' fill-opacity='0.07'/%3E%3C/svg%3E") right center / 90px 80px no-repeat, linear-gradient(135deg,#0a6e7c,#1ba8b0); }
   .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
   @media(max-width:900px){.stats{grid-template-columns:1fr 1fr}}
   .stat{border-radius:var(--rad);padding:22px;color:#fff;min-height:150px;display:flex;flex-direction:column;justify-content:center;text-align:center;box-shadow:var(--shadow)}
@@ -236,6 +253,76 @@
   .sx-modal-body{padding:18px 16px}
   .sx-modal-body label{font-size:11px;color:#888;text-transform:uppercase;letter-spacing:.03em}
   .sx-modal-foot{padding:12px 16px;border-top:1px solid var(--line);display:flex;justify-content:flex-end;gap:8px}
+  /* crear · primer renglón flotante */
+  .cr-headrow{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px;padding:0 4px 14px}
+  .hr-left{display:flex;align-items:center;gap:14px}
+  .hr-center{justify-self:center}
+  .hr-right{display:flex;align-items:center;gap:12px;justify-self:stretch}
+  .fechas-sm{display:flex;gap:16px;font-size:11px;color:#9aa0a6}
+  .fechas-sm b{color:#7a8086;font-weight:600}
+  .tipo-select{background:var(--blue);color:#fff;border:none;border-radius:8px;padding:9px 34px 9px 18px;font-weight:600;font-family:inherit;font-size:13px;cursor:pointer;-webkit-appearance:none;appearance:none;box-shadow:0 3px 8px rgba(28,132,198,.25);background-image:url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"11\" height=\"11\" viewBox=\"0 0 11 11\"><path d=\"M2 4l3.5 3.5L9 4\" stroke=\"white\" stroke-width=\"1.6\" fill=\"none\" stroke-linecap=\"round\"/></svg>');background-repeat:no-repeat;background-position:right 13px center}
+  .resp{display:inline-flex;align-items:center;gap:7px;background:#fff;border:1px solid var(--line);border-radius:8px;padding:8px 14px;color:#5e6064;font-weight:600;cursor:pointer;box-shadow:var(--shadow);transition:all .15s}
+  .resp:hover{border-color:var(--blue);color:var(--blue)}
+  .masivo-btn{background:#fff;border:1px solid var(--line);border-radius:8px;padding:8px 14px;color:#9aa0a6;font-weight:600;cursor:pointer;font-family:inherit;box-shadow:var(--shadow);transition:all .15s;width:108px;text-align:left;flex:none}
+  .masivo-btn .fa{float:right;margin-top:3px}
+  .masivo-btn.on{border-color:var(--red);color:var(--red);background:#fff5f5}
+  .cr-topcard{border-top:1px solid var(--line)!important;border-radius:var(--rad) var(--rad) 0 0}
+  .resp-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line)}
+  .resp-row:last-child{border-bottom:none}
+  .resp-row span{color:#9aa0a6}.resp-row b{color:#5e6064}
+  .hr-right{display:flex;align-items:center;gap:12px}
+  .hr-resp{flex:1;display:flex;justify-content:center}
+  /* dropdown custom solicitud */
+  .tipo-dd{position:relative}
+  .tipo-btn{background:var(--blue);color:#fff;border:none;border-radius:8px;padding:9px 16px;font-weight:600;font-family:inherit;font-size:13px;cursor:pointer;box-shadow:0 3px 8px rgba(28,132,198,.25);display:inline-flex;align-items:center;justify-content:space-between;gap:8px;width:190px}
+  .tipo-menu{position:absolute;top:calc(100% + 6px);left:50%;transform:translateX(-50%);min-width:240px;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 12px 34px rgba(0,0,0,.18);padding:6px;display:none;z-index:30}
+  .tipo-menu.open{display:block}
+  .tipo-menu a{display:block;padding:10px 14px;border-radius:7px;color:#9aa0a6;font-size:13px;cursor:pointer}
+  .tipo-menu a:hover{background:#f3f6f8;color:#5e6064}
+  .tipo-menu a.sel{background:var(--blue);color:#fff;font-weight:600}
+  /* nivel dots */
+  .lvl{cursor:default;white-space:nowrap}
+  .ndot{display:inline-block;width:9px;height:9px;border-radius:50%;background:#d3d8de;margin:0 2px}
+  .ndot.on{background:var(--blue)}
+  /* tooltip custom */
+  .tip{position:relative}
+  .tip::after{content:attr(data-tip);position:absolute;bottom:calc(100% + 9px);left:50%;transform:translateX(-50%) translateY(4px);background:#5e6570;color:#fff;font-size:11px;font-weight:600;letter-spacing:.02em;padding:4px 10px;border-radius:7px;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .15s,transform .15s;z-index:50;box-shadow:0 4px 10px rgba(0,0,0,.18)}
+  .tip::before{content:"";position:absolute;bottom:calc(100% + 4px);left:50%;transform:translateX(-50%);border:5px solid transparent;border-top-color:#5e6570;opacity:0;transition:opacity .15s;pointer-events:none;z-index:50}
+  .tip:hover::after{opacity:1;transform:translateX(-50%) translateY(0)}
+  .tip:hover::before{opacity:1}
+  /* crear · 3 paneles separados */
+  #v-crear .subbar{border:1px solid var(--line);border-radius:var(--rad);box-shadow:var(--shadow);margin-bottom:14px}
+  #v-crear .dtabs{display:flex;gap:12px;margin-bottom:14px}
+  #v-crear .dtab{flex:1;border:1px solid var(--line);border-radius:var(--rad);box-shadow:var(--shadow)}
+  /* info adicional · labels editables */
+  .ia-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px 28px}
+  .ia-row{display:flex;align-items:center;gap:10px}
+  .ia-label{width:130px;flex:none;border:1px solid transparent;background:transparent;font-weight:600;font-size:13px;color:#5e6064;font-family:inherit;padding:5px 8px;border-radius:6px;cursor:text;transition:all .12s}
+  .ia-label:hover{background:#eef1f4}
+  .ia-label:focus{outline:none;background:#fff;border-color:var(--blue);box-shadow:0 0 0 2px rgba(28,132,198,.15)}
+  .ia-row .form-control{flex:1}
+  .ia-extra{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px 28px;margin-top:16px}
+  .ia-bool-pair,.ia-date-pair{display:flex;gap:12px;min-width:0}
+  .ia-bool-pair .ia-bool,.ia-date-pair .ia-date{flex:1;min-width:0}
+  .ia-extra .ia-bool .ia-bool-lbl{flex:1;text-align:center}
+  .ia-extra .ia-date{display:flex;flex-direction:row;align-items:center;gap:10px}
+  .ia-extra .ia-date .form-control{max-width:none;flex:1;min-width:0}
+  .ia-bool{display:flex;align-items:center;border:1px solid var(--line);border-radius:8px;padding:3px 8px;gap:4px}
+  .ia-bool.on{border-color:var(--green)}
+  .ia-bool-ic{border:none;background:transparent;cursor:pointer;color:#9aa0a6;padding:4px}
+  .ia-bool.on .ia-bool-ic{color:var(--green)}
+  .ia-bool{cursor:pointer;transition:border-color .12s,background .12s}
+  .ia-bool:hover{border-color:#bbb;background:#f5f7f9}
+  .ia-bool.on:hover{border-color:var(--green)}
+  .ia-bool-lbl{cursor:text}
+  .ia-tip{position:fixed;background:#5e6470;color:#fff;font-size:11px;font-weight:600;padding:4px 12px;border-radius:20px;white-space:nowrap;pointer-events:none;opacity:0;transform:translateY(-4px);transition:opacity .25s,transform .25s;z-index:9999}
+  .ia-tip button{pointer-events:all}
+  .ia-tip button:hover{opacity:1!important;color:#fff!important}
+  .ia-tip::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:5px solid transparent;border-top-color:#5e6470}
+  .ia-tip.show{opacity:1;transform:translateY(0)}
+  .ia-tip.hide{opacity:0;transform:translateY(-4px)}
+  #v-crear .panel{border:1px solid var(--line);border-radius:var(--rad);box-shadow:var(--shadow)}
+  #cr-sol.placeholder{color:#a3a8ad;font-style:italic}
   .demo-banner{background:var(--blue);color:#fff;height:34px;display:flex;align-items:center;justify-content:center;gap:10px;font-size:12px;font-weight:600;flex:none}
   .db-btn{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.45);color:#fff;padding:3px 13px;border-radius:6px;font-weight:600;transition:background .15s}
   .db-btn:hover{background:rgba(255,255,255,.32)}
@@ -257,8 +344,8 @@
 </head>
 <body>
 <div class="demo-banner">
-  <a href="../../index.html" class="db-btn"><i class="fa fa-arrow-left"></i> Portfolio</a>
-  <span class="db-sep">—</span>
+  <a href="../../index.html" class="db-btn"><i class="fa fa-chevron-left" style="font-size:9px"></i> Portfolio</a>
+  <span class="db-sep">•</span>
   <span>Demo navegable</span>
 </div>
 
@@ -309,6 +396,44 @@
   </div>
 </div>
 
+<!-- ===== RESPONSABLE ===== -->
+<div class="sx-modal-ov" id="respModal">
+  <div class="sx-modal">
+    <div class="sx-modal-head"><span>Responsable</span><button class="sx-x" onclick="closeResp()">&times;</button></div>
+    <div class="sx-modal-body">
+      <div style="text-align:center;margin-bottom:14px">
+        <div style="width:74px;height:74px;border-radius:50%;background:#e6e8eb;color:#b5bbc2;display:flex;align-items:center;justify-content:center;font-size:36px;margin:0 auto 8px"><i class="fa fa-user"></i></div>
+        <div style="font-weight:700;font-size:16px;color:#34404e">Nicolás Ferreyra</div>
+        <div style="color:#9aa0a6;font-size:12px">Soporte Técnico · Nivel 2</div>
+      </div>
+      <div class="resp-row"><span>DNI</span><b>32.845.117</b></div>
+      <div class="resp-row"><span>Teléfono</span><b>+54 11 5567-2290</b></div>
+      <div class="resp-row"><span>Email</span><b>nferreyra@simax.demo</b></div>
+      <div class="resp-row"><span>Área</span><b>Mesa de Ayuda</b></div>
+      <div class="resp-row"><span>Legajo</span><b>SX-0427</b></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SOLICITANTE ===== -->
+<div class="sx-modal-ov" id="solicModal">
+  <div class="sx-modal">
+    <div class="sx-modal-head"><span>Solicitante</span><button class="sx-x" onclick="closeSolic()">&times;</button></div>
+    <div class="sx-modal-body">
+      <div style="text-align:center;margin-bottom:14px">
+        <div style="width:74px;height:74px;border-radius:50%;background:#e6e8eb;color:#b5bbc2;display:flex;align-items:center;justify-content:center;font-size:36px;margin:0 auto 8px"><i class="fa fa-user"></i></div>
+        <div id="sm-nombre" style="font-weight:700;font-size:16px;color:#34404e"></div>
+        <div id="sm-area" style="color:#9aa0a6;font-size:12px"></div>
+      </div>
+      <div class="resp-row"><span>Nivel</span><b id="sm-nivel"></b></div>
+      <div class="resp-row"><span>DNI</span><b id="sm-dni"></b></div>
+      <div class="resp-row"><span>Teléfono</span><b id="sm-tel"></b></div>
+      <div class="resp-row"><span>Email</span><b id="sm-email"></b></div>
+      <div class="resp-row"><span>Cliente</span><b>Org. Demo</b></div>
+    </div>
+  </div>
+</div>
+
 <!-- ===== APP ===== -->
 <div id="app" class="hidden-x">
   <nav class="sidebar">
@@ -321,14 +446,14 @@
     <ul class="smenu">
       <li class="active" id="m-crear"><a onclick="go('crear')"><i class="fa fa-plus"></i> <span class="lbl">Nuevo Incidente</span></a></li>
       <li id="m-consola"><a onclick="go('consola')"><i class="fa fa-table"></i> <span class="lbl">Consola</span></a></li>
-      <li id="m-mis"><a onclick="go('consola')"><i class="fa fa-th-large"></i> <span class="lbl">Mis Incidencias</span></a></li>
-      <li id="m-buscar"><a onclick="buscarFocus()"><i class="fa fa-search"></i> <span class="lbl">Buscar Incidentes</span></a></li>
-      <li><a onclick="go('clientes')"><i class="fa fa-user"></i> <span class="lbl">Solicitantes</span> <i class="fa fa-chevron-left caret-r"></i></a></li>
-      <li><a onclick="demo()"><i class="fa fa-book"></i> <span class="lbl">Base de Conocimientos</span> <i class="fa fa-chevron-left caret-r"></i></a></li>
-      <li><a onclick="demo()"><i class="fa fa-question-circle"></i> <span class="lbl">Consultas</span> <i class="fa fa-chevron-left caret-r"></i></a></li>
-      <li><a onclick="demo()"><i class="fa fa-envelope"></i> <span class="lbl">Difusión</span> <i class="fa fa-chevron-left caret-r"></i></a></li>
-      <li><a onclick="demo()"><i class="fa fa-lock"></i> <span class="lbl">Acceso &amp; Seguridad</span> <i class="fa fa-chevron-left caret-r"></i></a></li>
-      <li><a onclick="demo()"><i class="fa fa-cog"></i> <span class="lbl">Configuración</span> <i class="fa fa-chevron-left caret-r"></i></a></li>
+      <li class="smenu-off"><a onclick="demo()"><i class="fa fa-th-large"></i> <span class="lbl">Mis Incidencias</span></a></li>
+      <li class="smenu-off" id="m-buscar"><a onclick="demo()"><i class="fa fa-search"></i> <span class="lbl">Buscar Incidentes</span></a></li>
+      <li id="m-clientes"><a onclick="go('clientes')"><i class="fa fa-user"></i> <span class="lbl">Solicitantes</span></a></li>
+      <li class="smenu-off"><a onclick="demo()"><i class="fa fa-book"></i> <span class="lbl">Base de Conocimientos</span> <i class="fa fa-chevron-left caret-r"></i></a></li>
+      <li class="smenu-off"><a onclick="demo()"><i class="fa fa-question-circle"></i> <span class="lbl">Consultas</span> <i class="fa fa-chevron-left caret-r"></i></a></li>
+      <li class="smenu-off"><a onclick="demo()"><i class="fa fa-envelope"></i> <span class="lbl">Difusión</span> <i class="fa fa-chevron-left caret-r"></i></a></li>
+      <li class="smenu-off"><a onclick="demo()"><i class="fa fa-lock"></i> <span class="lbl">Acceso &amp; Seguridad</span> <i class="fa fa-chevron-left caret-r"></i></a></li>
+      <li class="smenu-off"><a onclick="demo()"><i class="fa fa-cog"></i> <span class="lbl">Configuración</span> <i class="fa fa-chevron-left caret-r"></i></a></li>
     </ul>
   </nav>
 
@@ -361,7 +486,7 @@ Incluyan en la descripción:
 • Mensaje de error exacto
 • Pasos para reproducir el problema
 
-Cualquier información adicional es de gran ayuda para acelerar la resolución."><div class="top" style="background:url(data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='120'%3E%3Ccircle cx='108' cy='18' r='48' fill='none' stroke='white' stroke-opacity='0.13' stroke-width='1.5'/%3E%3Ccircle cx='128' cy='100' r='62' fill='none' stroke='white' stroke-opacity='0.07' stroke-width='1'/%3E%3C/svg%3E) right top / 140px 120px no-repeat,linear-gradient(120deg,#0e4d75,#1c84c6)"><span class="badge2"><i class="fa fa-info-circle"></i> mensaje</span><h4>SIMAX</h4></div><div class="desc">En caso de que encuentren alguna falla u error en este sistema, cargar un incidente reportándolo para que sea solucionado a la brevedad…</div></div>
+Cualquier información adicional es de gran ayuda para acelerar la resolución."><div class="top nc-mensaje"><span class="badge2"><i class="fa fa-info-circle"></i> mensaje</span><h4>SIMAX</h4></div><div class="desc">En caso de que encuentren alguna falla u error en este sistema, cargar un incidente reportándolo para que sea solucionado a la brevedad…</div></div>
               <div class="msgcard" onclick="openNewsModal(this)" data-desc="Estimado colaborador, bienvenido a Simax.
 
 Utilice esta herramienta para gestionar los incidentes que le sean asignados, como así también los que usted registre como parte de sus funciones diarias.
@@ -371,7 +496,7 @@ Al cargar un incidente, recuerde completar siempre:
 • Nivel de prioridad
 • Descripción detallada del problema
 
-Ante cualquier consulta sobre el uso del sistema, comuníquese con la Mesa de Ayuda."><div class="top" style="background:linear-gradient(120deg,#3a4a5a,#6b7b8c)"><span class="badge2"><i class="fa fa-info-circle"></i> mensaje</span><h4>Bienvenido a Simax !</h4></div><div class="desc">Estimado colaborador, utilice esta herramienta para gestionar los incidentes que le sean asignados, como así también los que ud. registre como parte de sus funciones…</div></div>
+Ante cualquier consulta sobre el uso del sistema, comuníquese con la Mesa de Ayuda."><div class="top nc-info"><span class="badge2"><i class="fa fa-info-circle"></i> mensaje</span><h4>Bienvenido a Simax !</h4></div><div class="desc">Estimado colaborador, utilice esta herramienta para gestionar los incidentes que le sean asignados, como así también los que ud. registre como parte de sus funciones…</div></div>
               <div class="msgcard" onclick="openNewsModal(this)" data-desc="La versión 41 de Simax está disponible con las siguientes novedades:
 
 Novedades principales:
@@ -383,7 +508,7 @@ Correcciones:
 • Error en búsqueda avanzada con filtros combinados
 • Fallo en el módulo de difusión masiva al adjuntar archivos
 
-¡Contanos qué te parece y reportá cualquier inconveniente!"><div class="top" style="background:url(data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20'%3E%3Cpath d='M-2,22 L22,-2' stroke='white' stroke-opacity='0.1' stroke-width='1.2'/%3E%3C/svg%3E) repeat,linear-gradient(120deg,#0f8a6f,#1ab394)"><span class="badge2"><i class="fa fa-rocket"></i> novedad</span><h4>Nueva versión v.41</h4></div><div class="desc">Mejoras en el módulo de escalamientos, nuevos reportes de SLA y una consola más rápida. ¡Contanos qué te parece!</div></div>
+¡Contanos qué te parece y reportá cualquier inconveniente!"><div class="top nc-novedad"><span class="badge2"><i class="fa fa-rocket"></i> novedad</span><h4>Nueva versión v.41</h4></div><div class="desc">Mejoras en el módulo de escalamientos, nuevos reportes de SLA y una consola más rápida. ¡Contanos qué te parece!</div></div>
               <div class="msgcard" onclick="openNewsModal(this)" data-desc="Aviso de mantenimiento programado
 
 Fecha: sábado próximo
@@ -396,7 +521,7 @@ Recomendaciones:
 • Guardar el trabajo pendiente antes de las 02:00 hs
 • En caso de urgencia, contactar a Infraestructura por el canal de guardia
 
-El equipo estará disponible durante toda la ventana para monitorear y resolver inconvenientes."><div class="top" style="background:linear-gradient(120deg,#c07b16,#f8ac59)"><span class="badge2"><i class="fa fa-wrench"></i> aviso</span><h4>Mantenimiento programado</h4></div><div class="desc">El sábado de 02 a 04 hs se realizará mantenimiento del datacenter. Pueden presentarse intermitencias durante la ventana.</div></div>
+El equipo estará disponible durante toda la ventana para monitorear y resolver inconvenientes."><div class="top nc-aviso"><span class="badge2"><i class="fa fa-wrench"></i> aviso</span><h4>Mantenimiento programado</h4></div><div class="desc">El sábado de 02 a 04 hs se realizará mantenimiento del datacenter. Pueden presentarse intermitencias durante la ventana.</div></div>
               <div class="msgcard" onclick="openNewsModal(this)" data-desc="Se incorporaron 12 nuevos artículos a la Base de Conocimientos.
 
 Temas incluidos:
@@ -406,7 +531,7 @@ Temas incluidos:
 • Validación de tokens de firma digital (ePass2000)
 • Alta y baja de usuarios en el dominio
 
-Recordá consultar la KB antes de escalar un caso al segundo nivel. Esto reduce los tiempos de resolución y mejora los indicadores de SLA del equipo."><div class="top" style="background:url(data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='90' height='80'%3E%3Crect x='8' y='20' width='56' height='4' rx='2' fill='white' fill-opacity='0.14'/%3E%3Crect x='8' y='32' width='40' height='3' rx='1.5' fill='white' fill-opacity='0.09'/%3E%3Crect x='8' y='43' width='50' height='3' rx='1.5' fill='white' fill-opacity='0.11'/%3E%3Crect x='8' y='54' width='30' height='3' rx='1.5' fill='white' fill-opacity='0.07'/%3E%3C/svg%3E) right center / 90px 80px no-repeat,linear-gradient(120deg,#138a9c,#23c6c8)"><span class="badge2"><i class="fa fa-book"></i> kb</span><h4>Base de Conocimientos</h4></div><div class="desc">Sumamos 12 artículos nuevos para resolución de incidentes frecuentes. Consultalos antes de escalar un caso.</div></div>
+Recordá consultar la KB antes de escalar un caso al segundo nivel. Esto reduce los tiempos de resolución y mejora los indicadores de SLA del equipo."><div class="top nc-kb"><span class="badge2"><i class="fa fa-book"></i> kb</span><h4>Base de Conocimientos</h4></div><div class="desc">Sumamos 12 artículos nuevos para resolución de incidentes frecuentes. Consultalos antes de escalar un caso.</div></div>
             </div>
           </div>
         </div>
@@ -506,50 +631,99 @@ Recordá consultar la KB antes de escalar un caso al segundo nivel. Esto reduce 
 
     <!-- CREAR -->
     <div id="v-crear" class="hidden-x">
-      <div class="crumb"><i>Mesa de Ayuda</i> &rsaquo; <b>Nuevo Incidente</b></div>
-      <div class="body" style="padding-top:0">
-        <div class="ihead">
-          <span class="estado" style="background:var(--teal)">Pendiente</span>
-          <div class="fechas"><div class="f"><label>Fecha de Ingreso</label><b id="cr-fecha"></b></div><div class="f"><label>Fecha Límite</label><b>---</b></div></div>
-          <button class="pill-btn">Solicitud <i class="fa fa-caret-down"></i></button>
-          <span class="ghost-btn"><i class="fa fa-user"></i> Nicolás Ferreyra</span>
-          <span class="ghost-btn" style="color:var(--red)">Masivo <i class="fa fa-times"></i></span>
+      <div class="crumb" style="display:flex;align-items:center;gap:6px;justify-content:flex-end">
+        <span onclick="go('dashboard')" style="cursor:pointer;color:#9aa0a6;transition:color .15s" onmouseenter="this.style.color='var(--blue)'" onmouseleave="this.style.color='#9aa0a6'">Mesa de Ayuda</span>
+        <i class="fa fa-chevron-right" style="font-size:9px;color:var(--blue);opacity:.7"></i>
+        <b style="color:#3a3f44">Nuevo Incidente</b>
+      </div>
+      <div class="body">
+        <div class="cr-headrow">
+          <div class="hr-left">
+            <span class="estado" style="background:var(--teal)">Pendiente</span>
+            <div class="fechas-sm">
+              <span>Ingreso <b id="cr-fecha"></b></span>
+              <span>Límite <b id="cr-limite">---</b></span>
+            </div>
+          </div>
+          <div class="hr-center">
+            <div class="tipo-dd" id="tipoDD">
+              <button class="tipo-btn" type="button" onclick="toggleTipo(event)"><span id="tipoVal">Solicitud</span> <i class="fa fa-caret-down"></i></button>
+              <div class="tipo-menu" id="tipoMenu"></div>
+            </div>
+          </div>
+          <div class="hr-right">
+            <span class="hr-resp"><span class="resp" title="RESPONSABLE" onclick="openResp()"><i class="fa fa-user"></i> Nicolás Ferreyra</span></span>
+            <button class="masivo-btn" id="masivoBtn" type="button" onclick="toggleMasivo()">Masivo <i class="fa fa-times" id="masivoIc"></i></button>
+          </div>
         </div>
-        <div class="subbar">
-          <span class="lbl-badge">Solicitante</span>
-          <select class="form-control" id="cr-sol" style="max-width:320px"></select>
-          <span class="lvl">●●●●●</span>
-          <span style="margin-left:auto">Sitio</span>
-          <select class="form-control" style="max-width:150px"><option>Bolívar</option><option>Casa Central</option></select>
+        <div class="subbar cr-topcard">
+          <button class="lbl-badge" type="button" onclick="openSolic()" title="Ver datos del solicitante" style="border:none;cursor:pointer">Solicitante</button>
+          <select class="form-control" id="cr-sol" style="flex:1;min-width:180px" onchange="onSolicChange()"></select>
+          <span class="lvl tip" id="cr-nivel" data-tip="Nivel"></span>
+          <span style="margin-left:8px">Sitio</span>
+          <select class="form-control" style="max-width:160px"><option>Bolívar</option><option>Casa Central</option><option>Sucursal Norte</option></select>
           <span>Vía</span>
-          <select class="form-control" style="max-width:110px"><option>WEB</option><option>Teléfono</option><option>Email</option></select>
+          <select class="form-control" style="max-width:120px"><option>WEB</option><option>Teléfono</option><option>Email</option><option>Presencial</option></select>
         </div>
-        <div class="dtabs"><div class="dtab active">Detalle</div><div class="dtab" onclick="demo()">Info. Adicional</div><div class="dtab" onclick="demo()">Solución</div></div>
+        <div class="dtabs">
+          <div class="dtab active" data-tab="detalle" onclick="crTab('detalle')">Detalle</div>
+          <div class="dtab" data-tab="info" onclick="crTab('info')">Info. Adicional</div>
+          <div class="dtab" data-tab="soluc" onclick="crTab('soluc')">Solución</div>
+        </div>
         <div class="panel">
+          <div id="crt-detalle">
           <div class="row"><div class="col-sm-12 field form-group"><label>Asunto</label><input id="cr-asunto" class="form-control" maxlength="50" autofocus /></div></div>
           <div class="row"><div class="col-sm-12 field form-group"><label>Descripción</label><textarea id="cr-descri" class="form-control" rows="5"></textarea></div></div>
-          <hr style="border-top:1px dashed var(--line)" />
+          <hr style="border:none;border-top:1px dashed var(--line);opacity:.35;margin:6px 0" />
           <div class="row">
-            <div class="col-sm-3 field form-group"><label>Grupo</label><select id="cr-grupo" class="form-control"></select></div>
-            <div class="col-sm-3 field form-group"><label>Subgrupo</label><select class="form-control form-readonly"><option>Seleccione un Grupo</option></select></div>
-            <div class="col-sm-3 field form-group"><label>Item</label><select class="form-control form-readonly"><option>Seleccione un Subgrupo</option></select></div>
-            <div class="col-sm-3 field form-group"><label>Gru.Res.</label><select class="form-control form-readonly"><option>Seleccione un item</option></select></div>
+            <div class="col-sm-3 field form-group"><label>Grupo</label><select id="cr-grupo" class="form-control" onchange="onGrupoChange()"></select></div>
+            <div class="col-sm-3 field form-group"><label>Subgrupo</label><select id="cr-subgrupo" class="form-control form-readonly" onchange="onSubgrupoChange()"><option value="">Seleccione un Grupo</option></select></div>
+            <div class="col-sm-3 field form-group"><label>Item</label><select id="cr-item" class="form-control form-readonly" onchange="onItemChange()"><option value="">Seleccione un Subgrupo</option></select></div>
+            <div class="col-sm-3 field form-group"><label>Gru.Res.</label><input id="cr-grures" class="form-control form-readonly" readonly placeholder="— seleccione un item —" style="cursor:default" /></div>
           </div>
           <div class="row">
-            <div class="col-sm-3 field form-group"><label>Prioridad</label><select id="cr-prio" class="form-control"><option>Muy Alta</option><option>Alta</option><option selected>Media</option><option>Baja</option></select></div>
-            <div class="col-sm-3 field form-group"><label>Severidad</label><select class="form-control"><option selected>Baja</option><option>Mayor</option><option>Crítica</option></select></div>
-            <div class="col-sm-3 field form-group"><label>Contexto</label><select class="form-control"><option>Sin contexto</option><option>Puesto de Trabajo</option><option>Producción</option></select></div>
-            <div class="col-sm-3 field form-group"><label>Impacto</label><select class="form-control"><option selected>Bajo</option><option>Medio</option><option>Alto</option></select></div>
+            <div class="col-sm-3 field form-group"><label>Prioridad</label><select id="cr-prio" class="form-control" onchange="calcLimite()"><option>Muy Alta</option><option>Alta</option><option selected>Media</option><option>Baja</option></select></div>
+            <div class="col-sm-3 field form-group"><label>Severidad</label><select id="cr-sev" class="form-control" onchange="calcLimite()"><option selected>Baja</option><option>Mayor</option><option>Crítica</option></select></div>
+            <div class="col-sm-3 field form-group"><label>Contexto</label><select id="cr-ctx" class="form-control" onchange="calcLimite()"><option>Sin contexto</option><option>Puesto de Trabajo</option><option>Producción</option></select></div>
+            <div class="col-sm-3 field form-group"><label>Impacto</label><select id="cr-imp" class="form-control" onchange="calcLimite()"><option selected>Bajo</option><option>Medio</option><option>Alto</option></select></div>
           </div>
-          <div class="actions" style="margin-top:14px">
-            <button class="actbtn" onclick="demo()">Escalamientos</button>
-            <button class="actbtn" onclick="demo()">Historial</button>
-            <button class="actbtn" onclick="demo()">Equipos</button>
-            <button class="actbtn" onclick="demo()">Soluc. Sim.</button>
-            <button class="actbtn" onclick="demo()">Base Con.</button>
-            <button class="ghost-btn" style="min-width:110px" onclick="go('consola')">Consola</button>
-            <button class="actbtn" style="flex:0 0 130px" onclick="crearInc()"><i class="fa fa-check"></i> Agregar</button>
+          </div><!-- /crt-detalle -->
+
+          <div id="crt-info" class="hidden-x">
+            <div class="ia-grid">
+              <div class="ia-row"><input class="ia-label" value="Info adicional 1" title="Editá el nombre del campo" /><input class="form-control" /></div>
+              <div class="ia-row"><input class="ia-label" value="Info adicional 4" title="Editá el nombre del campo" /><input class="form-control" /></div>
+              <div class="ia-row"><input class="ia-label" value="Info adicional 2" title="Editá el nombre del campo" /><input class="form-control" /></div>
+              <div class="ia-row"><input class="ia-label" value="Info adicional 5" title="Editá el nombre del campo" /><input class="form-control" /></div>
+              <div class="ia-row"><input class="ia-label" value="Info adicional 3" title="Editá el nombre del campo" /><input class="form-control" /></div>
+              <div class="ia-row"><input class="ia-label" value="Info adicional 6" title="Editá el nombre del campo" /><input class="form-control" /></div>
+            </div>
+            <div class="ia-extra">
+              <div class="ia-bool-pair">
+                <div class="ia-bool" onclick="iaBool(this)"><button class="ia-bool-ic" type="button"><i class="fa fa-times"></i></button><input class="ia-label ia-bool-lbl" value="Info adicional 7" title="Editá el nombre del campo" onclick="event.stopPropagation()" oninput="sizeIaLbl(this)" /></div>
+                <div class="ia-bool" onclick="iaBool(this)"><button class="ia-bool-ic" type="button"><i class="fa fa-times"></i></button><input class="ia-label ia-bool-lbl" value="Info adicional 8" title="Editá el nombre del campo" onclick="event.stopPropagation()" oninput="sizeIaLbl(this)" /></div>
+              </div>
+              <div class="ia-date-pair">
+                <div class="ia-date"><input class="ia-label" value="Info adicional 9" title="Editá el nombre del campo" /><input type="datetime-local" class="form-control" /></div>
+                <div class="ia-date"><input class="ia-label" value="Info adicional 10" title="Editá el nombre del campo" /><input type="datetime-local" class="form-control" /></div>
+              </div>
+            </div>
           </div>
+
+          <div id="crt-soluc" class="hidden-x">
+            <div class="row"><div class="col-sm-12 field form-group"><label>Resumen</label><input id="cr-resumen" class="form-control" /></div></div>
+            <div class="row"><div class="col-sm-12 field form-group"><label>Detalle</label><textarea id="cr-detalle" class="form-control" rows="4"></textarea></div></div>
+            <div style="display:flex;gap:8px">
+              <button class="actbtn" type="button" id="btn-enproceso" onclick="selEstado(this)">En Proceso</button>
+              <button class="actbtn" type="button" id="btn-resuelto" style="background:#fff;color:var(--blue);border:1px solid var(--blue)" onclick="selEstado(this)">Resuelto</button>
+              <button class="actbtn" type="button" id="btn-fuera" style="background:#fff;color:var(--blue);border:1px solid var(--blue)" onclick="selEstado(this)">Fuera de Alcance</button>
+            </div>
+          </div>
+
+        </div>
+        <div style="margin-top:14px;display:flex;justify-content:flex-end;gap:6px">
+          <button class="ghost-btn" onclick="go('consola')">Consola</button>
+          <button class="actbtn" style="flex:none;padding:7px 18px" onclick="crearInc()"><i class="fa fa-check"></i> Agregar</button>
         </div>
       </div>
     </div>
@@ -595,7 +769,11 @@ function openNewsModal(card){
   const badge = card.querySelector('.badge2');
   const title = card.querySelector('h4');
   const desc = card.dataset.desc;
-  document.getElementById('newsModalTop').style.background = top.style.background;
+  const modalTop = document.getElementById('newsModalTop');
+  // copiar clase de color nc-*
+  modalTop.className = modalTop.className.replace(/\bnc-\w+/g,'').trim();
+  const nc = [...top.classList].find(c=>c.startsWith('nc-'));
+  if(nc) modalTop.classList.add(nc);
   document.getElementById('newsModalBadge').innerHTML = badge.innerHTML;
   document.getElementById('newsModalTitle').textContent = title.textContent;
   document.getElementById('newsModalDesc').textContent = desc;
@@ -623,6 +801,95 @@ const EST = {
   pendiente:{t:'Pendiente',c:'#23c6c8'}, rechazada:{t:'Rechazada',c:'#ed5565'}, cerradas:{t:'Cerrado',c:'#7b8896'}
 };
 const GRUPOS=['Infraestructura','Aplicaciones de Negocio','Puesto de Trabajo','Seguridad Física','Redes y Conectividad'];
+const SUBGRUPOS={
+  'Infraestructura':['Servidores','Storage','Virtualización','Backup','Datacenter'],
+  'Aplicaciones de Negocio':['ERP','CRM','BI / Reportes','Integraciones','Desarrollo interno'],
+  'Puesto de Trabajo':['Hardware PC','Impresoras','Periféricos','Software de usuario','Telefonía'],
+  'Seguridad Física':['Control de acceso','CCTV','Alarmas','Incendio','Visitantes'],
+  'Redes y Conectividad':['LAN','Wi-Fi','WAN / Internet','VPN','Telefonía IP']
+};
+const ITEMS={
+  'Servidores':['Sin respuesta','Disco lleno','Falla de RAM','Actualización de OS','Alta de servidor'],
+  'Storage':['Falta de espacio','Error de lectura','Migración de datos','Expansión','Falla de disco'],
+  'Virtualización':['VM no inicia','Snapshot','Migración en vivo','Recursos insuficientes','Alta de VM'],
+  'Backup':['Job fallido','Restauración','Retención','Cambio de política','Falla de agente'],
+  'Datacenter':['Temperatura','UPS','PDU','Rotulado','Cableado'],
+  'ERP':['Error de login','Proceso lento','Bug funcional','Alta de usuario','Actualización'],
+  'CRM':['Error en módulo','Importación de datos','Permisos','Integración','Reporte incorrecto'],
+  'BI / Reportes':['Reporte no carga','Dato incorrecto','Dashboard caído','Alta de acceso','Nuevo reporte'],
+  'Integraciones':['Falla de API','Timeout','Mapeo incorrecto','Alta de integración','Certificado'],
+  'Desarrollo interno':['Bug','Solicitud de cambio','Deploy','Revisión de código','Nueva funcionalidad'],
+  'Hardware PC':['No enciende','Pantalla','Teclado/Mouse','Disco duro','Reemplazo de equipo'],
+  'Impresoras':['No imprime','Atasco de papel','Driver','Tóner','Configuración de red'],
+  'Periféricos':['Cámara','Auriculares','Hub USB','Lector de tarjeta','Monitor'],
+  'Software de usuario':['Instalación','Licencia','Error de aplicación','Actualización','Desinstalación'],
+  'Telefonía':['Sin tono','Config. desvío','Nuevo interno','Falla de aparato','Voicemail'],
+  'Control de acceso':['Tarjeta bloqueada','Alta de acceso','Baja de acceso','Lector sin respuesta','Horarios'],
+  'CCTV':['Cámara caída','Grabación','Acceso remoto','Nueva cámara','Almacenamiento'],
+  'Alarmas':['Falsa alarma','Sensor','Panel','Zona','Mantenimiento'],
+  'Incendio':['Detector','Extintor','Simulacro','Mantenimiento','Habilitación'],
+  'Visitantes':['Alta de pase','Registro','Credencial','Bloqueo','Reporte'],
+  'LAN':['Sin conectividad','Switch','Puerto caído','VLAN','Cableado'],
+  'Wi-Fi':['Sin señal','AP caído','Contraseña','Nueva AP','Interferencia'],
+  'WAN / Internet':['Sin internet','Lentitud','Failover','Alta de enlace','Router'],
+  'VPN':['No conecta','Certificado','Alta de acceso','Lentitud','Baja de acceso'],
+  'Telefonía IP':['Sin tono','Config. SIP','Nuevo interno','Calidad de audio','Central']
+};
+function onGrupoChange(){
+  const g=document.getElementById('cr-grupo').value;
+  const sg=document.getElementById('cr-subgrupo');
+  const it=document.getElementById('cr-item');
+  it.innerHTML='<option value="">Seleccione un Subgrupo</option>';
+  it.classList.add('form-readonly'); it.disabled=true;
+  document.getElementById('cr-grures').value='';
+  document.getElementById('cr-grures').classList.add('form-readonly');
+  if(!g||g===''){ sg.innerHTML='<option value="">Seleccione un Grupo</option>'; sg.classList.add('form-readonly'); sg.disabled=true; return; }
+  sg.innerHTML='<option value="">Seleccione un Subgrupo</option>'+(SUBGRUPOS[g]||[]).map(s=>`<option>${s}</option>`).join('');
+  sg.classList.remove('form-readonly'); sg.disabled=false;
+}
+function onSubgrupoChange(){
+  const s=document.getElementById('cr-subgrupo').value;
+  const it=document.getElementById('cr-item');
+  const gr=document.getElementById('cr-grures');
+  gr.value=''; gr.classList.add('form-readonly');
+  if(!s){ it.innerHTML='<option value="">Seleccione un Subgrupo</option>'; it.classList.add('form-readonly'); it.disabled=true; return; }
+  it.innerHTML='<option value="">Seleccione un Item</option>'+(ITEMS[s]||[]).map(i=>`<option>${i}</option>`).join('');
+  it.classList.remove('form-readonly'); it.disabled=false;
+}
+const GRU_RES={
+  'Sin respuesta':'Infraestructura N1','Disco lleno':'Infraestructura N2','Falla de RAM':'Infraestructura N2','Actualización de OS':'Infraestructura N3','Alta de servidor':'Infraestructura N3',
+  'Falta de espacio':'Storage N1','Error de lectura':'Storage N2','Migración de datos':'Storage N3','Expansión':'Storage N3','Falla de disco':'Storage N2',
+  'VM no inicia':'Virtualización N1','Snapshot':'Virtualización N2','Migración en vivo':'Virtualización N3','Recursos insuficientes':'Virtualización N2','Alta de VM':'Virtualización N2',
+  'Job fallido':'Backup N1','Restauración':'Backup N2','Retención':'Backup N2','Cambio de política':'Backup N3','Falla de agente':'Backup N2',
+  'Temperatura':'Datacenter Facilities','UPS':'Datacenter Facilities','PDU':'Datacenter Facilities','Rotulado':'Datacenter N1','Cableado':'Datacenter N1',
+  'Error de login':'Soporte Aplicaciones','Proceso lento':'Soporte Aplicaciones','Bug funcional':'Desarrollo','Alta de usuario':'Soporte Aplicaciones','Actualización':'Infraestructura N2',
+  'Error en módulo':'Soporte CRM','Importación de datos':'Soporte CRM','Permisos':'Soporte Aplicaciones','Integración':'Desarrollo','Reporte incorrecto':'Soporte CRM',
+  'Reporte no carga':'BI N1','Dato incorrecto':'BI N2','Dashboard caído':'BI N1','Alta de acceso':'Mesa de Ayuda','Nuevo reporte':'BI N3',
+  'Falla de API':'Integraciones N2','Timeout':'Integraciones N1','Mapeo incorrecto':'Integraciones N2','Alta de integración':'Integraciones N3','Certificado':'Infraestructura N2',
+  'Bug':'Desarrollo','Solicitud de cambio':'Desarrollo','Deploy':'Desarrollo N3','Revisión de código':'Desarrollo N3','Nueva funcionalidad':'Desarrollo N3',
+  'No enciende':'Mesa de Ayuda','Pantalla':'Mesa de Ayuda','Teclado/Mouse':'Mesa de Ayuda','Disco duro':'Soporte HW','Reemplazo de equipo':'Soporte HW',
+  'No imprime':'Mesa de Ayuda','Atasco de papel':'Mesa de Ayuda','Driver':'Mesa de Ayuda','Tóner':'Logística','Configuración de red':'Redes N1',
+  'Cámara':'Mesa de Ayuda','Auriculares':'Mesa de Ayuda','Hub USB':'Mesa de Ayuda','Lector de tarjeta':'Soporte HW','Monitor':'Soporte HW',
+  'Instalación':'Mesa de Ayuda','Licencia':'Soporte Aplicaciones','Error de aplicación':'Soporte Aplicaciones','Desinstalación':'Mesa de Ayuda',
+  'Sin tono':'Telefonía N1','Config. desvío':'Telefonía N1','Nuevo interno':'Telefonía N2','Falla de aparato':'Telefonía N1','Voicemail':'Telefonía N1',
+  'Tarjeta bloqueada':'Seguridad Física','Alta de acceso':'Seguridad Física','Baja de acceso':'Seguridad Física','Lector sin respuesta':'Seguridad Física','Horarios':'Seguridad Física',
+  'Cámara caída':'CCTV N1','Grabación':'CCTV N2','Acceso remoto':'CCTV N1','Nueva cámara':'CCTV N2','Almacenamiento':'CCTV N2',
+  'Falsa alarma':'Seguridad Física','Sensor':'Seguridad Física','Panel':'Seguridad Física','Zona':'Seguridad Física','Mantenimiento':'Facilities',
+  'Detector':'Facilities','Extintor':'Facilities','Simulacro':'Facilities','Habilitación':'Facilities',
+  'Alta de pase':'Seguridad Física','Registro':'Seguridad Física','Credencial':'Seguridad Física','Bloqueo':'Seguridad Física','Reporte':'Seguridad Física',
+  'Sin conectividad':'Redes N1','Switch':'Redes N2','Puerto caído':'Redes N1','VLAN':'Redes N2','Cableado':'Redes N1',
+  'Sin señal':'Redes N1','AP caído':'Redes N1','Contraseña':'Mesa de Ayuda','Nueva AP':'Redes N2','Interferencia':'Redes N2',
+  'Sin internet':'Redes N2','Lentitud':'Redes N1','Failover':'Redes N3','Alta de enlace':'Redes N3','Router':'Redes N2',
+  'No conecta':'Redes N1','Certificado':'Infraestructura N2','Lentitud':'Redes N1',
+  'Config. SIP':'Telefonía N2','Calidad de audio':'Telefonía N1','Central':'Telefonía N3'
+};
+function onItemChange(){
+  const v=document.getElementById('cr-item').value;
+  const gr=document.getElementById('cr-grures');
+  if(!v){ gr.value=''; gr.classList.add('form-readonly'); return; }
+  gr.value=GRU_RES[v]||'Mesa de Ayuda';
+  gr.classList.remove('form-readonly');
+}
 const SOLICITANTES=['Rodrigo Mansilla','Anabela Bustos','Damián Leiva','Sandra Ruiz','Sergio Palomino','Javier Peralta'];
 const RESP=['Sergio Palomino','Martín Giordano','Nicolás Ferreyra','Rodrigo Mansilla','Diego Torricelli'];
 
@@ -662,10 +929,109 @@ let clientes=[
 
 /* ===== NAV ===== */
 let tab='escalado';
-function entrar(){ document.getElementById('login').classList.add('hidden-x'); document.getElementById('app').classList.remove('hidden-x'); go('dashboard'); }
+function entrar(){ document.getElementById('login').classList.add('hidden-x'); document.getElementById('app').classList.remove('hidden-x'); sessionStorage.setItem('sx-in','1'); go('dashboard'); }
 function togglePass(){ const p=document.getElementById('lg-pass'), ic=document.getElementById('eye-ic'); const show=p.type==='password'; p.type=show?'text':'password'; ic.className='fa '+(show?'fa-eye-slash':'fa-eye'); }
 function openCambiar(){ ['cc-act','cc-new1','cc-new2'].forEach(id=>document.getElementById(id).value=''); document.getElementById('cambiarModal').classList.add('open'); }
 function cerrarCambiar(){ document.getElementById('cambiarModal').classList.remove('open'); }
+function toggleMasivo(){ const b=document.getElementById('masivoBtn'); const on=b.classList.toggle('on'); document.getElementById('masivoIc').className='fa '+(on?'fa-check':'fa-times'); }
+let _iaTipDismissed=false;
+let _iaTipEl=null;
+function showIaTip(){
+  if(_iaTipEl) return;
+  const anchor = document.querySelector('#crt-info .ia-label');
+  if(!anchor) return;
+  const tip = document.createElement('div');
+  tip.className='ia-tip';
+  _iaTipEl=tip;
+  const lbl = document.createElement('span');
+  lbl.textContent='Etiquetas editables';
+  const x = document.createElement('button');
+  x.textContent='×';
+  x.style.cssText='background:none;border:none;color:inherit;font-size:13px;line-height:1;padding:0 0 0 7px;cursor:pointer;opacity:.8;vertical-align:middle';
+  x.onclick=()=>{ _iaTipDismissed=true; dismissIaTip(); };
+  tip.appendChild(lbl);
+  tip.appendChild(x);
+  document.body.appendChild(tip);
+  const rect = anchor.getBoundingClientRect();
+  const tw = tip.offsetWidth;
+  tip.style.left = (rect.left + rect.width/2 - tw/2) + 'px';
+  tip.style.top = (rect.top - tip.offsetHeight - 10) + 'px';
+  requestAnimationFrame(()=>tip.classList.add('show'));
+}
+function dismissIaTip(){
+  if(!_iaTipEl) return;
+  const tip=_iaTipEl; _iaTipEl=null;
+  tip.classList.remove('show');
+  tip.classList.add('hide');
+  tip.addEventListener('transitionend',()=>tip.remove(),{once:true});
+}
+function iaBool(el){ const w=el.closest('.ia-bool')||el; const on=w.classList.toggle('on'); w.querySelector('.ia-bool-ic i').className='fa '+(on?'fa-check':'fa-times'); }
+function sizeIaLbl(el){ el.style.width='0'; el.style.width=(el.scrollWidth+2)+'px'; }
+document.addEventListener('DOMContentLoaded',()=>{
+  document.querySelectorAll('.ia-bool-lbl').forEach(sizeIaLbl);
+  if(sessionStorage.getItem('sx-in')){
+    document.getElementById('login').classList.add('hidden-x');
+    document.getElementById('app').classList.remove('hidden-x');
+    go(sessionStorage.getItem('sx-view') || 'dashboard');
+  }
+});
+
+/* tipo (solicitud) dropdown */
+const TIPOS=['Solicitud','Incidente','Requerimiento','Consulta','Reclamo','Cambio','Acceso'];
+let curTipo='Solicitud';
+function buildTipoMenu(){ document.getElementById('tipoMenu').innerHTML=TIPOS.map(t=>`<a class="${t===curTipo?'sel':''}" onclick="selTipo('${t}')">${t}</a>`).join(''); document.getElementById('tipoVal').textContent=curTipo; }
+function toggleTipo(e){ e.stopPropagation(); document.getElementById('tipoMenu').classList.toggle('open'); }
+function selTipo(t){ curTipo=t; buildTipoMenu(); document.getElementById('tipoMenu').classList.remove('open'); }
+document.addEventListener('click', e=>{ if(!e.target.closest('#tipoDD')){ const m=document.getElementById('tipoMenu'); if(m) m.classList.remove('open'); } });
+
+/* solicitantes con nivel */
+const SOLIC=[
+  {n:'Luis Di Natale', niv:5, dni:'27.114.882', tel:'+54 11 4422-7781', email:'ldinatale@org.demo', area:'Dirección'},
+  {n:'Anabel, Berisso', niv:3, dni:'30.998.214', tel:'+54 11 5567-9921', email:'aberisso@org.demo', area:'Compras'},
+  {n:'Damián, Nepomnaschy', niv:4, dni:'29.455.610', tel:'+54 11 4781-3344', email:'dnepom@org.demo', area:'Sistemas'},
+  {n:'Sandra, Gregoric', niv:2, dni:'32.220.471', tel:'+54 11 6612-0099', email:'sgregoric@org.demo', area:'Administración'},
+  {n:'Carlos Avaca', niv:3, dni:'28.760.155', tel:'+54 11 4490-2255', email:'cavaca@org.demo', area:'Soporte'},
+  {n:'Javier, Vázquez', niv:1, dni:'34.901.778', tel:'+54 11 5520-8810', email:'jvazquez@org.demo', area:'Mesa de Entradas'}
+];
+function renderNivel(niv){ let h=''; for(let i=1;i<=5;i++) h+=`<i class="ndot ${i<=niv?'on':''}"></i>`; document.getElementById('cr-nivel').innerHTML=h; }
+function onSolicChange(){ const i=document.getElementById('cr-sol').selectedIndex; renderNivel(i>0?SOLIC[i-1].niv:0); calcLimite(); }
+function calcLimite(){
+  const solIdx=document.getElementById('cr-sol').selectedIndex;
+  const nivel=solIdx>0?SOLIC[solIdx-1].niv:1;
+  const prio=document.getElementById('cr-prio').value;
+  const sev=document.getElementById('cr-sev').value;
+  const ctx=document.getElementById('cr-ctx').value;
+  const imp=document.getElementById('cr-imp').value;
+  // base en horas según prioridad
+  const baseH={'Muy Alta':2,'Alta':4,'Media':8,'Baja':24}[prio]||8;
+  // multiplicador por severidad
+  const mSev={'Baja':1,'Mayor':0.6,'Crítica':0.35}[sev]||1;
+  // multiplicador por impacto
+  const mImp={'Bajo':1,'Medio':0.8,'Alto':0.55}[imp]||1;
+  // contexto productivo reduce más
+  const mCtx=ctx==='Producción'?0.6:ctx==='Puesto de Trabajo'?0.85:1;
+  // nivel del solicitante: nivel alto = más urgente
+  const mNiv=[1,0.9,0.8,0.7,0.6][nivel-1]||1;
+  const horas=Math.max(0.5, baseH*mSev*mImp*mCtx*mNiv);
+  const limite=new Date(Date.now()+horas*3600000);
+  const p=n=>String(n).padStart(2,'0');
+  const txt=p(limite.getDate())+'/'+p(limite.getMonth()+1)+'/'+limite.getFullYear()+' '+p(limite.getHours())+':'+p(limite.getMinutes());
+  document.getElementById('cr-limite').textContent=txt;
+}
+function openSolic(){
+  const i=document.getElementById('cr-sol').selectedIndex; const s=i>0?SOLIC[i-1]:SOLIC[0];
+  document.getElementById('sm-nombre').textContent=s.n;
+  document.getElementById('sm-area').textContent=s.area+' · Nivel '+s.niv;
+  document.getElementById('sm-nivel').textContent='Nivel '+s.niv;
+  document.getElementById('sm-dni').textContent=s.dni;
+  document.getElementById('sm-tel').textContent=s.tel;
+  document.getElementById('sm-email').textContent=s.email;
+  document.getElementById('solicModal').classList.add('open');
+}
+function closeSolic(){ document.getElementById('solicModal').classList.remove('open'); }
+function openResp(){ document.getElementById('respModal').classList.add('open'); }
+function closeResp(){ document.getElementById('respModal').classList.remove('open'); }
+document.addEventListener('click', e=>{ if(e.target.classList && e.target.classList.contains('sx-modal-ov')) e.target.classList.remove('open'); });
 function guardarCambiar(){
   const a=document.getElementById('cc-act').value.trim();
   const n1=document.getElementById('cc-new1').value.trim();
@@ -675,16 +1041,13 @@ function guardarCambiar(){
   document.getElementById('lg-pass').value=n1;
   cerrarCambiar(); toast('Contraseña actualizada.','ok');
 }
-function logout(){ document.getElementById('userpop').classList.add('hidden-x'); document.getElementById('app').classList.add('hidden-x'); document.getElementById('login').classList.remove('hidden-x'); }
-function go(v){
-  ['dashboard','consola','detalle','crear','clientes'].forEach(x=>document.getElementById('v-'+x).classList.toggle('hidden-x', x!==v));
-  document.getElementById('m-crear').classList.toggle('active', v==='crear');
-  document.getElementById('m-consola').classList.toggle('active', v==='consola');
-  if(v==='dashboard') initDashboard();
-  if(v==='consola') renderConsola();
-  if(v==='crear') resetCrear();
-  if(v==='clientes') renderCli();
-  closeOpt(); document.getElementById('userpop').classList.add('hidden-x'); window.scrollTo(0,0);
+function logout(){ sessionStorage.removeItem('sx-in'); sessionStorage.removeItem('sx-view'); document.getElementById('userpop').classList.add('hidden-x'); document.getElementById('app').classList.add('hidden-x'); document.getElementById('login').classList.remove('hidden-x'); }
+function go(v){ ['dashboard','consola','detalle','crear','clientes'].forEach(x=>document.getElementById('v-'+x).classList.toggle('hidden-x',x!==v)); document.getElementById('m-crear').classList.toggle('active',v==='crear'); document.getElementById('m-consola').classList.toggle('active',v==='consola'); document.getElementById('m-clientes').classList.toggle('active',v==='clientes'); if(v==='dashboard')initDashboard(); if(v==='consola')renderConsola(); if(v==='crear')resetCrear(); if(v==='clientes')renderCli(); closeOpt(); document.getElementById('userpop').classList.add('hidden-x'); window.scrollTo(0,0); sessionStorage.setItem('sx-view',v); }
+function crTab(name){
+  ['detalle','info','soluc'].forEach(t=>document.getElementById('crt-'+t).classList.toggle('hidden-x', t!==name));
+  document.querySelectorAll('#v-crear .dtab').forEach(d=>d.classList.toggle('active', d.dataset.tab===name));
+  if(name==='info' && !_iaTipDismissed) showIaTip(); else dismissIaTip();
+  sessionStorage.setItem('sx-crtab', name);
 }
 function toggleSide(){ document.querySelector('.sidebar').classList.toggle('mini'); }
 function toggleUser(){ document.getElementById('userpop').classList.toggle('hidden-x'); }
@@ -704,7 +1067,7 @@ function buildArea(){
   const area=a=>line(a)+` L ${X(a.length-1).toFixed(1)} ${H-22} L ${X(0).toFixed(1)} ${H-22} Z`;
   const ct=document.getElementById('dashChart');
   ct.innerHTML=`
-    <svg id="dashSvg" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" style="width:100%;height:210px;display:block;overflow:visible">
+    <svg id="dashSvg" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" style="width:100%;height:100%;display:block;overflow:visible">
       <defs>
         <linearGradient id="g1" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#1c84c6" stop-opacity=".26"/><stop offset="1" stop-color="#1c84c6" stop-opacity="0"/></linearGradient>
         <linearGradient id="g2" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#1ab394" stop-opacity=".26"/><stop offset="1" stop-color="#1ab394" stop-opacity="0"/></linearGradient>
@@ -924,15 +1287,39 @@ function reabrir(id){ const i=inc.find(x=>x.id===id); i.tab='asignado'; i.cierre
 /* ===== CREAR ===== */
 function resetCrear(){
   document.getElementById('cr-fecha').textContent=now();
-  document.getElementById('cr-sol').innerHTML='<option>Solicitantes</option>'+SOLICITANTES.map(s=>`<option>${s} | Org. Demo</option>`).join('');
-  document.getElementById('cr-grupo').innerHTML='<option>---</option>'+GRUPOS.map(g=>`<option>${g}</option>`).join('');
+  document.getElementById('cr-sol').innerHTML='<option value="">...</option>'+SOLIC.map(s=>`<option>${s.n} | Org. Demo</option>`).join('');
+  document.getElementById('cr-grupo').innerHTML='<option value="">Seleccione un Grupo</option>'+GRUPOS.map(g=>`<option>${g}</option>`).join('');
+  const sg=document.getElementById('cr-subgrupo'); sg.innerHTML='<option value="">Seleccione un Grupo</option>'; sg.classList.add('form-readonly'); sg.disabled=true;
+  const it=document.getElementById('cr-item'); it.innerHTML='<option value="">Seleccione un Subgrupo</option>'; it.classList.add('form-readonly'); it.disabled=true;
+  const gr=document.getElementById('cr-grures'); gr.value=''; gr.classList.add('form-readonly');
+  _estadoSoluc='';
+  ['btn-enproceso','btn-resuelto','btn-fuera'].forEach((id,i)=>{ const b=document.getElementById(id); if(b){ b.style.background=i===0?'var(--blue)':'#fff'; b.style.color=i===0?'#fff':'var(--blue)'; } });
   document.getElementById('cr-asunto').value=''; document.getElementById('cr-descri').value='';
+  const mb=document.getElementById('masivoBtn'); if(mb){ mb.classList.remove('on'); document.getElementById('masivoIc').className='fa fa-times'; }
+  curTipo='Solicitud'; buildTipoMenu(); renderNivel(0); crTab('detalle');
+  document.getElementById('cr-limite').textContent='---';
+}
+let _estadoSoluc='';
+function selEstado(btn){
+  _estadoSoluc=btn.textContent.trim();
+  [document.getElementById('btn-enproceso'),document.getElementById('btn-resuelto'),document.getElementById('btn-fuera')].forEach(b=>{
+    const activo=b===btn;
+    b.style.background=activo?'var(--blue)':'#fff';
+    b.style.color=activo?'#fff':'var(--blue)';
+    b.style.border=activo?'1px solid var(--blue)':'1px solid var(--blue)';
+  });
 }
 function crearInc(){
+  const solEl=document.getElementById('cr-sol');
+  if(solEl.selectedIndex===0){ toast('Seleccioná un solicitante.','err'); return; }
   const a=document.getElementById('cr-asunto').value.trim();
   if(!a){toast("El campo 'Asunto' es obligatorio.",'err');return;}
+  if(_estadoSoluc==='Resuelto'){
+    if(!document.getElementById('cr-resumen').value.trim()){toast("Con estado 'Resuelto', el Resumen es obligatorio.",'err');crTab('soluc');return;}
+    if(!document.getElementById('cr-detalle').value.trim()){toast("Con estado 'Resuelto', el Detalle es obligatorio.",'err');crTab('soluc');return;}
+  }
   const id=SEQ++;
-  const solSel=document.getElementById('cr-sol').value; const sol=solSel.split(' | ')[0]==='Solicitantes'?SOLICITANTES[0]:solSel.split(' | ')[0];
+  const sol=solEl.value.split(' | ')[0];
   inc.unshift({id,tab:'pendiente',sla:{k:'curso',t:'En curso (0m)'},asunto:a,descri:document.getElementById('cr-descri').value||'(sin descripción)',ingreso:now(),cierre:'—',cliente:'Org. Demo',sol,resp:'Nicolás Ferreyra',tip:(document.getElementById('cr-grupo').value||'General')+' - General - General',prio:document.getElementById('cr-prio').value,
     eventos:[{f:now(),tipo:'Apertura',desc:'Incidente creado',obs:'Cargado desde la consola.',ag:'Nicolás Ferreyra'}]});
   toast('Incidente #'+id+' creado.','ok'); tab='pendiente'; go('consola');

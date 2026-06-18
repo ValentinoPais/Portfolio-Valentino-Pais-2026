@@ -36,6 +36,8 @@
   .tile{position:relative;border-radius:20px;padding:22px;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;color:#fff;transition:transform .3s,filter .2s,opacity .3s;aspect-ratio:1}
   a.tile:hover{transform:translateY(-3px);filter:brightness(1.06)}
   .col2{grid-column:span 2;aspect-ratio:auto}
+  .loc-center{grid-column:2 / span 2}
+  @media(max-width:860px){.loc-center{grid-column:1 / -1}}
   .tile>*{position:relative;z-index:2}
   .t-label{font-family:'JetBrains Mono',monospace;font-size:.74rem;letter-spacing:.05em;text-transform:uppercase;opacity:.72}
   .t-h{font-size:clamp(1.25rem,2.3vw,1.6rem);font-weight:700;letter-spacing:-.01em;line-height:1.18}
@@ -105,7 +107,7 @@
   .brand-name{font-weight:700;font-size:1.1rem;letter-spacing:-.01em}
 
   /* map tile */
-  .maptile{padding:0;overflow:hidden}
+  .maptile{padding:0;overflow:hidden;aspect-ratio:2/1;min-height:200px}
   .maptile .mapframe{position:absolute;inset:0;width:100%;height:100%;z-index:1;background:#0d1117}
   .leaflet-container{background:#0d1117!important}
   .maptile .map-label{position:absolute;top:14px;left:16px;z-index:3;font-family:'JetBrains Mono',monospace;font-size:.74rem;letter-spacing:.05em;text-transform:uppercase;opacity:.85}
@@ -313,7 +315,7 @@
       </a>
 
       <!-- UBICACIÓN -->
-      <div class="tile c-loc col2 maptile" data-cat="info">
+      <div class="tile c-loc col2 maptile loc-center" data-cat="info">
         <div class="mapframe" id="locmap"></div>
         <div class="map-label" data-es="ubicación" data-en="location">ubicación</div>
         <div class="map-overlay">
