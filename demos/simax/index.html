@@ -96,12 +96,25 @@
 
   .toolbar{display:flex;align-items:center;gap:8px;justify-content:flex-end;padding:0 22px 8px}
   .tbtn{width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:#fff;color:#9aa0a6;display:flex;align-items:center;justify-content:center;cursor:pointer}
-  .tbtn.blue{background:var(--blue);color:#fff;border-color:var(--blue);transition:background .15s,transform .15s}
-  .tbtn.blue:hover{background:var(--blue-h);color:#fff;border-color:var(--blue-h);transform:scale(1.08)}
+  .tbtn.blue{background:var(--blue);color:#fff;border-color:var(--blue);transition:background .15s,box-shadow .15s}
+  .tbtn.blue:hover{background:var(--blue-h);color:#fff;border-color:var(--blue-h);box-shadow:0 3px 8px rgba(28,132,198,.35)}
+  .tbtn:not(.blue):hover{border-color:#cfd6dd;color:var(--blue)}
+  .tbtn[data-tip]{position:relative}
+  .tbtn[data-tip]::after{content:attr(data-tip);position:absolute;top:calc(100% + 9px);left:50%;transform:translateX(-50%) translateY(-4px);background:#5e6570;color:#fff;font-size:11px;font-weight:600;letter-spacing:.02em;padding:4px 11px;border-radius:999px;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .15s,transform .15s;z-index:9999;box-shadow:0 4px 10px rgba(0,0,0,.18)}
+  .tbtn[data-tip]::before{content:"";position:absolute;top:calc(100% + 4px);left:50%;transform:translateX(-50%);border:5px solid transparent;border-bottom-color:#5e6570;opacity:0;transition:opacity .15s;z-index:9999;pointer-events:none}
+  .tbtn[data-tip]:hover::after{opacity:1;transform:translateX(-50%) translateY(0)}
+  .tbtn[data-tip]:hover::before{opacity:1}
+  .tbtn.search{width:34px;padding:0;border-radius:17px;overflow:hidden;justify-content:flex-end;transition:width .22s ease,padding .22s ease,border-color .15s,box-shadow .15s}
+  .tbtn.search.open{width:212px;padding-right:12px}
+  .tbtn.search.open:focus-within{border-color:var(--blue);box-shadow:0 0 0 2px rgba(28,132,198,.14)}
+  .tbtn.search input{width:0;opacity:0;border:none;outline:none;background:transparent;font-family:inherit;font-size:13px;color:#5e6064;transition:width .22s ease,opacity .14s ease}
+  .tbtn.search.open input{width:150px;opacity:1;margin-right:6px}
+  .tbtn.search input::placeholder{color:#b3b9bf}
+  .tbtn.search .fa-search{flex:none;width:34px;text-align:center;cursor:pointer}
 
   /* tabs pill */
-  .tabbar{display:flex;flex-wrap:wrap;gap:8px;border-bottom:none;margin:0 0 14px}
-  .tabpill{padding:9px 16px;background:#fff;border:1px solid var(--line);color:#6a7077;font-weight:600;cursor:pointer;white-space:nowrap;border-radius:9px;box-shadow:0 1px 2px rgba(0,0,0,.04);transition:all .15s}
+  .tabbar{display:flex;flex-wrap:wrap;gap:8px;border-bottom:none;margin:0 0 16px;width:100%}
+  .tabpill{flex:1 1 auto;min-width:0;text-align:center;padding:9px 14px;background:#fff;border:1px solid var(--line);color:#6a7077;font-weight:600;cursor:pointer;white-space:nowrap;border-radius:9px;box-shadow:0 1px 2px rgba(0,0,0,.04);transition:all .15s}
   .tabpill:hover{border-color:#cfd6dd}
   .tabpill .dot{color:var(--blue);font-weight:800}
   .tabpill.active{background:var(--blue);color:#fff;border-color:var(--blue);box-shadow:0 3px 8px rgba(28,132,198,.28)}
@@ -109,23 +122,49 @@
 
   /* table */
   .tablewrap{background:#fff;border:1px solid var(--line);border-radius:var(--rad);box-shadow:var(--shadow);overflow:hidden;overflow-x:auto}
+  /* consola: scroll interno del panel de filas, header sticky, breadcrumb/tabs fijos */
+  #v-consola{height:100%;display:flex;flex-direction:column}
+  #v-consola>.crumb{flex:none}
+  #v-consola>.body{flex:1;min-height:0;display:flex;flex-direction:column}
+  #v-consola .tabbar{flex:none}
+  #v-consola .tablewrap{flex:0 1 auto;min-height:0;display:flex;flex-direction:column;overflow:hidden}
+  .tscroll{flex:0 1 auto;min-height:0;overflow:auto}
   table.t{width:100%;border-collapse:collapse;min-width:900px}
-  table.t th{padding:14px;font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:#9aa0a6;background:#fafbfc;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}
+  table.t th{padding:9px 14px;font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:#9aa0a6;background:#fafbfc;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap;position:sticky;top:0;z-index:3}
   table.t th .fa{opacity:.4;margin-left:3px}
-  table.t td{padding:13px 14px;border-bottom:1px solid #f2f3f4;vertical-align:middle}
-  table.t tbody tr:last-child td{border-bottom:none}
-  table.t tbody tr{cursor:pointer;transition:background .12s}
-  table.t tbody tr:hover{background:#f6fafe}
-  .idbadge{display:inline-block;min-width:28px;text-align:center;background:#d3d8de;color:#fff;font-weight:700;border-radius:8px;padding:3px 7px}
-  .idbadge.on{background:var(--blue)}
+  table.t td{padding:7px 14px;border-bottom:1px solid #f2f3f4;vertical-align:middle;background:#fff;transition:background .12s}
+  table.t tbody tr:nth-child(even) td{background:#fbfcfd}
+  table.t tbody tr:last-child td{border-bottom:none;padding-bottom:7px}
+  table.t tbody tr{cursor:pointer}
+  table.t tbody tr:hover td{background:#f1f8fe}
+  table.t tbody tr:hover td:first-child{box-shadow:inset 3px 0 0 var(--blue)}
+  @keyframes rowin{from{opacity:0}to{opacity:1}}
+  #rows tr{animation:rowin .26s ease both}
+  #rows tr:nth-child(1){animation-delay:.02s} #rows tr:nth-child(2){animation-delay:.05s}
+  #rows tr:nth-child(3){animation-delay:.08s} #rows tr:nth-child(4){animation-delay:.11s}
+  #rows tr:nth-child(5){animation-delay:.14s} #rows tr:nth-child(6){animation-delay:.17s}
+  #rows tr:nth-child(n+7){animation-delay:.2s}
+  @media(prefers-reduced-motion:reduce){#rows tr{animation:none}}
+  .pager{display:none;align-items:center;justify-content:flex-end;margin:0;padding:12px 16px;border-top:1px solid var(--line);background:#fff;font-size:12px;color:#8a9099}
+  .pager .nav{display:flex;align-items:center;gap:10px}
+  .pgbtn{width:30px;height:30px;border-radius:8px;border:1px solid var(--blue);background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 2px 5px rgba(28,132,198,.28);transition:background .15s,color .15s,border-color .15s,transform .15s}
+  .pgbtn:hover:not(:disabled){background:var(--blue-h);border-color:var(--blue-h);transform:translateY(-1px);box-shadow:0 4px 9px rgba(28,132,198,.36)}
+  .pgbtn:disabled{background:#fff;border-color:#e6eaee;color:#c2c8ce;box-shadow:none;cursor:default}
+  .pager .cur{font-weight:700;color:#3a3f44;min-width:34px;text-align:center}
+  .pager .cur .tot{color:#bcc3c9;font-weight:400}
+  .idbadge{display:inline-block;min-width:28px;text-align:center;background:var(--blue);color:#fff;font-weight:700;border-radius:8px;padding:3px 7px;cursor:pointer;transition:background .15s,box-shadow .15s,transform .15s}
+  .idbadge:hover{background:var(--blue-d);box-shadow:0 2px 7px rgba(28,132,198,.45);transform:translateY(-1px)}
   .sla{display:inline-block;border-radius:13px;padding:3px 11px;font-size:11px;font-weight:600;color:#fff;white-space:nowrap}
   .sla.venc{background:var(--red)} .sla.ok{background:var(--green)} .sla.curso{background:var(--blue)}
   .sla .fa{margin-right:4px}
-  .tip{color:#6a7077;font-size:12px}
-  .opts{display:flex;gap:6px;justify-content:flex-end}
-  .ob{width:30px;height:30px;border-radius:50%;background:var(--blue);color:#fff;border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:12px;transition:background .15s,transform .15s}
-  .ob:hover{background:var(--blue-h);color:#fff;transform:scale(1.1)}
-  .ob.lock{background:#9fb6c6}
+  .subt{color:#6a7077;font-size:12px}
+  mark.hl{background:rgba(28,132,198,.28);color:inherit;padding:0;border-radius:0;font-weight:inherit}
+  .opts{display:flex;gap:5px;justify-content:flex-end;opacity:.65;transition:opacity .15s}
+  table.t tbody tr:hover .opts{opacity:1}
+  .ob{width:30px;height:30px;border-radius:50%;background:#f1f4f7;color:#7b8896;border:1px solid #e6eaee;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:12px;transition:background .15s,color .15s,border-color .15s,transform .15s}
+  .ob:hover{background:var(--blue);color:#fff;border-color:var(--blue);transform:scale(1.1)}
+  .ob.lock{color:#9fb6c6}
+  .ob.lock:hover{background:#9fb6c6;color:#fff;border-color:#9fb6c6}
 
   /* options dropdown */
   .optmenu{position:fixed;z-index:120;background:#fff;border:1px solid var(--line);border-radius:6px;box-shadow:0 12px 34px rgba(0,0,0,.18);padding:6px 0;min-width:185px;display:none}
@@ -133,6 +172,8 @@
   .optmenu a .fa{width:15px;text-align:center;color:#8a9099}
   .optmenu a:hover{background:#f3f6f8}
   .optmenu a.disabled{opacity:.4;pointer-events:none}
+  .optmenu a.off{color:#b0b6bc}
+  .optmenu a.off .fa{color:#cbd0d5}
   .optmenu a.danger{color:var(--red)} .optmenu a.danger .fa{color:var(--red)}
   .optmenu .sep{height:1px;background:var(--line);margin:5px 0}
 
@@ -248,7 +289,7 @@
   .sx-modal-ov{position:fixed;inset:0;z-index:260;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;padding:20px}
   .sx-modal-ov.open{display:flex}
   .sx-modal{background:#fff;border-radius:6px;width:390px;max-width:100%;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,.35)}
-  .sx-modal-head{background:var(--blue);color:#fff;padding:12px 16px;font-weight:700;display:flex;justify-content:space-between;align-items:center}
+  .sx-modal-head{background:var(--blue);color:#fff;padding:12px 16px;font-weight:700;display:flex;justify-content:space-between;align-items:center;border-radius:6px 6px 0 0}
   .sx-x{background:none;border:none;color:#fff;font-size:22px;line-height:1;cursor:pointer}
   .sx-modal-body{padding:18px 16px}
   .sx-modal-body label{font-size:11px;color:#888;text-transform:uppercase;letter-spacing:.03em}
@@ -285,6 +326,8 @@
   .ndot{display:inline-block;width:9px;height:9px;border-radius:50%;background:#d3d8de;margin:0 2px}
   .ndot.on{background:var(--blue)}
   /* tooltip custom */
+  .notif-pill{display:inline-block;background:rgba(26,179,148,.16);color:#138a70;border-radius:10px;padding:1px 9px;font-size:10px;font-weight:700;letter-spacing:.02em;margin-left:6px;cursor:default}
+  .priv-pill{display:inline-block;background:#eceef1;color:#7b8896;border-radius:10px;padding:1px 9px;font-size:10px;font-weight:700;margin-left:6px}
   .tip{position:relative}
   .tip::after{content:attr(data-tip);position:absolute;bottom:calc(100% + 9px);left:50%;transform:translateX(-50%) translateY(4px);background:#5e6570;color:#fff;font-size:11px;font-weight:600;letter-spacing:.02em;padding:4px 10px;border-radius:7px;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .15s,transform .15s;z-index:50;box-shadow:0 4px 10px rgba(0,0,0,.18)}
   .tip::before{content:"";position:absolute;bottom:calc(100% + 4px);left:50%;transform:translateX(-50%);border:5px solid transparent;border-top-color:#5e6570;opacity:0;transition:opacity .15s;pointer-events:none;z-index:50}
@@ -381,6 +424,65 @@
     <div class="sx-modal-foot">
       <button class="ghost-btn" onclick="cerrarCambiar()">Cancelar</button>
       <button class="btn btn-login" style="width:auto;padding:8px 22px" onclick="guardarCambiar()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MODAL CERRAR INCIDENTE ===== -->
+<div class="sx-modal-ov" id="cerrarModal">
+  <div class="sx-modal" style="width:560px">
+    <div class="sx-modal-head"><span>Cerrar incidente</span><button class="sx-x" onclick="cerrarCerrar()">&times;</button></div>
+    <div class="sx-modal-body">
+      <div class="form-group"><label>Estado de cierre</label>
+        <select id="ci-tipo" class="form-control"><option>Resuelto</option><option>Cancelado</option><option>Fuera de Alcance</option></select>
+      </div>
+      <div class="form-group" style="margin-bottom:0"><label>Motivo de cierre</label>
+        <textarea id="ci-motivo" class="form-control" rows="4" style="resize:none" placeholder="Describí el motivo del cierre…"></textarea>
+      </div>
+    </div>
+    <div class="sx-modal-foot">
+      <button class="btn btn-login" style="width:auto;padding:8px 24px" onclick="confirmarCierre()">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MODAL ESCALAMIENTOS ===== -->
+<div class="sx-modal-ov" id="escalModal">
+  <div class="sx-modal" style="width:560px">
+    <div class="sx-modal-head"><span>Escalamientos</span><button class="sx-x" onclick="cerrarEscal()">&times;</button></div>
+    <div class="sx-modal-body">
+      <label style="display:block;margin-bottom:10px">Historial de escalamientos</label>
+      <div id="escal-hist" style="max-height:240px;overflow:auto;margin-bottom:18px"></div>
+      <div class="form-group" style="margin-bottom:0"><label>Escalar a</label>
+        <div style="display:flex;gap:8px">
+          <select id="escal-agente" class="form-control" style="flex:1"></select>
+          <button class="btn btn-login" style="width:auto;padding:8px 22px;white-space:nowrap" onclick="confirmarEscal()">Escalar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MODAL EVENTOS ===== -->
+<div class="sx-modal-ov" id="eventosModal">
+  <div class="sx-modal" style="width:600px">
+    <div class="sx-modal-head"><span>Eventos</span><button class="sx-x" onclick="cerrarEventos()">&times;</button></div>
+    <div class="sx-modal-body">
+      <div id="ev-list" style="max-height:260px;overflow:auto;margin-bottom:16px"></div>
+      <div style="border-top:1px solid var(--line);padding-top:14px">
+        <div style="display:flex;gap:8px;margin-bottom:10px">
+          <div class="form-group" style="flex:1;margin-bottom:0"><label>Tipo de evento</label>
+            <select id="ev-new-tipo" class="form-control"><option>Comentario</option><option>Gestión</option><option>Llamado</option><option>Seguimiento</option><option>Solución</option></select>
+          </div>
+          <div class="form-group" style="flex:1;margin-bottom:0"><label>Visibilidad</label>
+            <select id="ev-new-vis" class="form-control"><option value="privado">Privado</option><option value="notif">Notificación al solicitante</option></select>
+          </div>
+        </div>
+        <div class="form-group" style="margin-bottom:10px"><label>Detalle</label>
+          <textarea id="ev-new-obs" class="form-control" rows="2" style="resize:none" placeholder="Escribí el evento…"></textarea>
+        </div>
+        <div style="text-align:right"><button class="btn btn-login" style="width:auto;padding:8px 22px" onclick="agregarEvento()">Agregar evento</button></div>
+      </div>
     </div>
   </div>
 </div>
@@ -602,26 +704,38 @@ Recordá consultar la KB antes de escalar un caso al segundo nivel. Esto reduce 
 
     <!-- CONSOLA -->
     <div id="v-consola" class="hidden-x">
-      <div class="crumb clearfix"><span class="pull-left"><i>Mesa de Ayuda</i> &rsaquo; <b>Consola</b></span>
-        <span class="toolbar pull-right" style="padding:0">
-          <span class="tbtn"><input id="buscar" placeholder="" style="border:none;width:0;padding:0;outline:none" onblur="this.style.width='0'" /><i class="fa fa-search" onclick="buscarFocus()"></i></span>
-          <span class="tbtn" onclick="demo()" title="Colores SLA"><i class="fa fa-eyedropper"></i></span>
-          <span class="tbtn" onclick="demo()" title="Columnas"><i class="fa fa-th"></i></span>
-          <span class="tbtn" onclick="demo()" title="Filtros"><i class="fa fa-filter"></i></span>
+      <div class="crumb" style="display:flex;align-items:center;justify-content:space-between;gap:6px">
+        <span class="toolbar" style="padding:0">
           <span class="tbtn blue" onclick="go('crear')"><i class="fa fa-plus"></i></span>
+          <span class="tbtn" onclick="demo()" data-tip="Filtros"><i class="fa fa-filter"></i></span>
+          <span class="tbtn" onclick="demo()" data-tip="Ordenar columnas"><i class="fa fa-th"></i></span>
+          <span class="tbtn" onclick="demo()" data-tip="Colores SLA"><i class="fa fa-eyedropper"></i></span>
+          <span class="tbtn search" title="Buscar" onclick="buscarFocus()"><input id="buscar" placeholder="Buscar en la consola…" oninput="page=1;renderConsola()" onblur="if(!this.value)this.closest('.tbtn').classList.remove('open')" /><i class="fa fa-search"></i></span>
+        </span>
+        <span style="display:flex;align-items:center;gap:6px">
+          <span onclick="go('dashboard')" style="cursor:pointer;color:#9aa0a6;transition:color .15s" onmouseenter="this.style.color='var(--blue)'" onmouseleave="this.style.color='#9aa0a6'">Mesa de Ayuda</span>
+          <i class="fa fa-chevron-right" style="font-size:9px;color:var(--blue);opacity:.7"></i>
+          <b style="color:#3a3f44">Consola</b>
         </span>
       </div>
-      <div class="body" style="padding-top:0">
+      <div class="body">
         <div class="tabbar" id="tabbar"></div>
         <div class="tablewrap">
-          <table class="t">
-            <thead><tr>
-              <th>ID</th><th>SLA</th><th>Asunto</th><th>Fecha Ingreso</th><th>Cliente</th>
-              <th>Solicitante</th><th>Responsable</th><th>Tipificación</th><th style="text-align:right">Opciones</th>
-            </tr></thead>
-            <tbody id="rows"></tbody>
-          </table>
-          <div id="empty" style="display:none;padding:30px;text-align:center;color:#bbb">No hay incidentes en esta vista.</div>
+          <div class="tscroll">
+            <table class="t">
+              <thead><tr>
+                <th style="text-align:center">ID</th><th style="text-align:center">SLA</th><th>Asunto</th><th>Fecha Ingreso</th><th>Cliente</th>
+                <th>Solicitante</th><th>Responsable</th><th>Tipificación</th><th style="text-align:center">Opciones</th>
+              </tr></thead>
+              <tbody id="rows"></tbody>
+            </table>
+            <div id="empty" style="display:none;padding:46px 30px;text-align:center;color:#aab1b8">
+              <i class="fa fa-inbox" style="font-size:42px;color:#dde3e8;display:block;margin-bottom:12px"></i>
+              <div style="font-size:14px;font-weight:600;color:#8a9099">No hay incidentes en esta vista</div>
+              <div style="font-size:12px;margin-top:3px">Probá con otra solapa o ajustá la búsqueda.</div>
+            </div>
+          </div>
+          <div id="pager" class="pager" style="display:none"></div>
         </div>
       </div>
     </div>
@@ -927,6 +1041,38 @@ let clientes=[
   {id:4,nombre:'Logística del Sur SRL',cuit:'30-70991245-8',cont:'Depósito Central',niv:2,n:37,act:false}
 ];
 
+/* ===== SEED: rellena cada tab hasta el conteo objetivo ===== */
+(function seedInc(){
+  const targets={prueba:4,espera:1,escalado:26,asignado:12,pendiente:1,rechazada:1,cerradas:340};
+  const pick=a=>a[Math.floor(Math.random()*a.length)];
+  const ri=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
+  const p2=n=>String(n).padStart(2,'0');
+  const CLIENTES_N=['Org. Demo','Distribuidora KanuSur','Estudio Torres','Logística del Sur'];
+  const PRIOS=['Baja','Media','Media','Media','Alta','Alta','Muy Alta'];
+  const mkTip=()=>{ const g=pick(GRUPOS),sg=pick(SUBGRUPOS[g]),it=pick(ITEMS[sg]); return {g,sg,it,tip:`${g} - ${sg} - ${it}`}; };
+  const fecha=(m0,m1)=>{ const d=ri(1,28),m=ri(m0,m1); return {d,m,s:`${p2(d)}/${p2(m)}/2026 ${p2(ri(8,18))}:${p2(ri(0,59))}`}; };
+  const slaAct=()=> Math.random()<.3 ? {k:'curso',t:`En curso (${ri(1,4)}d ${ri(1,9)}h)`} : {k:'curso',t:`En curso (${ri(1,9)}h ${p2(ri(0,59))}m)`};
+  for(const k in targets){
+    for(let have=inc.filter(i=>i.tab===k).length; have<targets[k]; have++){
+      const id=SEQ++, T=mkTip(), sol=pick(SOLICITANTES), resp=pick(RESP), prio=pick(PRIOS);
+      const cli=Math.random()<.65?'Org. Demo':pick(CLIENTES_N);
+      const ing=(k==='cerradas')?fecha(1,5):fecha(4,6);
+      const aper={f:`${p2(ing.d)}/${p2(ing.m)} ${ing.s.slice(-5)}`,tipo:'Apertura',desc:'Incidente creado',obs:`Reporte de ${T.sg.toLowerCase()}.`,ag:'Mesa de Ayuda'};
+      let sla,cierre='—',eventos=[aper];
+      if(k==='cerradas'){
+        const ok=Math.random()<.62, cm=Math.min(6,ing.m+ri(0,2)), cdd=ri(1,28), ch=ri(8,18), cmi=p2(ri(0,59));
+        sla= ok?{k:'ok',t:`Cerrado a tiempo (${ri(1,23)}h ${p2(ri(0,59))}m)`}:{k:'venc',t:`Cerrado vencido (${ri(1,30)}d ${ri(1,23)}h)`};
+        cierre=`${p2(cdd)}/${p2(cm)}/2026 ${p2(ch)}:${cmi}`;
+        eventos.push({f:`${p2(cdd)}/${p2(cm)} ${p2(ch)}:${cmi}`,tipo:'Cierre',desc:'Incidente cerrado',obs:'Resuelto y validado con el usuario.',ag:resp});
+      } else if(k==='escalado'){ sla=slaAct(); eventos.push({f:aper.f,tipo:'Escalamiento',desc:'Escalado a '+T.g,obs:'Requiere intervención del área.',ag:'Nicolás Ferreyra'}); }
+      else if(k==='asignado'){ sla=slaAct(); eventos.push({f:aper.f,tipo:'Asignación',desc:'Asignado a '+resp,obs:'Tomado por el responsable.',ag:'Mesa de Ayuda'}); }
+      else if(k==='prueba'){ sla=slaAct(); eventos.push({f:aper.f,tipo:'Prueba Solución',desc:'Enviada prueba de solución',obs:'A la espera de validación del usuario.',ag:resp}); }
+      else { sla=slaAct(); }
+      inc.push({id,tab:k,sla,asunto:T.it,descri:`Se reporta ${T.it.toLowerCase()} en ${T.sg}. Requiere atención de ${T.g}.`,ingreso:ing.s,cierre,cliente:cli,sol,resp:(k==='pendiente'?'—':resp),tip:T.tip,prio,eventos});
+    }
+  }
+})();
+
 /* ===== NAV ===== */
 let tab='escalado';
 function entrar(){ document.getElementById('login').classList.add('hidden-x'); document.getElementById('app').classList.remove('hidden-x'); sessionStorage.setItem('sx-in','1'); go('dashboard'); }
@@ -969,10 +1115,18 @@ function iaBool(el){ const w=el.closest('.ia-bool')||el; const on=w.classList.to
 function sizeIaLbl(el){ el.style.width='0'; el.style.width=(el.scrollWidth+2)+'px'; }
 document.addEventListener('DOMContentLoaded',()=>{
   document.querySelectorAll('.ia-bool-lbl').forEach(sizeIaLbl);
+  const forceLogin = new URLSearchParams(location.search).has('login') || location.hash==='#login';
+  if(forceLogin){
+    sessionStorage.removeItem('sx-in'); sessionStorage.removeItem('sx-view'); sessionStorage.removeItem('sx-crtab');
+    history.replaceState(null,'',location.pathname); // limpia el param: un reload posterior sí restaura
+    return; // el login se muestra por defecto
+  }
   if(sessionStorage.getItem('sx-in')){
     document.getElementById('login').classList.add('hidden-x');
     document.getElementById('app').classList.remove('hidden-x');
-    go(sessionStorage.getItem('sx-view') || 'dashboard');
+    let v = sessionStorage.getItem('sx-view') || 'dashboard';
+    if(v==='detalle') v='consola'; // detalle necesita un incidente abierto; evita pantalla vacía
+    go(v);
   }
 });
 
@@ -1051,7 +1205,7 @@ function crTab(name){
 }
 function toggleSide(){ document.querySelector('.sidebar').classList.toggle('mini'); }
 function toggleUser(){ document.getElementById('userpop').classList.toggle('hidden-x'); }
-function buscarFocus(){ go('consola'); const b=document.getElementById('buscar'); b.style.width='150px'; b.focus(); }
+function buscarFocus(){ const b=document.getElementById('buscar'); b.closest('.tbtn').classList.add('open'); b.focus(); }
 function demo(){ toast('Sección no incluida en la demo.', 'err'); }
 
 /* ===== DASHBOARD ===== */
@@ -1149,54 +1303,72 @@ function newsGo(d){ newsIdx+=d; renderNews(); }
 window.addEventListener('resize', ()=>{ if(!document.getElementById('v-dashboard').classList.contains('hidden-x')) renderNews(); });
 
 /* ===== CONSOLA ===== */
+const PAGE_SIZE=10;
+let page=1;
+const _esc=s=>String(s).replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+function hl(t,q){ t=String(t); if(!q) return t; return t.replace(new RegExp('('+_esc(q)+')','ig'),'<mark class="hl">$1</mark>'); }
 function renderConsola(){
   document.getElementById('tabbar').innerHTML = TABS.map(t=>{
     const real = inc.filter(i=>i.tab===t.k).length;
-    return `<div class="tabpill ${t.k===tab?'active':''}" onclick="setTab('${t.k}')">${t.n} <span class="dot">• ${t.c}</span></div>`;
+    return `<div class="tabpill ${t.k===tab?'active':''}" onclick="setTab('${t.k}')">${t.n} <span class="dot">• ${real}</span></div>`;
   }).join('');
-  const q=(document.getElementById('buscar').value||'').toLowerCase();
+  const qr=(document.getElementById('buscar').value||'').trim(), q=qr.toLowerCase();
   let list=inc.filter(i=>i.tab===tab);
-  if(q) list=list.filter(i=>(i.asunto+i.descri+i.sol+i.resp+i.tip+i.id).toLowerCase().includes(q));
-  document.getElementById('rows').innerHTML=list.map(i=>`
-    <tr onclick="abrir(${i.id})">
-      <td><span class="idbadge ${['escalado','asignado'].includes(i.tab)?'on':''}">${i.id}</span></td>
+  if(q) list=list.filter(i=>(i.id+' '+i.asunto+' '+i.ingreso+' '+i.cliente+' '+i.sol+' '+i.resp+' '+i.tip).toLowerCase().includes(q));
+  const total=list.length, totalPages=Math.max(1,Math.ceil(total/PAGE_SIZE));
+  if(page>totalPages) page=totalPages; if(page<1) page=1;
+  const start=(page-1)*PAGE_SIZE, pageItems=list.slice(start,start+PAGE_SIZE);
+  document.getElementById('rows').innerHTML=pageItems.map(i=>`
+    <tr ondblclick="abrir(${i.id})">
+      <td><span class="idbadge" title="Editar incidente" onclick="event.stopPropagation();abrir(${i.id})">${hl(i.id,qr)}</span></td>
       <td><span class="sla ${i.sla.k}"><i class="fa fa-${i.sla.k==='venc'?'exclamation-circle':i.sla.k==='ok'?'check-circle':'clock-o'}"></i>${i.sla.t}</span></td>
-      <td><strong>${i.asunto}</strong></td>
-      <td class="tip">${i.ingreso}</td>
-      <td>${i.cliente}</td>
-      <td>${i.sol}</td>
-      <td>${i.resp==='—'?'<span style="color:#bbb">Sin asignar</span>':i.resp}</td>
-      <td class="tip">${i.tip}</td>
+      <td><strong>${hl(i.asunto,qr)}</strong></td>
+      <td class="subt">${hl(i.ingreso,qr)}</td>
+      <td>${hl(i.cliente,qr)}</td>
+      <td>${hl(i.sol,qr)}</td>
+      <td>${i.resp==='—'?'<span style="color:#bbb">Sin asignar</span>':hl(i.resp,qr)}</td>
+      <td class="subt">${hl(i.tip,qr)}</td>
       <td onclick="event.stopPropagation()"><div class="opts">
-        <button class="ob lock" title="Permisos"><i class="fa fa-lock"></i></button>
+        ${i.tab==='cerradas'?`<button class="ob lock" title="Reabrir incidente" onclick="reabrir(${i.id})"><i class="fa fa-unlock"></i></button>`:`<button class="ob lock" title="Cerrar incidente" onclick="cerrarInc(${i.id})"><i class="fa fa-lock"></i></button>`}
         <button class="ob" title="Opciones" onclick="openOpt(event,${i.id})"><i class="fa fa-cog"></i></button>
-        <button class="ob" title="Asignar" onclick="tomar(${i.id})"><i class="fa fa-user-plus"></i></button>
+        <button class="ob" title="Escalamientos" onclick="openEscal(${i.id})"><i class="fa fa-level-up"></i></button>
       </div></td>
     </tr>`).join('');
-  document.getElementById('empty').style.display=list.length?'none':'block';
+  document.getElementById('empty').style.display=total?'none':'block';
+  renderPager(total,totalPages,start,pageItems.length);
 }
-function setTab(k){ tab=k; renderConsola(); }
+function renderPager(total,totalPages,start,shown){
+  const el=document.getElementById('pager');
+  if(!total){ el.style.display='none'; return; }
+  el.style.display='flex';
+  el.innerHTML=`
+    <span class="nav">
+      <button class="pgbtn" onclick="goPage(${page-1})" ${page<=1?'disabled':''} title="Anterior"><i class="fa fa-angle-left"></i></button>
+      <span class="cur">${page}<span class="tot"> / ${totalPages}</span></span>
+      <button class="pgbtn" onclick="goPage(${page+1})" ${page>=totalPages?'disabled':''} title="Siguiente"><i class="fa fa-angle-right"></i></button>
+    </span>`;
+}
+function goPage(p){ page=p; renderConsola(); const w=document.querySelector('#v-consola .tscroll'); if(w) w.scrollTo({top:0,behavior:'smooth'}); }
+function setTab(k){ tab=k; page=1; renderConsola(); }
 
 /* options dropdown */
 function openOpt(e,id){
   e.stopPropagation();
   const m=document.getElementById('optmenu');
-  const cerrada = inc.find(x=>x.id===id).tab==='cerradas';
   m.innerHTML=`
     <a onclick="abrir(${id})"><i class="fa fa-pencil"></i> Editar</a>
-    <a onclick="abrir(${id})"><i class="fa fa-calendar"></i> Eventos</a>
-    <a onclick="demo()"><i class="fa fa-paperclip"></i> Adjuntos</a>
-    <a onclick="demo()"><i class="fa fa-question-circle"></i> Autorizaciones</a>
-    <a onclick="demo()"><i class="fa fa-list"></i> Log</a>
-    <a onclick="demo()"><i class="fa fa-clock-o"></i> Reloj</a>
+    <a onclick="openEventos(${id})"><i class="fa fa-calendar"></i> Eventos</a>
+    <a class="off" onclick="demo()"><i class="fa fa-paperclip"></i> Adjuntos</a>
+    <a class="off" onclick="demo()"><i class="fa fa-question-circle"></i> Autorizaciones</a>
+    <a class="off" onclick="demo()"><i class="fa fa-list"></i> Log</a>
+    <a class="off" onclick="demo()"><i class="fa fa-clock-o"></i> Reloj</a>
     <div class="sep"></div>
-    <a class="disabled"><i class="fa fa-puzzle-piece"></i> Prueba Solución</a>
-    <a onclick="tomar(${id})"><i class="fa fa-hand-paper-o"></i> Tomar</a>
-    <a onclick="demo()"><i class="fa fa-globe"></i> Masivo</a>
-    <a onclick="demo()"><i class="fa fa-share"></i> Avanzar Fase</a>
-    <a onclick="demo()"><i class="fa fa-tags"></i> Recatalogar</a>
-    <a onclick="demo()"><i class="fa fa-refresh"></i> Repactar</a>
-    ${cerrada?`<a onclick="reabrir(${id})"><i class="fa fa-folder-open"></i> Reabrir</a>`:`<a class="danger" onclick="cerrarInc(${id})"><i class="fa fa-times-circle"></i> Cerrar / Cancelar</a>`}`;
+    <a class="off" onclick="demo()"><i class="fa fa-puzzle-piece"></i> Prueba Solución</a>
+    <a class="off" onclick="demo()"><i class="fa fa-hand-paper-o"></i> Tomar</a>
+    <a class="off" onclick="demo()"><i class="fa fa-globe"></i> Masivo</a>
+    <a class="off" onclick="demo()"><i class="fa fa-share"></i> Avanzar Fase</a>
+    <a class="off" onclick="demo()"><i class="fa fa-tags"></i> Recatalogar</a>
+    <a class="off" onclick="demo()"><i class="fa fa-refresh"></i> Repactar</a>`;
   m.style.display='block';
   const r=e.currentTarget.getBoundingClientRect();
   let left=r.left-160; if(left<8)left=8;
@@ -1281,8 +1453,73 @@ function nuevoEvento(id){
   i.eventos.push({f:now(),tipo:t,desc:t+' agregado',obs:o,ag:'Nicolás Ferreyra'}); toast('Evento agregado.','ok'); abrir(id);
 }
 function tomar(id){ const i=inc.find(x=>x.id===id); i.resp='Nicolás Ferreyra'; if(i.tab==='pendiente')i.tab='asignado'; i.eventos.push({f:now(),tipo:'Asignación',desc:'Incidente tomado',obs:'Tomado por el agente.',ag:'Nicolás Ferreyra'}); toast('Tomaste el incidente #'+id+'.','ok'); closeOpt(); if(!document.getElementById('v-detalle').classList.contains('hidden-x'))abrir(id); else renderConsola(); }
-function cerrarInc(id){ const i=inc.find(x=>x.id===id); i.tab='cerradas'; i.cierre=now(); i.sla={k:'ok',t:'Cerrado a tiempo'}; i.eventos.push({f:now(),tipo:'Cierre',desc:'Incidente cerrado',obs:'Resuelto y cerrado por el agente.',ag:'Nicolás Ferreyra'}); toast('Incidente #'+id+' cerrado.','ok'); closeOpt(); abrir(id); }
-function reabrir(id){ const i=inc.find(x=>x.id===id); i.tab='asignado'; i.cierre='—'; i.sla={k:'curso',t:'En curso (0m)'}; i.eventos.push({f:now(),tipo:'Reapertura',desc:'Incidente reabierto',obs:'Reabierto por el agente.',ag:'Nicolás Ferreyra'}); toast('Incidente #'+id+' reabierto.','ok'); closeOpt(); abrir(id); }
+let _cierreId=null;
+function cerrarInc(id){ _cierreId=id; document.getElementById('ci-tipo').value='Resuelto'; document.getElementById('ci-motivo').value=''; closeOpt(); document.getElementById('cerrarModal').classList.add('open'); setTimeout(()=>document.getElementById('ci-motivo').focus(),50); }
+function cerrarCerrar(){ document.getElementById('cerrarModal').classList.remove('open'); }
+function confirmarCierre(){
+  const motivo=document.getElementById('ci-motivo').value.trim();
+  if(!motivo){ toast('Indicá el motivo de cierre.','err'); document.getElementById('ci-motivo').focus(); return; }
+  const tipo=document.getElementById('ci-tipo').value;
+  const i=inc.find(x=>x.id===_cierreId); if(!i){ cerrarCerrar(); return; }
+  i.tab='cerradas'; i.cierre=now(); i.sla={k:'ok',t:'Cerrado a tiempo'}; i.motivoCierre=motivo;
+  i.eventos.push({f:now(),tipo:'Cierre',desc:'Incidente cerrado ('+tipo+')',obs:motivo,ag:'Nicolás Ferreyra'});
+  cerrarCerrar();
+  toast('Incidente #'+_cierreId+' cerrado.','ok');
+  tab='cerradas'; page=1; go('consola');
+}
+function reabrir(id){ const i=inc.find(x=>x.id===id); i.tab='asignado'; i.cierre='—'; i.sla={k:'curso',t:'En curso (0m)'}; i.eventos.push({f:now(),tipo:'Reapertura',desc:'Incidente reabierto',obs:'Reabierto por el agente.',ag:'Nicolás Ferreyra'}); closeOpt(); toast('Incidente #'+id+' reabierto.','ok'); tab='asignado'; page=1; go('consola'); }
+
+let _escalId=null;
+function openEscal(id){ _escalId=id; closeOpt(); document.getElementById('escal-agente').innerHTML=RESP.map(a=>`<option>${a}</option>`).join(''); renderEscalHist(); document.getElementById('escalModal').classList.add('open'); }
+function cerrarEscal(){ document.getElementById('escalModal').classList.remove('open'); }
+function renderEscalHist(){
+  const i=inc.find(x=>x.id===_escalId), el=document.getElementById('escal-hist');
+  const evs=(i.eventos||[]).filter(e=>/escal/i.test(e.tipo));
+  if(!evs.length){ el.innerHTML='<div style="color:#aab1b8;font-size:13px;padding:12px 2px">Sin escalamientos registrados.</div>'; return; }
+  el.innerHTML=evs.map(e=>`<div style="border-left:2px solid var(--blue);padding:0 0 12px 14px;position:relative;margin-left:4px">
+    <span style="position:absolute;left:-6px;top:3px;width:10px;height:10px;border-radius:50%;background:var(--blue);border:2px solid #fff;box-shadow:0 0 0 1px var(--blue)"></span>
+    <div style="font-size:11px;color:#9aa0a6"><i class="fa fa-clock-o"></i> ${e.f} · ${e.ag}</div>
+    <div style="margin-top:2px;font-weight:600">${e.desc}</div>
+    ${e.obs?`<div style="color:#777;font-size:12px">${e.obs}</div>`:''}
+  </div>`).join('');
+}
+function confirmarEscal(){
+  const i=inc.find(x=>x.id===_escalId); if(!i){ cerrarEscal(); return; }
+  const ag=document.getElementById('escal-agente').value;
+  i.resp=ag; i.tab='escalado';
+  i.eventos.push({f:now(),tipo:'Escalamiento',desc:'Escalado a '+ag,obs:'Reasignado por el agente.',ag:'Nicolás Ferreyra'});
+  toast('Incidente #'+_escalId+' escalado a '+ag+'.','ok');
+  renderEscalHist(); renderConsola();
+}
+
+let _evId=null;
+function openEventos(id){ _evId=id; closeOpt(); document.getElementById('ev-new-obs').value=''; document.getElementById('ev-new-tipo').value='Comentario'; document.getElementById('ev-new-vis').value='privado'; renderEvList(); document.getElementById('eventosModal').classList.add('open'); }
+function cerrarEventos(){ document.getElementById('eventosModal').classList.remove('open'); }
+function renderEvList(){
+  const i=inc.find(x=>x.id===_evId), el=document.getElementById('ev-list');
+  el.innerHTML=(i.eventos||[]).map(e=>{
+    const c = e.vis==='notif' ? 'var(--green)' : 'var(--blue)';
+    const tag = e.vis==='notif'
+      ? `<span class="notif-pill tip" data-tip="Se envió un correo de notificación al solicitante."><i class="fa fa-bell"></i> SE NOTIFICÓ AL SOLICITANTE</span>`
+      : (e.vis==='privado' ? `<span class="priv-pill"><i class="fa fa-lock"></i> Privado</span>` : '');
+    return `<div style="border-left:2px solid ${c};padding:0 0 13px 14px;position:relative;margin-left:4px">
+      <span style="position:absolute;left:-6px;top:3px;width:10px;height:10px;border-radius:50%;background:${c};border:2px solid #fff;box-shadow:0 0 0 1px ${c}"></span>
+      <div style="font-size:11px;color:#9aa0a6"><i class="fa fa-clock-o"></i> ${e.f} · ${e.ag}</div>
+      <div style="margin:2px 0"><span style="background:#eef1f3;border-radius:3px;padding:1px 8px;font-size:11px;margin-right:6px;font-weight:600">${e.tipo}</span><strong>${e.desc}</strong>${tag}</div>
+      ${e.obs?`<div style="color:#777;font-size:12px">${e.obs}</div>`:''}
+    </div>`;
+  }).join('');
+}
+function agregarEvento(){
+  const obs=document.getElementById('ev-new-obs').value.trim();
+  if(!obs){ toast('Escribí el detalle del evento.','err'); return; }
+  const tipo=document.getElementById('ev-new-tipo').value, vis=document.getElementById('ev-new-vis').value;
+  inc.find(x=>x.id===_evId).eventos.push({f:now(),tipo,desc:tipo,obs,ag:'Nicolás Ferreyra',vis});
+  document.getElementById('ev-new-obs').value='';
+  toast(vis==='notif'?'Evento agregado y solicitante notificado.':'Evento agregado.','ok');
+  renderEvList();
+  const l=document.getElementById('ev-list'); l.scrollTop=l.scrollHeight;
+}
 
 /* ===== CREAR ===== */
 function resetCrear(){
@@ -1327,7 +1564,7 @@ function crearInc(){
 
 /* ===== CLIENTES ===== */
 function renderCli(){ document.getElementById('cli-rows').innerHTML=clientes.map(c=>`
-  <tr><td><span class="idbadge">${c.id}</span></td><td><strong>${c.nombre}</strong></td><td class="tip">${c.cuit}</td><td>${c.cont}</td>
+  <tr><td><span class="idbadge">${c.id}</span></td><td><strong>${c.nombre}</strong></td><td class="subt">${c.cuit}</td><td>${c.cont}</td>
   <td><span class="label label-info">Nivel ${c.niv}</span></td><td>${c.n}</td>
   <td>${c.act?'<span class="sla ok">Activo</span>':'<span class="sla" style="background:#9aa0a6">Inactivo</span>'}</td></tr>`).join(''); }
 function toggleAlta(){ document.getElementById('alta').classList.toggle('hidden-x'); }
