@@ -76,11 +76,24 @@
   .topbar{height:52px;background:transparent;border-bottom:none;box-shadow:none;display:flex;align-items:center;justify-content:space-between;padding:0 18px;position:relative}
   .burger{width:32px;height:32px;border-radius:50%;background:var(--blue);color:#fff;border:none;display:flex;align-items:center;justify-content:center;transition:background .15s,transform .15s}
   .burger:hover{background:var(--blue-h);color:#fff;transform:scale(1.08)}
-  .topbar .user-ic{color:var(--blue);font-size:18px;cursor:pointer}
-  .user-pop{position:absolute;right:12px;top:46px;width:240px;background:#fff;border:1px solid var(--line);border-radius:6px;box-shadow:0 10px 30px rgba(0,0,0,.18);padding:18px;text-align:center;z-index:60}
-  .user-pop .av{width:84px;height:84px;border-radius:50%;background:#e6e8eb;color:#b5bbc2;display:flex;align-items:center;justify-content:center;font-size:46px;margin:0 auto 8px}
-  .user-pop .nm{font-weight:700;color:#444}.user-pop .em{color:#999;font-size:12px;margin-bottom:12px}
-  .user-pop .btn{font-size:12px}
+  .topbar .user-ic{color:var(--blue);font-size:30px;line-height:1;cursor:pointer}
+  .user-pop{position:absolute;right:12px;top:92px;width:262px;background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 16px 40px rgba(0,0,0,.22);z-index:60;overflow:hidden;padding:0}
+  .up-head{height:56px;background:linear-gradient(135deg,#1c84c6,#23c6c8)}
+  .user-pop .av{width:72px;height:72px;border-radius:50%;background:#eef1f4;color:#9aa7b2;display:flex;align-items:center;justify-content:center;font-size:36px;margin:0 auto;position:relative;top:20px;border:4px solid #fff;box-shadow:0 4px 12px rgba(0,0,0,.16)}
+  .user-pop .av.av-edit{cursor:pointer;overflow:hidden}
+  .av-ov{position:absolute;inset:0;border-radius:50%;background:rgba(0,0,0,.5);color:#fff;display:flex;align-items:center;justify-content:center;font-size:22px;opacity:0;transition:opacity .16s}
+  .av-edit:hover .av-ov{opacity:1}
+  .up-body{text-align:center;padding:32px 16px 14px}
+  .user-pop .nm{font-weight:700;color:#3a3f44;font-size:15px}
+  .user-pop .em{color:#9aa0a6;font-size:12px;margin-top:2px}
+  .up-role{display:inline-block;margin-top:9px;background:rgba(28,132,198,.12);color:#1c84c6;border-radius:20px;padding:3px 12px;font-size:11px;font-weight:600}
+  .up-menu{border-top:1px solid var(--line);padding:6px}
+  .up-menu a{display:flex;align-items:center;gap:11px;padding:9px 12px;border-radius:8px;color:#5e6064;font-size:13px;font-weight:600;cursor:pointer;transition:background .14s,color .14s}
+  .up-menu a .fa{width:16px;text-align:center;color:#9aa0a6;transition:color .14s}
+  .up-menu a:hover{background:#f3f6f8}
+  .up-menu a.danger{color:var(--red)}
+  .up-menu a.danger .fa{color:var(--red)}
+  .up-menu a.danger:hover{background:#fdecec}
 
   .crumb{padding:10px 16px;color:#9aa0a6;font-size:14px;background:#fff;border-bottom:1px solid var(--line);box-shadow:0 1px 3px rgba(0,0,0,.04);text-align:right}
   .crumb b{color:#3a3f44}
@@ -200,6 +213,23 @@
   .actbtn{flex:1;min-width:120px;background:var(--blue);color:#fff;border:none;border-radius:8px;padding:11px;font-weight:600;position:relative;cursor:pointer;transition:background .15s,transform .15s,color .15s}
   .actbtn .badge{position:absolute;top:-6px;right:-6px;background:var(--red);border-radius:50%;font-size:10px;padding:3px 6px}
   .actbtn.light{background:#7fbbe0}
+  .actbtn.sm{flex:none;min-width:0;padding:8px 12px;font-size:13px}
+  .act-foot{margin-left:auto;display:flex;gap:6px;align-items:center;border-left:1px solid var(--line);padding-left:12px}
+  .cli-act{background:none;border:none;color:#9aa0a6;cursor:pointer;padding:6px 8px;border-radius:7px;font-size:14px;transition:background .14s,color .14s}
+  .cli-act:hover{background:#eef6fc;color:var(--blue)}
+  .cli-act.danger:hover{background:#fdecec;color:var(--red)}
+  .cl-switch{display:inline-flex;align-items:center;gap:8px;cursor:pointer;user-select:none;height:38px;padding:0 4px}
+  .cl-switch input{display:none}
+  .cl-switch-slider{width:38px;height:20px;border-radius:20px;background:#cfd6dd;position:relative;transition:background .18s;flex:none}
+  .cl-switch-slider::after{content:"";position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.25);transition:left .18s}
+  .cl-switch input:checked + .cl-switch-slider{background:var(--blue)}
+  .cl-switch input:checked + .cl-switch-slider::after{left:20px}
+  .niv-step{display:flex;width:max-content;align-items:center;border:1px solid #ccc;border-radius:9px;overflow:hidden;height:34px;background:#fff}
+  .niv-step button{width:32px;height:100%;border:none;background:#f3f6f8;color:var(--blue);cursor:pointer;font-size:11px;transition:background .14s}
+  .niv-step button:hover{background:#e4eef6}
+  .niv-step span{min-width:32px;text-align:center;font-weight:700;color:#3a3f44;font-size:14px}
+  .nuevo-btn{display:inline-flex;align-items:center;gap:8px;background:var(--blue);color:#fff;border:none;border-radius:10px;padding:9px 18px;font-weight:600;font-size:13px;font-family:inherit;cursor:pointer;box-shadow:0 4px 12px rgba(28,132,198,.3);transition:transform .15s,box-shadow .15s,background .15s}
+  .nuevo-btn:hover{background:var(--blue-h);transform:translateY(-1px);box-shadow:0 7px 18px rgba(28,132,198,.42)}
   .actbtn:hover{background:var(--blue-h);color:#fff;transform:scale(1.03)}
   .wbtn{width:100%;background:#7fbbe0;color:#fff;border:none;border-radius:8px;padding:13px;font-weight:700;margin-top:6px}
   .field label{font-size:11px;text-transform:uppercase;letter-spacing:.03em;color:#9aa0a6}
@@ -267,6 +297,13 @@
   .donut{width:152px;height:152px;border-radius:50%;position:relative;animation:donutin .9s cubic-bezier(.3,0,.2,1)}
   .donut::after{content:"";position:absolute;inset:24%;background:#fff;border-radius:50%}
   @keyframes donutin{from{transform:rotate(-110deg) scale(.85);opacity:0}to{transform:rotate(0) scale(1);opacity:1}}
+  .donut-svg{width:152px;height:152px;transform:rotate(-90deg);overflow:visible;animation:donutin2 .9s cubic-bezier(.3,0,.2,1)}
+  @keyframes donutin2{from{transform:rotate(-90deg) scale(.85);opacity:0}to{transform:rotate(-90deg) scale(1);opacity:1}}
+  .dseg{transition:stroke-width .16s ease,opacity .16s ease;cursor:pointer}
+  .dseg.active{stroke-width:23}
+  .dleg-row{display:flex;align-items:center;justify-content:space-between;font-size:12px;padding:4px 7px;margin-bottom:2px;border-radius:6px;cursor:pointer;transition:background .15s}
+  .dleg-row.active{background:#eef6fc}
+  .dleg-row.active>span{font-weight:700;color:#3a3f45}
 
   /* news carousel */
   .news{position:relative;margin-bottom:16px}
@@ -288,12 +325,16 @@
   /* cambiar contraseña modal */
   .sx-modal-ov{position:fixed;inset:0;z-index:260;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;padding:20px}
   .sx-modal-ov.open{display:flex}
-  .sx-modal{background:#fff;border-radius:6px;width:390px;max-width:100%;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,.35)}
-  .sx-modal-head{background:var(--blue);color:#fff;padding:12px 16px;font-weight:700;display:flex;justify-content:space-between;align-items:center;border-radius:6px 6px 0 0}
-  .sx-x{background:none;border:none;color:#fff;font-size:22px;line-height:1;cursor:pointer}
-  .sx-modal-body{padding:18px 16px}
-  .sx-modal-body label{font-size:11px;color:#888;text-transform:uppercase;letter-spacing:.03em}
-  .sx-modal-foot{padding:12px 16px;border-top:1px solid var(--line);display:flex;justify-content:flex-end;gap:8px}
+  .sx-modal{background:transparent;border-radius:14px;width:390px;max-width:100%;box-shadow:0 24px 60px rgba(20,40,70,.28)}
+  .sx-modal-head{background:var(--blue);color:#fff;padding:15px 20px;font-weight:700;font-size:15px;display:flex;justify-content:space-between;align-items:center;border-radius:14px 14px 0 0}
+  .sx-x{background:none;border:none;color:#fff;font-size:22px;line-height:1;cursor:pointer;opacity:.85;transition:opacity .14s}
+  .sx-x:hover{opacity:1}
+  .sx-modal-body{padding:22px 20px;background:#fff}
+  .sx-modal-body:last-child{border-radius:0 0 14px 14px}
+  .sx-modal-body label{font-size:10.5px;color:#9aa0a6;text-transform:uppercase;letter-spacing:.03em;font-weight:600}
+  .sx-modal-body .form-control{border-radius:9px;transition:border-color .14s,box-shadow .14s}
+  .sx-modal-body .form-control:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(28,132,198,.14);outline:none}
+  .sx-modal-foot{padding:14px 20px;border-top:1px solid var(--line);background:#fafbfc;display:flex;justify-content:flex-end;gap:8px;border-radius:0 0 14px 14px}
   /* crear · primer renglón flotante */
   .cr-headrow{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px;padding:0 4px 14px}
   .hr-left{display:flex;align-items:center;gap:14px}
@@ -326,17 +367,37 @@
   .ndot{display:inline-block;width:9px;height:9px;border-radius:50%;background:#d3d8de;margin:0 2px}
   .ndot.on{background:var(--blue)}
   /* tooltip custom */
-  .notif-pill{display:inline-block;background:rgba(26,179,148,.16);color:#138a70;border-radius:10px;padding:1px 9px;font-size:10px;font-weight:700;letter-spacing:.02em;margin-left:6px;cursor:default}
-  .priv-pill{display:inline-block;background:#eceef1;color:#7b8896;border-radius:10px;padding:1px 9px;font-size:10px;font-weight:700;margin-left:6px}
+  .notif-pill{display:inline-block;background:rgba(26,179,148,.16);color:#138a70;border-radius:10px;padding:1px 9px;font-size:10px;font-weight:700;letter-spacing:.02em;margin-left:6px;cursor:default;white-space:nowrap}
+  .priv-pill{display:inline-block;background:#eceef1;color:#7b8896;border-radius:10px;padding:1px 9px;font-size:10px;font-weight:700;margin-left:6px;white-space:nowrap;cursor:default}
+  .norm-pill{display:inline-block;background:rgba(28,132,198,.12);color:#1c84c6;border-radius:10px;padding:1px 9px;font-size:10px;font-weight:700;margin-left:6px;white-space:nowrap;cursor:default}
+  #floatTip{position:fixed;background:#5e6570;color:#fff;font-size:11px;font-weight:600;letter-spacing:.02em;padding:6px 11px;border-radius:7px;pointer-events:none;opacity:0;transform:translateY(4px);transition:opacity .15s,transform .15s;z-index:99999;box-shadow:0 6px 16px rgba(0,0,0,.24);max-width:240px;text-align:center;line-height:1.35}
+  #floatTip.show{opacity:1;transform:translateY(0)}
+  #floatTip::after{content:"";position:absolute;top:100%;left:var(--arrow,50%);transform:translateX(-50%);border:5px solid transparent;border-top-color:#5e6570}
+  .ev-table{width:100%;border-collapse:collapse;font-size:12px}
+  .ev-table th{padding:8px 11px;font-size:10px;text-transform:uppercase;letter-spacing:.04em;color:#9aa0a6;background:#fafbfc;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap;position:sticky;top:0;z-index:2}
+  .ev-table td{padding:8px 11px;border-bottom:1px solid #f2f3f4;vertical-align:top;background:#fff}
+  .ev-table tbody tr:nth-child(even) td{background:#fbfcfd}
+  .ev-table tbody tr:last-child td{border-bottom:none}
+  .ev-tipo-badge{display:inline-block;background:#eef1f3;border-radius:3px;padding:1px 8px;font-size:11px;font-weight:600;white-space:nowrap}
+  .esc-btn{width:100%;background:#fff;border:1px solid var(--line);border-radius:4px;padding:8px 12px;font-family:inherit;font-size:13px;color:#5e6064;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:8px;text-align:left;min-height:38px}
+  .esc-btn:hover{border-color:#c4ccd2}
+  .esc-menu{position:fixed;background:#fff;border:1px solid var(--line);border-radius:6px;box-shadow:0 12px 34px rgba(0,0,0,.18);padding:5px;display:none;z-index:99998;max-height:236px;overflow:auto}
+  .esc-menu.open{display:block}
+  .esc-opt{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:5px;font-size:13px;color:#5e6064;cursor:pointer}
+  .esc-opt:hover{background:#f3f6f8}
+  .esc-opt.sel{background:#eef6fc}
+  .esc-opt .nm{font-weight:600;white-space:nowrap}
+  .esc-grp-pill{display:inline-block;background:#eef1f3;color:#6b7884;border-radius:10px;padding:1px 9px;font-size:10px;font-weight:700;white-space:nowrap}
+  .esc-cnt{margin-left:auto;color:#9aa0a6;font-size:11px;white-space:nowrap;display:flex;align-items:center;gap:4px;padding-left:10px}
   .tip{position:relative}
   .tip::after{content:attr(data-tip);position:absolute;bottom:calc(100% + 9px);left:50%;transform:translateX(-50%) translateY(4px);background:#5e6570;color:#fff;font-size:11px;font-weight:600;letter-spacing:.02em;padding:4px 10px;border-radius:7px;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .15s,transform .15s;z-index:50;box-shadow:0 4px 10px rgba(0,0,0,.18)}
   .tip::before{content:"";position:absolute;bottom:calc(100% + 4px);left:50%;transform:translateX(-50%);border:5px solid transparent;border-top-color:#5e6570;opacity:0;transition:opacity .15s;pointer-events:none;z-index:50}
   .tip:hover::after{opacity:1;transform:translateX(-50%) translateY(0)}
   .tip:hover::before{opacity:1}
   /* crear · 3 paneles separados */
-  #v-crear .subbar{border:1px solid var(--line);border-radius:var(--rad);box-shadow:var(--shadow);margin-bottom:14px}
-  #v-crear .dtabs{display:flex;gap:12px;margin-bottom:14px}
-  #v-crear .dtab{flex:1;border:1px solid var(--line);border-radius:var(--rad);box-shadow:var(--shadow)}
+  #v-crear .subbar,#v-detalle .subbar{border:1px solid var(--line);border-radius:var(--rad);box-shadow:var(--shadow);margin-bottom:14px}
+  #v-crear .dtabs,#v-detalle .dtabs{display:flex;gap:12px;margin-bottom:14px}
+  #v-crear .dtab,#v-detalle .dtab{flex:1;border:1px solid var(--line);border-radius:var(--rad);box-shadow:var(--shadow)}
   /* info adicional · labels editables */
   .ia-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px 28px}
   .ia-row{display:flex;align-items:center;gap:10px}
@@ -364,7 +425,7 @@
   .ia-tip::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:5px solid transparent;border-top-color:#5e6470}
   .ia-tip.show{opacity:1;transform:translateY(0)}
   .ia-tip.hide{opacity:0;transform:translateY(-4px)}
-  #v-crear .panel{border:1px solid var(--line);border-radius:var(--rad);box-shadow:var(--shadow)}
+  #v-crear .panel,#v-detalle .panel{border:1px solid var(--line);border-radius:var(--rad);box-shadow:var(--shadow)}
   #cr-sol.placeholder{color:#a3a8ad;font-style:italic}
   .demo-banner{background:var(--blue);color:#fff;height:34px;display:flex;align-items:center;justify-content:center;gap:10px;font-size:12px;font-weight:600;flex:none}
   .db-btn{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.45);color:#fff;padding:3px 13px;border-radius:6px;font-weight:600;transition:background .15s}
@@ -448,14 +509,22 @@
 
 <!-- ===== MODAL ESCALAMIENTOS ===== -->
 <div class="sx-modal-ov" id="escalModal">
-  <div class="sx-modal" style="width:560px">
+  <div class="sx-modal" style="width:720px;max-width:96vw">
     <div class="sx-modal-head"><span>Escalamientos</span><button class="sx-x" onclick="cerrarEscal()">&times;</button></div>
     <div class="sx-modal-body">
       <label style="display:block;margin-bottom:10px">Historial de escalamientos</label>
-      <div id="escal-hist" style="max-height:240px;overflow:auto;margin-bottom:18px"></div>
+      <div style="max-height:260px;overflow:auto;border:1px solid var(--line);border-radius:6px;margin-bottom:18px">
+        <table class="ev-table">
+          <thead><tr><th>Fecha</th><th>Evento</th><th>Detalle</th><th>Agente</th></tr></thead>
+          <tbody id="escal-hist"></tbody>
+        </table>
+      </div>
       <div class="form-group" style="margin-bottom:0"><label>Escalar a</label>
-        <div style="display:flex;gap:8px">
-          <select id="escal-agente" class="form-control" style="flex:1"></select>
+        <div style="display:flex;gap:8px;align-items:flex-start">
+          <div class="esc-dd" id="escalDD" style="flex:1;position:relative">
+            <button class="esc-btn" type="button" onclick="toggleEscalDD(event)"><span id="escalVal"></span><i class="fa fa-caret-down" style="opacity:.5"></i></button>
+            <div class="esc-menu" id="escalMenu"></div>
+          </div>
           <button class="btn btn-login" style="width:auto;padding:8px 22px;white-space:nowrap" onclick="confirmarEscal()">Escalar</button>
         </div>
       </div>
@@ -465,24 +534,39 @@
 
 <!-- ===== MODAL EVENTOS ===== -->
 <div class="sx-modal-ov" id="eventosModal">
-  <div class="sx-modal" style="width:600px">
+  <div class="sx-modal" style="width:780px;max-width:96vw">
     <div class="sx-modal-head"><span>Eventos</span><button class="sx-x" onclick="cerrarEventos()">&times;</button></div>
     <div class="sx-modal-body">
-      <div id="ev-list" style="max-height:260px;overflow:auto;margin-bottom:16px"></div>
-      <div style="border-top:1px solid var(--line);padding-top:14px">
-        <div style="display:flex;gap:8px;margin-bottom:10px">
-          <div class="form-group" style="flex:1;margin-bottom:0"><label>Tipo de evento</label>
-            <select id="ev-new-tipo" class="form-control"><option>Comentario</option><option>Gestión</option><option>Llamado</option><option>Seguimiento</option><option>Solución</option></select>
-          </div>
-          <div class="form-group" style="flex:1;margin-bottom:0"><label>Visibilidad</label>
-            <select id="ev-new-vis" class="form-control"><option value="privado">Privado</option><option value="notif">Notificación al solicitante</option></select>
-          </div>
-        </div>
-        <div class="form-group" style="margin-bottom:10px"><label>Detalle</label>
-          <textarea id="ev-new-obs" class="form-control" rows="2" style="resize:none" placeholder="Escribí el evento…"></textarea>
-        </div>
-        <div style="text-align:right"><button class="btn btn-login" style="width:auto;padding:8px 22px" onclick="agregarEvento()">Agregar evento</button></div>
+      <div id="ev-scroll" style="max-height:360px;overflow-y:auto;overflow-x:hidden;border:1px solid var(--line);border-radius:6px">
+        <table class="ev-table">
+          <thead><tr>
+            <th>Fecha</th><th>Tipo</th><th>Evento</th><th>Detalle</th><th>Agente</th><th>Visibilidad</th>
+          </tr></thead>
+          <tbody id="ev-list"></tbody>
+        </table>
       </div>
+      <div style="text-align:right;margin-top:14px"><button class="btn btn-login" style="width:auto;padding:8px 22px" onclick="abrirNuevoEvento()"><i class="fa fa-plus"></i> Nuevo evento</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MODAL NUEVO EVENTO ===== -->
+<div class="sx-modal-ov" id="evNuevoModal" style="z-index:280">
+  <div class="sx-modal" style="width:480px">
+    <div class="sx-modal-head"><span>Nuevo evento</span><button class="sx-x" onclick="cerrarNuevoEvento()">&times;</button></div>
+    <div class="sx-modal-body">
+      <div style="display:flex;gap:8px;margin-bottom:10px">
+        <div class="form-group" style="flex:1;margin-bottom:0"><label>Tipo de evento</label>
+          <select id="ev-new-tipo" class="form-control"><option>Comentario</option><option>Gestión</option><option>Llamado</option><option>Seguimiento</option><option>Solución</option></select>
+        </div>
+        <div class="form-group" style="flex:1;margin-bottom:0"><label>Visibilidad</label>
+          <select id="ev-new-vis" class="form-control"><option value="normal">Normal</option><option value="privado">Privado</option><option value="notif">Notificación al solicitante</option></select>
+        </div>
+      </div>
+      <div class="form-group" style="margin-bottom:14px"><label>Detalle</label>
+        <textarea id="ev-new-obs" class="form-control" rows="3" style="resize:none" placeholder="Escribí el evento…"></textarea>
+      </div>
+      <div style="text-align:right"><button class="btn btn-login" style="width:auto;padding:8px 22px" onclick="agregarEvento()">Agregar evento</button></div>
     </div>
   </div>
 </div>
@@ -490,7 +574,7 @@
 <!-- ===== MODAL NOTICIA ===== -->
 <div class="sx-modal-ov" id="newsModal" onclick="closeNewsModal(event)">
   <div class="sx-modal" style="width:620px;max-width:95vw">
-    <div id="newsModalTop" style="height:72px;position:relative;padding:12px 14px;border-radius:6px 6px 0 0">
+    <div id="newsModalTop" style="height:72px;position:relative;padding:12px 14px;border-radius:14px 14px 0 0">
       <span id="newsModalBadge" style="position:absolute;top:10px;right:12px;background:rgba(0,0,0,.25);border-radius:12px;padding:3px 10px;font-size:11px;color:#fff"></span>
       <h4 id="newsModalTitle" style="position:absolute;bottom:12px;left:14px;margin:0;font-weight:700;color:#fff;font-size:16px"></h4>
     </div>
@@ -565,10 +649,17 @@
       <i class="fa fa-user-circle user-ic" onclick="toggleUser()"></i>
     </div>
     <div class="user-pop hidden-x" id="userpop">
-      <div class="av"><i class="fa fa-user"></i></div>
-      <div class="nm"><i class="fa fa-user" style="color:var(--blue)"></i> Nicolás Ferreyra</div>
-      <div class="em">nferreyra@simax.com.ar</div>
-      <div style="display:flex;gap:6px"><button class="btn btn-primary btn-sm" style="flex:1" onclick="demo()"><i class="fa fa-asterisk"></i> Cambiar Clave</button><button class="btn btn-primary btn-sm" style="flex:1" onclick="logout()"><i class="fa fa-sign-out"></i> Logout</button></div>
+      <div class="up-head"></div>
+      <div class="av av-edit" onclick="editPerfil(event)" title="Editar perfil"><i class="fa fa-user"></i><span class="av-ov"><i class="fa fa-pencil"></i></span></div>
+      <div class="up-body">
+        <div class="nm">Nicolás Ferreyra</div>
+        <div class="em">nferreyra@simax.com.ar</div>
+        <span class="up-role">Agente · Mesa de Ayuda</span>
+      </div>
+      <div class="up-menu">
+        <a onclick="openCambiar()"><i class="fa fa-key"></i> Cambiar contraseña</a>
+        <a class="danger" onclick="logout()"><i class="fa fa-sign-out"></i> Cerrar sesión</a>
+      </div>
     </div>
 
     <div class="views-wrap">
@@ -741,7 +832,7 @@ Recordá consultar la KB antes de escalar un caso al segundo nivel. Esto reduce 
     </div>
 
     <!-- DETALLE -->
-    <div id="v-detalle" class="hidden-x"><div class="body" id="detalle"></div></div>
+    <div id="v-detalle" class="hidden-x"><div class="crumb" id="detalle-crumb" style="display:flex;align-items:center;gap:6px;justify-content:flex-end"></div><div class="body" id="detalle"></div></div>
 
     <!-- CREAR -->
     <div id="v-crear" class="hidden-x">
@@ -842,22 +933,74 @@ Recordá consultar la KB antes de escalar un caso al segundo nivel. Esto reduce 
       </div>
     </div>
 
+    <!-- MODAL SOLICITANTE (alta/edición) -->
+    <div class="sx-modal-ov" id="cliModal">
+      <div class="sx-modal sx-modern" style="width:540px;max-width:96vw">
+        <div class="sx-modal-head"><span id="cli-modal-title">Nuevo Solicitante</span><button class="sx-x" onclick="cerrarCli()">&times;</button></div>
+        <div class="sx-modal-body">
+          <div class="form-group" style="margin-bottom:14px"><label>Razón Social</label>
+            <div style="display:flex;gap:12px;align-items:center">
+              <input id="cl-nom" class="form-control" placeholder="Nombre o razón social" style="flex:1" />
+              <label class="cl-switch pilltip" id="cl-act-sw" data-tip="Estado activo">
+                <input type="checkbox" id="cl-act" checked onchange="clSwitch()" />
+                <span class="cl-switch-slider"></span>
+              </label>
+            </div>
+          </div>
+          <div style="display:flex;gap:10px;margin-bottom:14px">
+            <div class="form-group" style="flex:1;margin-bottom:0"><label>CUIT</label><input id="cl-cuit" class="form-control" placeholder="30-xxxxxxxx-x" /></div>
+            <div class="form-group" style="flex:1;margin-bottom:0"><label>Contacto</label><input id="cl-cont" class="form-control" placeholder="Persona de contacto" /></div>
+          </div>
+          <div style="display:flex;gap:10px;margin-bottom:14px">
+            <div class="form-group" style="flex:1;margin-bottom:0"><label>Email</label><input id="cl-email" class="form-control" placeholder="contacto@org.demo" /></div>
+            <div class="form-group" style="flex:1;margin-bottom:0"><label>Teléfono</label><input id="cl-tel" class="form-control" placeholder="+54 11 ...." /></div>
+          </div>
+          <div style="display:flex;gap:10px;align-items:flex-start">
+            <div class="form-group" style="flex:1;margin-bottom:0"><label>Dirección</label><input id="cl-dir" class="form-control" placeholder="Calle, número, localidad" /></div>
+            <div class="form-group" style="flex:none;margin-bottom:0"><label>Nivel</label>
+              <div class="niv-step">
+                <button type="button" onclick="nivStep(-1)"><i class="fa fa-minus"></i></button>
+                <span id="cl-niv-val">2</span>
+                <button type="button" onclick="nivStep(1)"><i class="fa fa-plus"></i></button>
+              </div>
+              <input type="hidden" id="cl-niv" value="2" />
+            </div>
+          </div>
+        </div>
+        <div class="sx-modal-foot">
+          <button class="ghost-btn" onclick="cerrarCli()">Cancelar</button>
+          <button class="actbtn" style="flex:none;padding:7px 18px" onclick="guardarCli()"><i class="fa fa-check"></i> <span id="cli-save-lbl">Agregar</span></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL ELIMINAR SOLICITANTE -->
+    <div class="sx-modal-ov" id="cliDelModal">
+      <div class="sx-modal sx-modern" style="width:420px">
+        <div class="sx-modal-head"><span>Eliminar solicitante</span><button class="sx-x" onclick="cerrarCliDel()">&times;</button></div>
+        <div class="sx-modal-body">
+          <p style="margin:0;color:#5e6064;font-size:14px;line-height:1.5">¿Seguro que querés eliminar <b id="cli-del-name"></b>? Esta acción no se puede deshacer.</p>
+        </div>
+        <div class="sx-modal-foot">
+          <button class="ghost-btn" onclick="cerrarCliDel()">Cancelar</button>
+          <button class="actbtn" style="flex:none;padding:7px 18px;background:var(--red)" onclick="confirmCliDel()"><i class="fa fa-trash"></i> Eliminar</button>
+        </div>
+      </div>
+    </div>
+
     <!-- CLIENTES -->
     <div id="v-clientes" class="hidden-x">
-      <div class="crumb clearfix"><span class="pull-left"><i>Mesa de Ayuda</i> &rsaquo; <b>Solicitantes / Clientes</b></span>
-        <button class="btn btn-primary btn-sm pull-right" onclick="toggleAlta()"><i class="fa fa-plus"></i> Nuevo Cliente</button></div>
-      <div class="body" style="padding-top:0">
-        <div id="alta" class="panel hidden-x" style="border-top:1px solid var(--line);margin-bottom:14px">
-          <div class="row">
-            <div class="col-sm-4 form-group"><label>Razón Social</label><input id="cl-nom" class="form-control" /></div>
-            <div class="col-sm-3 form-group"><label>CUIT</label><input id="cl-cuit" class="form-control" placeholder="30-xxxxxxxx-x" /></div>
-            <div class="col-sm-3 form-group"><label>Contacto</label><input id="cl-cont" class="form-control" /></div>
-            <div class="col-sm-2 form-group"><label>Nivel</label><select id="cl-niv" class="form-control"><option>1</option><option selected>2</option><option>3</option></select></div>
-          </div>
-          <div class="text-right"><button class="ghost-btn" onclick="toggleAlta()">Cancelar</button> <button class="btn btn-primary" onclick="crearCli()"><i class="fa fa-check"></i> Guardar</button></div>
-        </div>
+      <div class="crumb" style="display:flex;align-items:center;justify-content:space-between;gap:10px">
+        <button class="nuevo-btn" onclick="nuevoCli()"><i class="fa fa-plus"></i> Nuevo Solicitante</button>
+        <span style="display:flex;align-items:center;gap:6px">
+          <span onclick="go('dashboard')" style="cursor:pointer;color:#9aa0a6;transition:color .15s" onmouseenter="this.style.color='var(--blue)'" onmouseleave="this.style.color='#9aa0a6'">Mesa de Ayuda</span>
+          <i class="fa fa-chevron-right" style="font-size:9px;color:var(--blue);opacity:.7"></i>
+          <b style="color:#3a3f44">Solicitantes</b>
+        </span>
+      </div>
+      <div class="body">
         <div class="tablewrap" style="border-top:1px solid var(--line)">
-          <table class="t"><thead><tr><th>#</th><th>Razón Social</th><th>CUIT</th><th>Contacto</th><th>Nivel</th><th>Incidentes</th><th>Estado</th></tr></thead>
+          <table class="t"><thead><tr><th>#</th><th>Razón Social</th><th>CUIT</th><th>Contacto</th><th style="text-align:center">Nivel</th><th style="text-align:center">Incidentes</th><th style="text-align:center">Estado</th><th style="text-align:center">Acciones</th></tr></thead>
           <tbody id="cli-rows"></tbody></table>
         </div>
       </div>
@@ -1004,6 +1147,39 @@ function onItemChange(){
   gr.value=GRU_RES[v]||'Mesa de Ayuda';
   gr.classList.remove('form-readonly');
 }
+/* ----- detalle: nivel del solicitante + cascada grupo/sub/item ----- */
+const SOL_NIV={'Rodrigo Mansilla':4,'Anabela Bustos':2,'Damián Leiva':3,'Sandra Ruiz':5,'Sergio Palomino':3,'Javier Peralta':1};
+function nivDe(n){ return SOL_NIV[n]||3; }
+function nivDots(niv){ let h=''; for(let k=1;k<=5;k++) h+=`<i class="ndot ${k<=niv?'on':''}"></i>`; return h; }
+function detSolicChange(){ const n=document.getElementById('det-sol').value; document.getElementById('det-nivel').innerHTML=nivDots(nivDe(n)); }
+function detGrupoChange(){
+  const g=document.getElementById('det-grupo').value;
+  const sg=document.getElementById('det-subgrupo');
+  const it=document.getElementById('det-item');
+  it.innerHTML='<option value="">Seleccione un Subgrupo</option>';
+  it.classList.add('form-readonly'); it.disabled=true;
+  document.getElementById('det-grures').value='';
+  document.getElementById('det-grures').classList.add('form-readonly');
+  if(!g||g===''){ sg.innerHTML='<option value="">Seleccione un Grupo</option>'; sg.classList.add('form-readonly'); sg.disabled=true; return; }
+  sg.innerHTML='<option value="">Seleccione un Subgrupo</option>'+(SUBGRUPOS[g]||[]).map(s=>`<option>${s}</option>`).join('');
+  sg.classList.remove('form-readonly'); sg.disabled=false;
+}
+function detSubgrupoChange(){
+  const s=document.getElementById('det-subgrupo').value;
+  const it=document.getElementById('det-item');
+  const gr=document.getElementById('det-grures');
+  gr.value=''; gr.classList.add('form-readonly');
+  if(!s){ it.innerHTML='<option value="">Seleccione un Subgrupo</option>'; it.classList.add('form-readonly'); it.disabled=true; return; }
+  it.innerHTML='<option value="">Seleccione un Item</option>'+(ITEMS[s]||[]).map(x=>`<option>${x}</option>`).join('');
+  it.classList.remove('form-readonly'); it.disabled=false;
+}
+function detItemChange(){
+  const v=document.getElementById('det-item').value;
+  const gr=document.getElementById('det-grures');
+  if(!v){ gr.value=''; gr.classList.add('form-readonly'); return; }
+  gr.value=GRU_RES[v]||'Mesa de Ayuda';
+  gr.classList.remove('form-readonly');
+}
 const SOLICITANTES=['Rodrigo Mansilla','Anabela Bustos','Damián Leiva','Sandra Ruiz','Sergio Palomino','Javier Peralta'];
 const RESP=['Sergio Palomino','Martín Giordano','Nicolás Ferreyra','Rodrigo Mansilla','Diego Torricelli'];
 
@@ -1072,6 +1248,9 @@ let clientes=[
     }
   }
 })();
+/* el responsable es siempre el agente del último escalamiento */
+function syncRespEscal(i){ const es=(i.eventos||[]).filter(e=>/escal/i.test(e.tipo)); if(es.length) i.resp=es[es.length-1].ag; }
+inc.forEach(syncRespEscal);
 
 /* ===== NAV ===== */
 let tab='escalado';
@@ -1082,9 +1261,9 @@ function cerrarCambiar(){ document.getElementById('cambiarModal').classList.remo
 function toggleMasivo(){ const b=document.getElementById('masivoBtn'); const on=b.classList.toggle('on'); document.getElementById('masivoIc').className='fa '+(on?'fa-check':'fa-times'); }
 let _iaTipDismissed=false;
 let _iaTipEl=null;
-function showIaTip(){
+function showIaTip(sel){
   if(_iaTipEl) return;
-  const anchor = document.querySelector('#crt-info .ia-label');
+  const anchor = document.querySelector(sel||'#crt-info .ia-label');
   if(!anchor) return;
   const tip = document.createElement('div');
   tip.className='ia-tip';
@@ -1103,6 +1282,7 @@ function showIaTip(){
   tip.style.left = (rect.left + rect.width/2 - tw/2) + 'px';
   tip.style.top = (rect.top - tip.offsetHeight - 10) + 'px';
   requestAnimationFrame(()=>tip.classList.add('show'));
+  setTimeout(()=>document.addEventListener('click', dismissIaTip, {once:true}),0);
 }
 function dismissIaTip(){
   if(!_iaTipEl) return;
@@ -1111,7 +1291,7 @@ function dismissIaTip(){
   tip.classList.add('hide');
   tip.addEventListener('transitionend',()=>tip.remove(),{once:true});
 }
-function iaBool(el){ const w=el.closest('.ia-bool')||el; const on=w.classList.toggle('on'); w.querySelector('.ia-bool-ic i').className='fa '+(on?'fa-check':'fa-times'); }
+function iaBool(el){ if(el.closest('#v-detalle') && !_detEdit) return; const w=el.closest('.ia-bool')||el; const on=w.classList.toggle('on'); w.querySelector('.ia-bool-ic i').className='fa '+(on?'fa-check':'fa-times'); }
 function sizeIaLbl(el){ el.style.width='0'; el.style.width=(el.scrollWidth+2)+'px'; }
 document.addEventListener('DOMContentLoaded',()=>{
   document.querySelectorAll('.ia-bool-lbl').forEach(sizeIaLbl);
@@ -1137,6 +1317,25 @@ function buildTipoMenu(){ document.getElementById('tipoMenu').innerHTML=TIPOS.ma
 function toggleTipo(e){ e.stopPropagation(); document.getElementById('tipoMenu').classList.toggle('open'); }
 function selTipo(t){ curTipo=t; buildTipoMenu(); document.getElementById('tipoMenu').classList.remove('open'); }
 document.addEventListener('click', e=>{ if(!e.target.closest('#tipoDD')){ const m=document.getElementById('tipoMenu'); if(m) m.classList.remove('open'); } });
+let _detTipo='Solicitud', _detEdit=false;
+function buildDTipoMenu(){ const m=document.getElementById('dtipoMenu'); if(!m)return; m.innerHTML=TIPOS.map(t=>`<a class="${t===_detTipo?'sel':''}" onclick="selDTipo('${t}')">${t}</a>`).join(''); document.getElementById('dtipoVal').textContent=_detTipo; }
+function toggleDTipo(e){ e.stopPropagation(); if(!_detEdit) return; document.getElementById('dtipoMenu').classList.toggle('open'); }
+function selDTipo(t){ _detTipo=t; buildDTipoMenu(); document.getElementById('dtipoMenu').classList.remove('open'); }
+document.addEventListener('click', e=>{ if(!e.target.closest('#dtipoDD')){ const m=document.getElementById('dtipoMenu'); if(m) m.classList.remove('open'); } });
+function detTab(name){ ['detalle','info','soluc'].forEach(t=>{const el=document.getElementById('dt-'+t); if(el) el.classList.toggle('hidden-x', t!==name);}); document.querySelectorAll('#v-detalle .dtab').forEach(d=>d.classList.toggle('active', d.dataset.tab===name)); if(name==='info' && !_iaTipDismissed) showIaTip('#dt-info .ia-label'); else dismissIaTip(); }
+function selEstadoDet(btn){ if(!_detEdit) return; btn.parentNode.querySelectorAll('.actbtn').forEach(b=>{const a=b===btn; b.style.background=a?'var(--blue)':'#fff'; b.style.color=a?'#fff':'var(--blue)'; b.style.border='1px solid var(--blue)';}); }
+function detEdit(id){
+  const i=inc.find(x=>x.id===id); if(!i)return;
+  if(_detEdit){ toast('Ya estás editando este incidente.','ok'); return; }
+  _detEdit=true;
+  document.querySelectorAll('#v-detalle .de').forEach(el=>{ el.classList.remove('form-readonly'); if(el.tagName==='SELECT') el.disabled=false; else el.removeAttribute('readonly'); });
+  document.getElementById('det-guardar').style.display='';
+  toast('Editando incidente.','ok');
+}
+function detGuardar(id){
+  if(!_detEdit){ toast('Activá "Editar" para modificar el incidente.','err'); return; }
+  _detEdit=false; toast('Cambios guardados.','ok'); abrir(id);
+}
 
 /* solicitantes con nivel */
 const SOLIC=[
@@ -1205,6 +1404,13 @@ function crTab(name){
 }
 function toggleSide(){ document.querySelector('.sidebar').classList.toggle('mini'); }
 function toggleUser(){ document.getElementById('userpop').classList.toggle('hidden-x'); }
+function editPerfil(e){ e.stopPropagation(); demo(); }
+document.addEventListener('click', e=>{
+  const pop=document.getElementById('userpop');
+  if(!pop || pop.classList.contains('hidden-x')) return;
+  if(e.target.closest('#userpop') || e.target.closest('.user-ic')) return;
+  pop.classList.add('hidden-x');
+});
 function buscarFocus(){ const b=document.getElementById('buscar'); b.closest('.tbtn').classList.add('open'); b.focus(); }
 function demo(){ toast('Sección no incluida en la demo.', 'err'); }
 
@@ -1266,10 +1472,16 @@ function dashFade(hide){
 }
 function buildDonut(){
   const data=[{l:'Cerradas',v:97,c:'#7b8896'},{l:'Escalado',v:26,c:'#34404e'},{l:'Asignado',v:12,c:'#1c84c6'},{l:'Prueba Sol.',v:4,c:'#1ab394'},{l:'Pendiente',v:3,c:'#f8ac59'}];
-  const tot=data.reduce((a,b)=>a+b.v,0); let acc=0;
-  const stops=data.map(d=>{const a=acc/tot*100; acc+=d.v; const b=acc/tot*100; return `${d.c} ${a.toFixed(1)}% ${b.toFixed(1)}%`;}).join(',');
-  document.getElementById('dashDonut').innerHTML=`<div class="donut" style="background:conic-gradient(${stops})"></div>`;
-  document.getElementById('donutLeg').innerHTML=data.map(d=>`<div style="display:flex;align-items:center;justify-content:space-between;font-size:12px;margin-bottom:5px"><span><i style="display:inline-block;width:10px;height:10px;border-radius:3px;background:${d.c};margin-right:7px"></i>${d.l}</span><b style="color:#5e6064">${d.v}</b></div>`).join('');
+  const tot=data.reduce((a,b)=>a+b.v,0), r=36, C=2*Math.PI*r; let acc=0;
+  const segs=data.map((d,i)=>{
+    const len=d.v/tot*C, off=-acc; acc+=len;
+    return `<circle class="dseg" data-i="${i}" cx="50" cy="50" r="${r}" fill="none" stroke="${d.c}" stroke-width="16" stroke-dasharray="${len.toFixed(2)} ${(C-len).toFixed(2)}" stroke-dashoffset="${off.toFixed(2)}" onmouseenter="hoverDonut(${i},1)" onmouseleave="hoverDonut(${i},0)"/>`;
+  }).join('');
+  document.getElementById('dashDonut').innerHTML=`<svg class="donut-svg" viewBox="0 0 100 100">${segs}</svg>`;
+  document.getElementById('donutLeg').innerHTML=data.map((d,i)=>`<div class="dleg-row" data-i="${i}" onmouseenter="hoverDonut(${i},1)" onmouseleave="hoverDonut(${i},0)"><span><i style="display:inline-block;width:10px;height:10px;border-radius:3px;background:${d.c};margin-right:7px"></i>${d.l}</span><b style="color:#5e6064">${d.v}</b></div>`).join('');
+}
+function hoverDonut(i,on){
+  document.querySelectorAll('.dseg[data-i="'+i+'"],.dleg-row[data-i="'+i+'"]').forEach(e=>e.classList.toggle('active',!!on));
 }
 function buildBars(){
   const tip=[{l:'Puesto de Trabajo',v:38,c:'#1c84c6'},{l:'Aplicaciones de Negocio',v:27,c:'#1ab394'},{l:'Infraestructura',v:19,c:'#34404e'},{l:'Redes y Conectividad',v:9,c:'#f8ac59'},{l:'Seguridad',v:7,c:'#23c6c8'}];
@@ -1383,67 +1595,113 @@ function abrir(id){
   const i=inc.find(x=>x.id===id); if(!i)return;
   const e=EST[i.tab];
   const cerrada=i.tab==='cerradas';
+  _detEdit=false;
+  const tip=(i.tip||'').split(' - '), grupo=tip[0]||'', sub=tip[1]||'', item=tip[2]||'';
+  const optsSel=(arr,sel)=>{let a=arr.slice(); if(sel&&!a.includes(sel))a=[sel,...a]; return a.map(o=>`<option${o===sel?' selected':''}>${o}</option>`).join('');};
+  const solOpt=i.sol+' | '+i.cliente;
+  const closeEv=(i.eventos||[]).slice().reverse().find(x=>/cierre|cerrado|soluci|resuel|prueba/i.test((x.tipo||'')+' '+(x.desc||'')));
+  const solResumen=cerrada?(closeEv?closeEv.desc:'Incidente resuelto'):'';
+  const solDetalle=cerrada?(i.motivoCierre||(closeEv?closeEv.obs:'')):'';
+  const estadoSel=cerrada?'Resuelto':(i.tab==='rechazada'?'Fuera de Alcance':'En Proceso');
+  document.getElementById('detalle-crumb').innerHTML=`
+    <span onclick="go('consola')" style="cursor:pointer;color:#9aa0a6;transition:color .15s" onmouseenter="this.style.color='var(--blue)'" onmouseleave="this.style.color='#9aa0a6'">Mesa de Ayuda</span>
+    <i class="fa fa-chevron-right" style="font-size:9px;color:var(--blue);opacity:.7"></i>
+    <b style="color:#3a3f44">Abrir Incidente N° ${i.id}</b>`;
   document.getElementById('detalle').innerHTML=`
-    <div class="crumb clearfix" style="padding:0 0 12px"><span class="lbl-badge">Incidente N° ${i.id}</span><span class="pull-right" style="color:#9aa0a6"><i>Mesa de Ayuda</i> &rsaquo; <b>Abrir Incidente</b></span></div>
-    <div class="ihead">
-      <span class="estado" style="background:${e.c}">${e.t}</span>
-      <div class="fechas"><div class="f"><label>Fecha de Ingreso</label><b>${i.ingreso}</b></div><div class="f"><label>Fecha Cierre</label><b>${i.cierre}</b></div></div>
-      <button class="pill-btn">Solicitud <i class="fa fa-caret-down"></i></button>
-      <span class="ghost-btn"><i class="fa fa-user"></i> ${i.resp==='—'?'Sin asignar':i.resp}</span>
-      <span style="margin-left:auto">
-        <button class="ghost-btn" onclick="go('consola')"><i class="fa fa-arrow-left"></i> Consola</button>
-      </span>
-    </div>
-    <div class="subbar">
-      <span class="lbl-badge">Solicitante</span>
-      <select class="form-control" style="max-width:340px"><option>${i.sol} | ${i.cliente}</option></select>
-      <span class="lvl">●●●●●</span>
-      <span style="margin-left:auto">Sitio</span><select class="form-control" style="max-width:140px"><option>Bolívar</option></select>
-      <span>Vía</span><select class="form-control" style="max-width:100px"><option>WEB</option></select>
-    </div>
-    <div class="dtabs"><div class="dtab active">Detalle</div><div class="dtab" onclick="demo()">Info. Adicional</div><div class="dtab" onclick="demo()">Solución</div></div>
-    <div class="panel">
-      <div class="row"><div class="col-sm-12 field form-group"><label>Asunto</label><input class="form-control form-readonly" value="${i.asunto.replace(/"/g,'&quot;')}" readonly /></div></div>
-      <div class="row"><div class="col-sm-12 field form-group"><label>Descripción</label><textarea class="form-control form-readonly" rows="4" readonly>${i.descri}</textarea></div></div>
-      <hr style="border-top:1px dashed var(--line)" />
-      <div class="row">
-        <div class="col-sm-3 field form-group"><label>Grupo</label><input class="form-control form-readonly" value="${i.tip.split(' - ')[0]||''}" readonly /></div>
-        <div class="col-sm-3 field form-group"><label>Subgrupo</label><input class="form-control form-readonly" value="${i.tip.split(' - ')[1]||'---'}" readonly /></div>
-        <div class="col-sm-3 field form-group"><label>Item</label><input class="form-control form-readonly" value="${i.tip.split(' - ')[2]||'---'}" readonly /></div>
-        <div class="col-sm-3 field form-group"><label>Prioridad</label><input class="form-control form-readonly" value="${i.prio}" readonly /></div>
-      </div>
-      <div class="actions">
-        <button class="actbtn" onclick="demo()">Editar</button>
-        <button class="actbtn" onclick="scrollHist()">Escalamientos<span class="badge">${i.eventos.filter(x=>x.tipo.includes('Escal')).length||2}</span></button>
-        <button class="actbtn" onclick="scrollHist()">Eventos</button>
-        <button class="actbtn" onclick="demo()">Log<span class="badge">4</span></button>
-        <button class="actbtn" onclick="demo()">Adjuntos<span class="badge">1</span></button>
-        <button class="actbtn" onclick="demo()">Tiempos</button>
-        <button class="actbtn" onclick="demo()">Soluc. Sim.<span class="badge">39</span></button>
-      </div>
-      ${cerrada
-        ? `<button class="wbtn" onclick="reabrir(${i.id})">Reabrir</button>`
-        : `<button class="wbtn" style="background:var(--blue)" onclick="cerrarInc(${i.id})">Cerrar</button>`}
-    </div>
-
-    <!-- HISTORIAL -->
-    <div class="panel" id="hist" style="border-top:none;margin-top:14px">
-      <div class="dtabs" style="margin:-16px -16px 14px"><div class="dtab active">Historial &amp; Eventos <span style="opacity:.7">(${i.eventos.length})</span></div></div>
-      ${i.eventos.map(ev=>`
-        <div style="border-left:2px solid var(--line);padding:0 0 14px 16px;position:relative;margin-left:6px">
-          <span style="position:absolute;left:-7px;top:2px;width:12px;height:12px;border-radius:50%;background:var(--blue);border:2px solid #fff;box-shadow:0 0 0 1px var(--blue)"></span>
-          <div style="font-size:11px;color:#9aa0a6"><i class="fa fa-clock-o"></i> ${ev.f} · ${ev.ag}</div>
-          <div style="margin:2px 0"><span style="background:#eef1f3;border-radius:3px;padding:1px 8px;font-size:11px;margin-right:6px;font-weight:600">${ev.tipo}</span><strong>${ev.desc}</strong></div>
-          <div style="color:#777">${ev.obs}</div>
-        </div>`).join('')}
-      <hr style="border-top:1px dashed var(--line)" />
-      <div class="row">
-        <div class="col-sm-3 form-group"><label class="field">Tipo</label><select id="ev-tipo" class="form-control"><option>Comentario</option><option>Gestión</option><option>Llamado</option><option>Escalamiento</option></select></div>
-        <div class="col-sm-9 form-group"><label class="field">Observación</label>
-          <div style="display:flex;gap:8px"><input id="ev-obs" class="form-control" placeholder="Agregar nota al historial..." onkeydown="if(event.key==='Enter')nuevoEvento(${i.id})" /><button class="btn btn-primary" onclick="nuevoEvento(${i.id})"><i class="fa fa-plus"></i></button></div>
+    <div class="cr-headrow">
+      <div class="hr-left">
+        <span class="estado" style="background:${e.c}">${e.t}</span>
+        <div class="fechas-sm">
+          <span>Ingreso <b>${i.ingreso}</b></span>
+          <span>Cierre <b>${i.cierre}</b></span>
         </div>
       </div>
+      <div class="hr-center">
+        <div class="tipo-dd" id="dtipoDD">
+          <button class="tipo-btn" type="button" onclick="toggleDTipo(event)"><span id="dtipoVal">Solicitud</span> <i class="fa fa-caret-down"></i></button>
+          <div class="tipo-menu" id="dtipoMenu"></div>
+        </div>
+      </div>
+      <div class="hr-right">
+        <span class="hr-resp"><span class="resp" title="RESPONSABLE" onclick="openResp()"><i class="fa fa-user"></i> ${i.resp==='—'?'Sin asignar':i.resp}</span></span>
+        <button class="masivo-btn${i.masivo?' on':''}" type="button" onclick="demo()" title="${i.masivo?'Incidente masivo':'No es masivo'}">Masivo <i class="fa fa-${i.masivo?'check':'times'}"></i></button>
+      </div>
+    </div>
+    <div class="subbar cr-topcard">
+      <button class="lbl-badge" type="button" onclick="openSolic()" title="Ver datos del solicitante" style="border:none;cursor:pointer">Solicitante</button>
+      <select id="det-sol" class="form-control form-readonly de" disabled onchange="detSolicChange()" style="flex:1;min-width:180px">${[...new Set([i.sol,...SOLICITANTES])].map(n=>`<option value="${n}"${n===i.sol?' selected':''}>${n} | ${i.cliente}</option>`).join('')}</select>
+      <span class="lvl" id="det-nivel">${nivDots(nivDe(i.sol))}</span>
+      <span style="margin-left:8px">Sitio</span>
+      <select class="form-control form-readonly de" disabled style="max-width:160px">${optsSel(['Bolívar','Casa Central','Sucursal Norte'],'Bolívar')}</select>
+      <span>Vía</span>
+      <select class="form-control form-readonly de" disabled style="max-width:120px">${optsSel(['WEB','Teléfono','Email','Presencial'],'WEB')}</select>
+    </div>
+    <div class="dtabs">
+      <div class="dtab active" data-tab="detalle" onclick="detTab('detalle')">Detalle</div>
+      <div class="dtab" data-tab="info" onclick="detTab('info')">Info. Adicional</div>
+      <div class="dtab" data-tab="soluc" onclick="detTab('soluc')">Solución</div>
+    </div>
+    <div class="panel">
+      <div id="dt-detalle">
+        <div class="row"><div class="col-sm-12 field form-group"><label>Asunto</label><input class="form-control form-readonly de" value="${i.asunto.replace(/"/g,'&quot;')}" readonly /></div></div>
+        <div class="row"><div class="col-sm-12 field form-group"><label>Descripción</label><textarea class="form-control form-readonly de" rows="4" readonly>${i.descri}</textarea></div></div>
+        <hr style="border:none;border-top:1px dashed var(--line);opacity:.35;margin:6px 0" />
+        <div class="row">
+          <div class="col-sm-3 field form-group"><label>Grupo</label><select id="det-grupo" class="form-control form-readonly de" disabled onchange="detGrupoChange()">${optsSel(GRUPOS,grupo)}</select></div>
+          <div class="col-sm-3 field form-group"><label>Subgrupo</label><select id="det-subgrupo" class="form-control form-readonly de" disabled onchange="detSubgrupoChange()">${optsSel(SUBGRUPOS[grupo]||[],sub)}</select></div>
+          <div class="col-sm-3 field form-group"><label>Item</label><select id="det-item" class="form-control form-readonly de" disabled onchange="detItemChange()">${optsSel(ITEMS[sub]||[],item)}</select></div>
+          <div class="col-sm-3 field form-group"><label>Gru.Res.</label><input id="det-grures" class="form-control form-readonly" readonly placeholder="— seleccione un item —" style="cursor:default" value="${GRU_RES[item]||(i.resp==='—'?'Mesa de Ayuda':escGrupo(i.resp))}" /></div>
+        </div>
+        <div class="row">
+          <div class="col-sm-3 field form-group"><label>Prioridad</label><select class="form-control form-readonly de" disabled>${optsSel(['Muy Alta','Alta','Media','Baja'],i.prio)}</select></div>
+          <div class="col-sm-3 field form-group"><label>Severidad</label><select class="form-control form-readonly de" disabled>${optsSel(['Baja','Mayor','Crítica'],'Baja')}</select></div>
+          <div class="col-sm-3 field form-group"><label>Contexto</label><select class="form-control form-readonly de" disabled>${optsSel(['Sin contexto','Puesto de Trabajo','Producción'],'Sin contexto')}</select></div>
+          <div class="col-sm-3 field form-group"><label>Impacto</label><select class="form-control form-readonly de" disabled>${optsSel(['Bajo','Medio','Alto'],'Bajo')}</select></div>
+        </div>
+      </div>
+      <div id="dt-info" class="hidden-x">
+        <div class="ia-grid">
+          <div class="ia-row"><input class="ia-label de" value="Info adicional 1" title="Editá el nombre del campo" readonly /><input class="form-control de" readonly /></div>
+          <div class="ia-row"><input class="ia-label de" value="Info adicional 4" title="Editá el nombre del campo" readonly /><input class="form-control de" readonly /></div>
+          <div class="ia-row"><input class="ia-label de" value="Info adicional 2" title="Editá el nombre del campo" readonly /><input class="form-control de" readonly /></div>
+          <div class="ia-row"><input class="ia-label de" value="Info adicional 5" title="Editá el nombre del campo" readonly /><input class="form-control de" readonly /></div>
+          <div class="ia-row"><input class="ia-label de" value="Info adicional 3" title="Editá el nombre del campo" readonly /><input class="form-control de" readonly /></div>
+          <div class="ia-row"><input class="ia-label de" value="Info adicional 6" title="Editá el nombre del campo" readonly /><input class="form-control de" readonly /></div>
+        </div>
+        <div class="ia-extra">
+          <div class="ia-bool-pair">
+            <div class="ia-bool" onclick="iaBool(this)"><button class="ia-bool-ic" type="button"><i class="fa fa-times"></i></button><input class="ia-label ia-bool-lbl de" value="Info adicional 7" title="Editá el nombre del campo" onclick="event.stopPropagation()" oninput="sizeIaLbl(this)" readonly /></div>
+            <div class="ia-bool" onclick="iaBool(this)"><button class="ia-bool-ic" type="button"><i class="fa fa-times"></i></button><input class="ia-label ia-bool-lbl de" value="Info adicional 8" title="Editá el nombre del campo" onclick="event.stopPropagation()" oninput="sizeIaLbl(this)" readonly /></div>
+          </div>
+          <div class="ia-date-pair">
+            <div class="ia-date"><input class="ia-label de" value="Info adicional 9" title="Editá el nombre del campo" readonly /><input type="datetime-local" class="form-control de" readonly /></div>
+            <div class="ia-date"><input class="ia-label de" value="Info adicional 10" title="Editá el nombre del campo" readonly /><input type="datetime-local" class="form-control de" readonly /></div>
+          </div>
+        </div>
+      </div>
+      <div id="dt-soluc" class="hidden-x">
+        <div class="row"><div class="col-sm-12 field form-group"><label>Resumen</label><input class="form-control form-readonly de" value="${(solResumen||'').replace(/"/g,'&quot;')}" readonly /></div></div>
+        <div class="row"><div class="col-sm-12 field form-group"><label>Detalle</label><textarea class="form-control form-readonly de" rows="4" readonly>${solDetalle||''}</textarea></div></div>
+        <div style="display:flex;gap:8px">
+          ${['En Proceso','Resuelto','Fuera de Alcance'].map(s=>`<button class="actbtn det-est" type="button" onclick="selEstadoDet(this)" style="background:${s===estadoSel?'var(--blue)':'#fff'};color:${s===estadoSel?'#fff':'var(--blue)'};border:1px solid var(--blue)">${s}</button>`).join('')}
+        </div>
+      </div>
+    </div>
+    <div class="actions" style="align-items:center">
+      ${cerrada?'':`<button class="actbtn" style="flex:none;padding:11px 18px" onclick="detEdit(${i.id})"><i class="fa fa-pencil"></i> Editar</button>`}
+      <button class="actbtn sm" onclick="openEventos(${i.id})">Eventos<span class="badge">${i.eventos.length}</span></button>
+      <button class="actbtn sm" onclick="openEscal(${i.id})">Escalamientos<span class="badge">${i.eventos.filter(x=>/escal/i.test(x.tipo)).length||0}</span></button>
+      <button class="actbtn sm" onclick="demo()">Adjuntos<span class="badge">1</span></button>
+      <button class="actbtn sm" onclick="demo()">Log<span class="badge">4</span></button>
+      <button class="actbtn sm" onclick="demo()">Tiempos</button>
+      <button class="actbtn sm" onclick="demo()">Soluc. Sim.<span class="badge">39</span></button>
+      ${cerrada?'':`<button class="actbtn sm" onclick="cerrarInc(${i.id})">Cerrar</button>`}
+      <span class="act-foot">
+        <button class="ghost-btn" onclick="go('consola')">Consola</button>
+        <button class="actbtn" id="det-guardar" style="flex:none;padding:7px 18px;display:none" onclick="detGuardar(${i.id})"><i class="fa fa-check"></i> Guardar</button>
+      </span>
     </div>`;
+  _detTipo='Solicitud'; buildDTipoMenu();
   go('detalle');
 }
 function scrollHist(){ document.getElementById('hist').scrollIntoView({behavior:'smooth'}); }
@@ -1469,45 +1727,88 @@ function confirmarCierre(){
 }
 function reabrir(id){ const i=inc.find(x=>x.id===id); i.tab='asignado'; i.cierre='—'; i.sla={k:'curso',t:'En curso (0m)'}; i.eventos.push({f:now(),tipo:'Reapertura',desc:'Incidente reabierto',obs:'Reabierto por el agente.',ag:'Nicolás Ferreyra'}); closeOpt(); toast('Incidente #'+id+' reabierto.','ok'); tab='asignado'; page=1; go('consola'); }
 
-let _escalId=null;
-function openEscal(id){ _escalId=id; closeOpt(); document.getElementById('escal-agente').innerHTML=RESP.map(a=>`<option>${a}</option>`).join(''); renderEscalHist(); document.getElementById('escalModal').classList.add('open'); }
-function cerrarEscal(){ document.getElementById('escalModal').classList.remove('open'); }
+let _escalId=null, _escSel=null;
+const RESP_GRUPO={'Sergio Palomino':'Redes y Conectividad','Martín Giordano':'Infraestructura','Nicolás Ferreyra':'Aplicaciones de Negocio','Rodrigo Mansilla':'Puesto de Trabajo','Diego Torricelli':'Seguridad Física'};
+function escGrupo(n){ return RESP_GRUPO[n]||'General'; }
+function escCount(n){ return inc.filter(x=>x.resp===n).length; }
+function openEscal(id){ _escalId=id; closeOpt(); _escSel=null; buildEscalDD(); renderEscalHist(); document.getElementById('escalModal').classList.add('open'); }
+function cerrarEscal(){ document.getElementById('escalModal').classList.remove('open'); document.getElementById('escalMenu').classList.remove('open'); }
+function buildEscalDD(){
+  document.getElementById('escalMenu').innerHTML=RESP.map(n=>`<div class="esc-opt ${n===_escSel?'sel':''}" onclick="selEscal('${n.replace(/'/g,"\\'")}')">
+      <span class="nm">${n}</span><span class="esc-grp-pill">${escGrupo(n)}</span>
+      <span class="esc-cnt"><i class="fa fa-folder-open-o"></i> ${escCount(n)} inc.</span>
+    </div>`).join('');
+  document.getElementById('escalVal').innerHTML = _escSel
+    ? `<span style="font-weight:600">${_escSel}</span> <span class="esc-grp-pill" style="margin-left:6px">${escGrupo(_escSel)}</span>`
+    : '<span style="color:#9aa0a6">Seleccioná un responsable…</span>';
+}
+function toggleEscalDD(e){
+  e.stopPropagation();
+  const m=document.getElementById('escalMenu');
+  if(m.classList.contains('open')){ m.classList.remove('open'); return; }
+  const r=document.querySelector('#escalDD .esc-btn').getBoundingClientRect();
+  m.style.left=r.left+'px'; m.style.width=r.width+'px'; m.classList.add('open');
+  const mh=m.offsetHeight; let top=r.bottom+4;
+  if(top+mh>window.innerHeight-8) top=Math.max(8,r.top-mh-4);
+  m.style.top=top+'px';
+}
+function selEscal(n){ _escSel=n; document.getElementById('escalMenu').classList.remove('open'); buildEscalDD(); }
+document.addEventListener('click', e=>{ if(!e.target.closest('#escalDD')){ const m=document.getElementById('escalMenu'); if(m) m.classList.remove('open'); } });
 function renderEscalHist(){
   const i=inc.find(x=>x.id===_escalId), el=document.getElementById('escal-hist');
   const evs=(i.eventos||[]).filter(e=>/escal/i.test(e.tipo));
-  if(!evs.length){ el.innerHTML='<div style="color:#aab1b8;font-size:13px;padding:12px 2px">Sin escalamientos registrados.</div>'; return; }
-  el.innerHTML=evs.map(e=>`<div style="border-left:2px solid var(--blue);padding:0 0 12px 14px;position:relative;margin-left:4px">
-    <span style="position:absolute;left:-6px;top:3px;width:10px;height:10px;border-radius:50%;background:var(--blue);border:2px solid #fff;box-shadow:0 0 0 1px var(--blue)"></span>
-    <div style="font-size:11px;color:#9aa0a6"><i class="fa fa-clock-o"></i> ${e.f} · ${e.ag}</div>
-    <div style="margin-top:2px;font-weight:600">${e.desc}</div>
-    ${e.obs?`<div style="color:#777;font-size:12px">${e.obs}</div>`:''}
-  </div>`).join('');
+  if(!evs.length){ el.innerHTML='<tr><td colspan="4" style="color:#aab1b8;text-align:center;padding:18px">Sin escalamientos registrados.</td></tr>'; return; }
+  el.innerHTML=evs.map(e=>`<tr>
+    <td style="white-space:nowrap;color:#777"><i class="fa fa-clock-o" style="opacity:.5"></i> ${e.f}</td>
+    <td><strong>${e.desc}</strong></td>
+    <td style="color:#777">${e.obs||'—'}</td>
+    <td style="white-space:nowrap">${e.ag}</td>
+  </tr>`).join('');
 }
 function confirmarEscal(){
   const i=inc.find(x=>x.id===_escalId); if(!i){ cerrarEscal(); return; }
-  const ag=document.getElementById('escal-agente').value;
+  if(!_escSel){ toast('Seleccioná un responsable para escalar.','err'); return; }
+  const ag=_escSel;
   i.resp=ag; i.tab='escalado';
-  i.eventos.push({f:now(),tipo:'Escalamiento',desc:'Escalado a '+ag,obs:'Reasignado por el agente.',ag:'Nicolás Ferreyra'});
+  i.eventos.push({f:now(),tipo:'Escalamiento',desc:'Escalado a '+ag,obs:'Reasignado a '+escGrupo(ag)+'.',ag});
   toast('Incidente #'+_escalId+' escalado a '+ag+'.','ok');
-  renderEscalHist(); renderConsola();
+  _escSel=null; buildEscalDD(); renderEscalHist(); renderConsola();
 }
 
+const _ft=document.createElement('div'); _ft.id='floatTip'; document.body.appendChild(_ft);
+function _showFT(t){
+  _ft.textContent=t.getAttribute('data-tip');
+  _ft.style.left='-9999px'; _ft.style.top='0'; _ft.classList.add('show');
+  const r=t.getBoundingClientRect(), w=_ft.offsetWidth, h=_ft.offsetHeight, cx=r.left+r.width/2;
+  let left=cx-w/2; left=Math.max(8,Math.min(left,window.innerWidth-w-8));
+  _ft.style.setProperty('--arrow',(cx-left)+'px');
+  _ft.style.left=left+'px';
+  _ft.style.top=(r.top-h-9)+'px';
+}
+document.addEventListener('mouseover', e=>{ const t=e.target.closest('.pilltip[data-tip]'); if(t) _showFT(t); });
+document.addEventListener('mouseout', e=>{ if(e.target.closest('.pilltip[data-tip]')) _ft.classList.remove('show'); });
+
 let _evId=null;
-function openEventos(id){ _evId=id; closeOpt(); document.getElementById('ev-new-obs').value=''; document.getElementById('ev-new-tipo').value='Comentario'; document.getElementById('ev-new-vis').value='privado'; renderEvList(); document.getElementById('eventosModal').classList.add('open'); }
-function cerrarEventos(){ document.getElementById('eventosModal').classList.remove('open'); }
+function openEventos(id){ _evId=id; closeOpt(); renderEvList(); document.getElementById('eventosModal').classList.add('open'); }
+function cerrarEventos(){ document.getElementById('eventosModal').classList.remove('open'); cerrarNuevoEvento(); }
+function abrirNuevoEvento(){ document.getElementById('ev-new-obs').value=''; document.getElementById('ev-new-tipo').value='Comentario'; document.getElementById('ev-new-vis').value='normal'; document.getElementById('evNuevoModal').classList.add('open'); document.getElementById('ev-new-obs').focus(); }
+function cerrarNuevoEvento(){ document.getElementById('evNuevoModal').classList.remove('open'); }
 function renderEvList(){
   const i=inc.find(x=>x.id===_evId), el=document.getElementById('ev-list');
   el.innerHTML=(i.eventos||[]).map(e=>{
-    const c = e.vis==='notif' ? 'var(--green)' : 'var(--blue)';
-    const tag = e.vis==='notif'
-      ? `<span class="notif-pill tip" data-tip="Se envió un correo de notificación al solicitante."><i class="fa fa-bell"></i> SE NOTIFICÓ AL SOLICITANTE</span>`
-      : (e.vis==='privado' ? `<span class="priv-pill"><i class="fa fa-lock"></i> Privado</span>` : '');
-    return `<div style="border-left:2px solid ${c};padding:0 0 13px 14px;position:relative;margin-left:4px">
-      <span style="position:absolute;left:-6px;top:3px;width:10px;height:10px;border-radius:50%;background:${c};border:2px solid #fff;box-shadow:0 0 0 1px ${c}"></span>
-      <div style="font-size:11px;color:#9aa0a6"><i class="fa fa-clock-o"></i> ${e.f} · ${e.ag}</div>
-      <div style="margin:2px 0"><span style="background:#eef1f3;border-radius:3px;padding:1px 8px;font-size:11px;margin-right:6px;font-weight:600">${e.tipo}</span><strong>${e.desc}</strong>${tag}</div>
-      ${e.obs?`<div style="color:#777;font-size:12px">${e.obs}</div>`:''}
-    </div>`;
+    const vis = e.vis==='notif'
+      ? `<span class="notif-pill pilltip" style="margin-left:0" data-tip="Se envió un correo de notificación al solicitante."><i class="fa fa-bell"></i> Notificó</span>`
+      : (e.vis==='privado'
+          ? `<span class="priv-pill pilltip" style="margin-left:0" data-tip="Este evento solo lo pueden ver los agentes."><i class="fa fa-lock"></i> Privado</span>`
+          : `<span class="norm-pill pilltip" style="margin-left:0" data-tip="Evento visible para todos."><i class="fa fa-eye"></i> Normal</span>`);
+    return `<tr>
+      <td style="white-space:nowrap;color:#777"><i class="fa fa-clock-o" style="opacity:.5"></i> ${e.f}</td>
+      <td><span class="ev-tipo-badge">${e.tipo}</span></td>
+      <td><strong>${e.desc}</strong></td>
+      <td style="color:#777;word-break:break-word">${e.obs||'—'}</td>
+      <td style="white-space:nowrap">${e.ag}</td>
+      <td>${vis}</td>
+    </tr>`;
   }).join('');
 }
 function agregarEvento(){
@@ -1515,10 +1816,10 @@ function agregarEvento(){
   if(!obs){ toast('Escribí el detalle del evento.','err'); return; }
   const tipo=document.getElementById('ev-new-tipo').value, vis=document.getElementById('ev-new-vis').value;
   inc.find(x=>x.id===_evId).eventos.push({f:now(),tipo,desc:tipo,obs,ag:'Nicolás Ferreyra',vis});
-  document.getElementById('ev-new-obs').value='';
+  cerrarNuevoEvento();
   toast(vis==='notif'?'Evento agregado y solicitante notificado.':'Evento agregado.','ok');
   renderEvList();
-  const l=document.getElementById('ev-list'); l.scrollTop=l.scrollHeight;
+  const l=document.getElementById('ev-scroll'); l.scrollTop=l.scrollHeight;
 }
 
 /* ===== CREAR ===== */
@@ -1565,13 +1866,40 @@ function crearInc(){
 /* ===== CLIENTES ===== */
 function renderCli(){ document.getElementById('cli-rows').innerHTML=clientes.map(c=>`
   <tr><td><span class="idbadge">${c.id}</span></td><td><strong>${c.nombre}</strong></td><td class="subt">${c.cuit}</td><td>${c.cont}</td>
-  <td><span class="label label-info">Nivel ${c.niv}</span></td><td>${c.n}</td>
-  <td>${c.act?'<span class="sla ok">Activo</span>':'<span class="sla" style="background:#9aa0a6">Inactivo</span>'}</td></tr>`).join(''); }
-function toggleAlta(){ document.getElementById('alta').classList.toggle('hidden-x'); }
-function crearCli(){ const n=document.getElementById('cl-nom').value.trim(); if(!n){toast("La 'Razón Social' es obligatoria.",'err');return;}
-  clientes.unshift({id:clientes.length+1,nombre:n,cuit:document.getElementById('cl-cuit').value||'—',cont:document.getElementById('cl-cont').value||'—',niv:document.getElementById('cl-niv').value,n:0,act:true});
-  document.getElementById('cl-nom').value='';document.getElementById('cl-cuit').value='';document.getElementById('cl-cont').value='';
-  toggleAlta(); renderCli(); toast('Cliente dado de alta.','ok'); }
+  <td style="text-align:center"><span class="label label-info">Nivel ${c.niv}</span></td><td style="text-align:center">${c.n}</td>
+  <td style="text-align:center">${c.act?'<span class="sla ok">Activo</span>':'<span class="sla" style="background:#9aa0a6">Inactivo</span>'}</td>
+  <td style="white-space:nowrap;text-align:center">
+    <button class="cli-act" title="Editar" onclick="editCli(${c.id})"><i class="fa fa-pencil"></i></button>
+    <button class="cli-act danger" title="Eliminar" onclick="eliminarCli(${c.id})"><i class="fa fa-trash"></i></button>
+  </td></tr>`).join(''); }
+let _cliEdit=null, _cliDelId=null;
+function _cliFill(c){
+  document.getElementById('cl-nom').value=c?c.nombre:'';
+  document.getElementById('cl-cuit').value=c?(c.cuit==='—'?'':c.cuit):'';
+  document.getElementById('cl-cont').value=c?(c.cont==='—'?'':c.cont):'';
+  document.getElementById('cl-email').value=c?(c.email||''):'';
+  document.getElementById('cl-tel').value=c?(c.tel||''):'';
+  document.getElementById('cl-dir').value=c?(c.dir||''):'';
+  document.getElementById('cl-niv').value=c?c.niv:'2';
+  document.getElementById('cl-niv-val').textContent=document.getElementById('cl-niv').value;
+  document.getElementById('cl-act').checked=c?!!c.act:true;
+  clSwitch();
+}
+function clSwitch(){ document.getElementById('cl-act-sw').setAttribute('data-tip', document.getElementById('cl-act').checked?'Estado activo':'Estado inactivo'); }
+function nivStep(d){ const el=document.getElementById('cl-niv'); const v=Math.max(1,Math.min(5,(parseInt(el.value)||1)+d)); el.value=v; document.getElementById('cl-niv-val').textContent=v; }
+function nuevoCli(){ _cliEdit=null; _cliFill(null); document.getElementById('cli-modal-title').textContent='Nuevo Solicitante'; document.getElementById('cli-save-lbl').textContent='Agregar'; document.getElementById('cliModal').classList.add('open'); setTimeout(()=>document.getElementById('cl-nom').focus(),50); }
+function editCli(id){ const c=clientes.find(x=>x.id===id); if(!c)return; _cliEdit=id; _cliFill(c); document.getElementById('cli-modal-title').textContent='Editar Solicitante'; document.getElementById('cli-save-lbl').textContent='Guardar'; document.getElementById('cliModal').classList.add('open'); }
+function cerrarCli(){ document.getElementById('cliModal').classList.remove('open'); }
+function guardarCli(){
+  const n=document.getElementById('cl-nom').value.trim(); if(!n){ toast("La 'Razón Social' es obligatoria.",'err'); return; }
+  const data={nombre:n,cuit:document.getElementById('cl-cuit').value||'—',cont:document.getElementById('cl-cont').value||'—',email:document.getElementById('cl-email').value||'',tel:document.getElementById('cl-tel').value||'',dir:document.getElementById('cl-dir').value||'',niv:document.getElementById('cl-niv').value,act:document.getElementById('cl-act').checked};
+  if(_cliEdit==null){ clientes.unshift(Object.assign({id:(Math.max(0,...clientes.map(c=>c.id))+1),n:0},data)); toast('Solicitante dado de alta.','ok'); }
+  else { Object.assign(clientes.find(c=>c.id===_cliEdit),data); toast('Solicitante actualizado.','ok'); }
+  cerrarCli(); renderCli();
+}
+function eliminarCli(id){ const c=clientes.find(x=>x.id===id); if(!c)return; _cliDelId=id; document.getElementById('cli-del-name').textContent=c.nombre; document.getElementById('cliDelModal').classList.add('open'); }
+function cerrarCliDel(){ document.getElementById('cliDelModal').classList.remove('open'); }
+function confirmCliDel(){ clientes=clientes.filter(x=>x.id!==_cliDelId); cerrarCliDel(); renderCli(); toast('Solicitante eliminado.','ok'); }
 
 /* ===== UTILS ===== */
 function now(){ const d=new Date(),p=n=>String(n).padStart(2,'0'); return p(d.getDate())+'/'+p(d.getMonth()+1)+'/'+d.getFullYear()+' '+p(d.getHours())+':'+p(d.getMinutes()); }
