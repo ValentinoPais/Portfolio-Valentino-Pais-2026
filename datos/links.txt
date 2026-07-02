@@ -1,0 +1,22 @@
+# =====================================================================
+#  LINKS DE LA PAGINA  ·  Portfolio Valentino Pais
+# =====================================================================
+#  Cambia cualquier link de aca y la pagina lo toma sola al cargar.
+#
+#  Formato:   NOMBRE: link
+#  - No borres los NOMBRES en mayuscula ni los dos puntos ":".
+#  - Las lineas que empiezan con "#" son notas y se ignoran.
+#  - El EMAIL actualiza el mail de contacto en todos lados
+#    (boton email, boton copiar y "escribir un mail").
+#
+#  Nota: el CV, la foto de perfil, la voz y la foto de Mateo son
+#  ARCHIVOS: para cambiarlos, reemplaza el archivo dentro de /datos
+#  (cv.pdf, perfil.jpg, voz-ingles.mp3, mateo.jpg) por el nuevo.
+# =====================================================================
+
+SMARTG:   https://www.smartg.com.ar/
+SIMAX:    https://valentinopais.github.io/simax-demo/?login=1
+MATEO:    https://mateoronnabregu.netlify.app/
+GITHUB:   https://github.com/valentinopais
+LINKEDIN: https://www.linkedin.com/in/valentinopais/
+EMAIL:    valenpais@gmail.com
