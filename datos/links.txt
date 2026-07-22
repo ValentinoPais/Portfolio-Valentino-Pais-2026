@@ -14,9 +14,12 @@
 #  (cv.pdf, perfil.jpg, voz-ingles.mp3, mateo.jpg) por el nuevo.
 # =====================================================================
 
-SMARTG:   https://www.smartg.com.ar/
-SIMAX:    https://valentinopais.github.io/simax-demo/?login=1
-MATEO:    https://mateoronnabregu.netlify.app/
-GITHUB:   https://github.com/valentinopais
-LINKEDIN: https://www.linkedin.com/in/valentinopais/
-EMAIL:    valenpais@gmail.com
+SMARTG:    https://www.smartg.com.ar/
+XOFT:      https://xoft.com.ar/index.html
+TELESMART: https://www.telesmart.com.ar/
+SIMAX:     https://valentinopais.github.io/simax-demo/
+MATEO:     https://valentinopais.github.io/MATEO-RONN-ABREGU-PORTFOLIO-PROFESIONAL-2026/
+KANUSUR:   https://www.instagram.com/kanusur/
+GITHUB:    https://github.com/valentinopais
+LINKEDIN:  https://www.linkedin.com/in/valentinopais/
+EMAIL:     valenpais@gmail.com
