@@ -631,5 +631,21 @@
       setTimeout(()=>map.invalidateSize(), 250);
     })();
   </script>
+  <script>
+  /* Empareja la altura del tile HELLO con la de los cuadrados (que quedan cuadrados) */
+  (function(){
+    function eqHero(){
+      var hello=document.querySelector('.c-hello'), sq=document.querySelector('.c-stack');
+      if(!hello||!sq) return;
+      if(window.matchMedia('(max-width:600px)').matches){ hello.style.height=''; return; }
+      hello.style.height='';                 // reset para medir el cuadrado
+      hello.style.height=sq.offsetHeight+'px';
+    }
+    document.addEventListener('DOMContentLoaded',eqHero);
+    window.addEventListener('load',eqHero);
+    window.addEventListener('resize',eqHero);
+    if(window.ResizeObserver){ var sq=document.querySelector('.c-stack'); if(sq) new ResizeObserver(eqHero).observe(sq); }
+  })();
+  </script>
 </body>
 </html>
