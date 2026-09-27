@@ -7,7 +7,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" />
+<link rel="preconnect" href="https://tiles.openfreemap.org" crossorigin />
 <style>
   :root{
     --bg:#0d1117;
@@ -107,10 +108,18 @@
   .brand-name{font-weight:700;font-size:1.1rem;letter-spacing:-.01em}
 
   /* map tile */
-  .maptile{padding:0;overflow:hidden;aspect-ratio:2/1;min-height:200px}
+  .maptile{padding:0;overflow:hidden;aspect-ratio:2/1;min-height:200px;width:100%;min-width:0}
   .maptile .mapframe{position:absolute;inset:0;width:100%;height:100%;z-index:1;background:#0d1117}
-  .leaflet-container{background:#0d1117!important}
-  .maptile .map-label{position:absolute;top:14px;left:16px;z-index:3;font-family:'JetBrains Mono',monospace;font-size:.74rem;letter-spacing:.05em;text-transform:uppercase;opacity:.85}
+  .maptile .maplibregl-canvas{position:absolute;left:0;top:0;opacity:0;transition:opacity .35s ease}
+  .maptile.ready .maplibregl-canvas{opacity:1}
+  /* créditos del mapa (los pide la licencia de OpenStreetMap): se ven unos segundos y quedan en una "i" */
+  .maptile .map-attrib{position:absolute;left:12px;bottom:10px;z-index:4;display:flex;align-items:center;gap:6px;font-size:.6rem;color:rgba(255,255,255,.5);opacity:0;transition:opacity .35s ease}
+  .maptile.ready .map-attrib{opacity:1}
+  .map-attrib .attr-i{width:16px;height:16px;flex:none;padding:0;border-radius:50%;border:1px solid rgba(255,255,255,.3);background:rgba(13,17,23,.6);color:inherit;font:italic 700 10px/14px Georgia,serif;cursor:pointer}
+  .map-attrib .attr-txt{white-space:nowrap;opacity:0;visibility:hidden;transition:opacity .3s,visibility .3s}
+  .map-attrib.open .attr-txt{opacity:1;visibility:visible}
+  @media(hover:hover){.map-attrib:hover .attr-txt{opacity:1;visibility:visible}}
+  .map-attrib a:hover{color:rgba(255,255,255,.85)}
   .maptile .map-overlay{position:absolute;inset:0;z-index:3;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;pointer-events:none}
   .avatar{width:86px;height:86px;border-radius:50%;border:4px solid rgba(255,255,255,.9);background:#3a4150 center/cover no-repeat;box-shadow:0 6px 20px rgba(0,0,0,.55)}
   .pin{display:inline-flex;align-items:center;gap:6px;background:rgba(13,17,23,.82);border:1px solid var(--border);color:#fff;font-size:.8rem;font-weight:600;padding:5px 11px;border-radius:999px}
@@ -175,10 +184,12 @@
   @media(max-width:860px){
     .bento{grid-template-columns:repeat(2,1fr)}
     .col2{grid-column:span 2}
+    .bento>.tile.solo{grid-column:1 / -1;justify-self:center;width:calc(50% - 7px)}
   }
   @media(max-width:600px){
     .bento{gap:11px}
     .c-stack{grid-column:span 2;aspect-ratio:auto;min-height:150px}
+    .bento>.tile.solo{width:calc(50% - 5.5px)}
   }
 </style>
 </head>
@@ -320,11 +331,11 @@
       <!-- UBICACIÓN -->
       <div class="tile c-loc col2 maptile loc-center" data-cat="info">
         <div class="mapframe" id="locmap"></div>
-        <div class="map-label" data-es="ubicación" data-en="location">ubicación</div>
         <div class="map-overlay">
           <div class="avatar" style="background-image:url('datos/perfil.jpg')"></div>
-          <div class="pin"><span class="pdot"></span> Obelisco · Buenos Aires</div>
+          <div class="pin"><span class="pdot"></span> Devoto · Buenos Aires</div>
         </div>
+        <div class="map-attrib"><button class="attr-i" type="button" aria-label="Créditos del mapa">i</button><span class="attr-txt"><a href="https://www.openmaptiles.org/" target="_blank" rel="noopener">© OpenMapTiles</a> · <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">© OpenStreetMap</a></span></div>
       </div>
 
     </div>
@@ -365,7 +376,6 @@
     </div>
   </div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
   <script>
     // ---- Links dinámicos: lee datos/links.txt al cargar (si falla, quedan los links del HTML) ----
     (function(){
@@ -618,17 +628,40 @@
       resize(); setInterval(draw,75); window.addEventListener('resize', resize);
     })();
 
-    // ---- Dark map (no controls, no interaction) centered on Obelisco ----
+    // ---- Mapa oscuro de fondo (sin controles ni interacción) centrado en Villa Devoto ----
+    // Tiles de OpenFreeMap (gratis, sin API key) dibujados con MapLibre. Se empieza a bajar
+    // apenas carga la página, así cuando llegás al final ya está listo.
     (function(){
-      if(typeof L === 'undefined') return;
-      const map = L.map('locmap', {
-        center: [-34.60368, -58.38157], zoom: 15,
-        zoomControl:false, attributionControl:false,
-        dragging:false, scrollWheelZoom:false, doubleClickZoom:false,
-        boxZoom:false, keyboard:false, touchZoom:false, tap:false, inertia:false
-      });
-      L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {maxZoom:19}).addTo(map);
-      setTimeout(()=>map.invalidateSize(), 250);
+      var LUGAR = { lng: -58.51226, lat: -34.59937, zoom: 14 };   // Plaza Arenales, Villa Devoto
+      var ESTILO = 'https://tiles.openfreemap.org/styles/dark';
+      var el = document.getElementById('locmap');
+      if(!el) return;
+      var tile = el.parentNode, creditos = tile.querySelector('.map-attrib');
+
+      var js = document.createElement('script');
+      js.src = 'https://cdnjs.cloudflare.com/ajax/libs/maplibre-gl/5.24.0/maplibre-gl.js';
+      js.async = true;
+      js.onload = function(){
+        try{
+          var map = new maplibregl.Map({
+            container: el, style: ESTILO,
+            center: [LUGAR.lng, LUGAR.lat], zoom: LUGAR.zoom,
+            interactive: false, attributionControl: false, fadeDuration: 0
+          });
+          map.once('load', function(){ tile.classList.add('ready'); mostrarCreditos(); });
+        }catch(e){ /* sin WebGL: queda el fondo oscuro con la foto */ }
+      };
+      document.head.appendChild(js);
+
+      // Créditos: se ven 5 s la primera vez que el mapa aparece en pantalla; después queda la "i"
+      function mostrarCreditos(){
+        if(!creditos) return;
+        function abrir(){ creditos.classList.add('open'); setTimeout(function(){ creditos.classList.remove('open'); }, 5000); }
+        if(!('IntersectionObserver' in window)) return abrir();
+        var io = new IntersectionObserver(function(e){ if(e[0].isIntersecting){ io.disconnect(); abrir(); } }, { threshold: .6 });
+        io.observe(tile);
+      }
+      if(creditos) creditos.querySelector('.attr-i').addEventListener('click', function(){ creditos.classList.toggle('open'); });
     })();
   </script>
   <script>
@@ -645,6 +678,25 @@
     window.addEventListener('load',eqHero);
     window.addEventListener('resize',eqHero);
     if(window.ResizeObserver){ var sq=document.querySelector('.c-stack'); if(sq) new ResizeObserver(eqHero).observe(sq); }
+  })();
+
+  /* En celular/tablet (2 columnas): si una tarjeta queda sola en su fila, se centra */
+  (function(){
+    var grid=document.querySelector('.bento');
+    if(!grid) return;
+    function centrarSueltas(){
+      var tiles=[].slice.call(grid.children), filas={};
+      tiles.forEach(function(t){ t.classList.remove('solo'); });
+      if(!window.matchMedia('(max-width:860px)').matches) return;
+      tiles.forEach(function(t){ (filas[t.offsetTop]=filas[t.offsetTop]||[]).push(t); });
+      for(var k in filas){
+        var f=filas[k];
+        if(f.length===1 && f[0].offsetWidth < grid.clientWidth*0.75) f[0].classList.add('solo');
+      }
+    }
+    var raf=0;
+    window.addEventListener('resize',function(){ cancelAnimationFrame(raf); raf=requestAnimationFrame(centrarSueltas); });
+    centrarSueltas();
   })();
   </script>
 </body>
