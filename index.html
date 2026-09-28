@@ -762,10 +762,10 @@
     star.addEventListener('click', function(e){ if(e.detail === 0) tocar(true); });  // lectores de pantalla
   })();
 
-  /* Sonido de la estrellita: mezcla de un "boing" (resorte) con una nota de cajita musical, generado con Web Audio (sin archivos).
+  /* Sonido de la estrellita: un "boing" de resorte, generado con Web Audio (sin archivos).
      Cada toque suena en un tono al azar (nunca el mismo dos veces seguidas) */
   (function(){
-    var ac = null, salida = null, ruidoBuf = null, ultimo = null, VOLUMEN = .9;
+    var ac = null, salida = null, ultimo = null, VOLUMEN = 1;
     function ctx(){
       if(!ac){
         var AC = window.AudioContext || window.webkitAudioContext; if(!AC) return null;
@@ -791,32 +791,21 @@
       osc.start(t); osc.stop(t + a + d + .05);
       return osc;
     }
-    function ruido(o){
-      if(!ruidoBuf){ ruidoBuf = ac.createBuffer(1, ac.sampleRate, ac.sampleRate); var d = ruidoBuf.getChannelData(0); for(var i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1; }
-      var t = o.t, a = o.a || .002, dd = o.d || .1, src = ac.createBufferSource(), fl = ac.createBiquadFilter(), g = ac.createGain();
-      src.buffer = ruidoBuf; fl.type = o.filtro || 'bandpass'; fl.frequency.setValueAtTime(o.f || 2000, t);
-      env(g, t, a, dd, o.v || .3); src.connect(fl); fl.connect(g); g.connect(salida);
-      src.start(t, Math.random() * .4); src.stop(t + a + dd + .05);
-    }
     function vibrato(osc, t, rapidez, prof, d){
       var l = ac.createOscillator(), lg = ac.createGain(); l.frequency.value = rapidez;
       lg.gain.setValueAtTime(prof, t); lg.gain.exponentialRampToValueAtTime(.01, t + d);
       l.connect(lg); lg.connect(osc.frequency); l.start(t); l.stop(t + d + .05);
     }
-    function boingCajita(t, f){
-      // el boing (resorte) adelante: la nota más un armónico, así se escucha bien también en parlantes chicos
+    function boing(t, f){   // el resorte: la nota que sube con vibrato, más un armónico para que se escuche bien también en parlantes chicos
       vibrato(nota({ f: f * .36, fin: f * .66, dur: .4, t: t, a: .005, d: .55, v: .34 }), t, 14, f * .07, .5);
       vibrato(nota({ f: f * .72, fin: f * 1.32, dur: .4, t: t, a: .005, d: .4, v: .1 }), t, 14, f * .14, .4);
-      // la cajita musical de fondo: más grave (una octava arriba de donde termina el boing) y más suave
-      nota({ f: f * 1.32, t: t + .04, a: .002, d: .6, v: .085 });
-      ruido({ t: t + .04, a: .001, d: .01, v: .06, filtro: 'bandpass', f: 3000 });                              // el "tic" del mecanismo, suave
     }
     window.estrellaAudio = {
       listo: function(){ return !!ac && ac.state === 'running'; },
       sonar: function(){
         var a = ctx(); if(!a) return;
         var k; do { k = Math.floor(Math.random() * 10) - 5; } while(k === ultimo); ultimo = k;      // tono al azar (de -5 a +4 semitonos)
-        try{ boingCajita(a.currentTime + .01, 700 * Math.pow(2, k / 12)); }catch(e){}
+        try{ boing(a.currentTime + .01, 700 * Math.pow(2, k / 12)); }catch(e){}
       }
     };
   })();
