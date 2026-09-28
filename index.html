@@ -31,7 +31,7 @@
 
   /* BENTO GRID */
   .bento{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;grid-auto-flow:dense}
-  .tile{position:relative;border-radius:20px;padding:22px;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;color:#fff;transition:transform .55s cubic-bezier(.2,.8,.2,1),scale .45s cubic-bezier(.2,.8,.2,1),box-shadow .35s,filter .2s,opacity .3s;aspect-ratio:1}
+  .tile{position:relative;border-radius:20px;padding:22px;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;color:#fff;transition:scale .45s cubic-bezier(.2,.8,.2,1),box-shadow .35s,filter .2s,opacity .3s;aspect-ratio:1}
   /* hover estilo "card de Steam": se inclina en 3D siguiendo al mouse, crece un poco y le pega un brillo (JS al final) */
   .tile{--rx:0deg;--ry:0deg;--gx:50%;--gy:50%;--sx:0px;--sy:14px;--glow:120,130,150}
   /* sombra del hover: toma el color de cada tarjeta (sobre el fondo oscuro una sombra negra no se ve) */
@@ -39,7 +39,8 @@
   .c-catari{--glow:90,150,230}.c-siacc{--glow:56,139,253}.c-display{--glow:30,184,208}.c-kanu{--glow:86,211,100}.c-gh{--glow:46,160,67}
   .c-mail{--glow:234,67,53}.c-li{--glow:10,102,194}.c-cv{--glow:240,136,62}.c-loc{--glow:140,150,170}
   .tile::before{content:"";position:absolute;inset:0;z-index:4;pointer-events:none;border-radius:inherit;opacity:0;transition:opacity .35s ease;background:radial-gradient(circle at var(--gx) var(--gy),rgba(255,255,255,.22),rgba(255,255,255,.06) 32%,rgba(255,255,255,0) 62%)}
-  .tile.hov{z-index:10;scale:1.035;transform:perspective(1000px) rotateX(var(--rx)) rotateY(var(--ry));box-shadow:var(--sx) var(--sy) 38px -10px rgba(var(--glow),.5),0 10px 28px -14px rgba(0,0,0,.8);transition:transform .12s ease-out,scale .25s ease-out,box-shadow .15s ease-out,filter .2s,opacity .3s}
+  .tile.arriba{z-index:10}   /* la que está en hover (o volviendo a su lugar) queda por encima de las vecinas */
+  .tile.hov{box-shadow:var(--sx) var(--sy) 38px -10px rgba(var(--glow),.5),0 10px 28px -14px rgba(0,0,0,.8);transition:box-shadow .15s ease-out,filter .2s,opacity .3s}
   .tile.hov::before{opacity:1}
   @media(hover:none){a.tile:active{scale:.97;transition:scale .1s}}
   .col2{grid-column:span 2;aspect-ratio:auto}
@@ -110,11 +111,16 @@
   .stack-pills span{font-family:'JetBrains Mono',monospace;font-size:.7rem;background:rgba(255,255,255,.17);border-radius:7px;padding:4px 8px}
   .eng-label{font-family:'JetBrains Mono',monospace;font-size:.76rem;letter-spacing:.08em;text-transform:uppercase;opacity:.9;font-weight:400}
   .eng-flip{position:relative;width:64%;max-width:150px;aspect-ratio:1;perspective:700px;cursor:pointer}
-  .flip-inner{position:relative;width:100%;height:100%;transition:transform .6s cubic-bezier(.4,0,.2,1);transform-style:preserve-3d}
+  .flip-inner{position:relative;width:100%;height:100%;transition:transform .6s cubic-bezier(.4,0,.2,1)}
   .eng-flip:hover .flip-inner,.eng-flip.flipped .flip-inner,.eng-flip.playing .flip-inner,.eng-flip.scrubbing .flip-inner{transform:rotateY(180deg)}
-  .flip-front,.flip-back{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;border-radius:50%;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+  .flip-front,.flip-back{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;border-radius:50%}
   .flip-front{border:3px solid rgba(255,255,255,.65);font-weight:800;font-size:clamp(.95rem,3.2vw,1.25rem);letter-spacing:-.01em}
-  .flip-back{transform:rotateY(180deg);background:linear-gradient(150deg,#1f9b87,#2bb79f);border-radius:50%}
+  .flip-back{background:linear-gradient(150deg,#1f9b87,#2bb79f);border-radius:50%;visibility:hidden}
+  /* el 3D del círculo se prende solo mientras gira o está dado vuelta (clase .gira, la pone el JS);
+     quieto se dibuja plano junto con la tarjeta, así no parpadea cuando la tarjeta se inclina */
+  .eng-flip.gira .flip-inner{transform-style:preserve-3d}
+  .eng-flip.gira .flip-front,.eng-flip.gira .flip-back{backface-visibility:hidden;-webkit-backface-visibility:hidden}
+  .eng-flip.gira .flip-back{transform:rotateY(180deg);visibility:visible}
   .ring{position:absolute;inset:0;width:100%;height:100%;transform:rotate(-90deg)}
   .ring .track{fill:none;stroke:rgba(255,255,255,.28);stroke-width:5}
   .ring .prog{fill:none;stroke:#fff;stroke-width:5;stroke-linecap:round}
@@ -191,8 +197,16 @@
   }
   @media(max-width:600px){
     .bento{gap:11px}
-    .c-hello,.c-stack,.c-eng{grid-column:span 2;aspect-ratio:auto;min-height:calc((100cqw - 11px) / 2)}
-    .c-eng .eng-flip{max-width:100px}
+    .c-hello{grid-column:span 2;aspect-ratio:auto;min-height:calc((100cqw - 11px) / 2)}
+    /* Tecnologías e Inglés: dos cuadraditos lado a lado; todo adentro escala con el ancho de la pantalla (cqw) */
+    .c-stack,.c-eng{padding:12px;gap:2.6cqw}
+    .c-stack .t-h{font-size:5.2cqw}
+    .stack-pills{gap:1cqw}
+    .stack-pills span{font-size:2.9cqw;padding:.6cqw 1.2cqw;border-radius:1.6cqw}
+    .eng-label{font-size:2.9cqw}
+    .c-eng .eng-flip{width:62%;max-width:none}
+    .flip-front{font-size:3.7cqw;border-width:2px}
+    .play-btn svg{width:7cqw;height:7cqw}
     .bento>.tile.solo{width:calc(50% - 5.5px)}
   }
 </style>
@@ -496,6 +510,16 @@
       const audio = document.getElementById('engAudio');
       const playBtn = document.getElementById('engPlay');
       const ring = flip.querySelector('.prog');
+      // el círculo usa 3D solo mientras gira o está dado vuelta; cuando vuelve a quedar quieto, se dibuja plano otra vez
+      const inner = flip.querySelector('.flip-inner');
+      const en3d = ()=> flip.classList.add('gira');
+      flip.addEventListener('pointerenter', en3d);
+      audio.addEventListener('play', en3d);
+      inner.addEventListener('transitionend', (e)=>{
+        if(e.target !== inner || e.propertyName !== 'transform') return;
+        const m = getComputedStyle(inner).transform;
+        if(m === 'none' || m === 'matrix(1, 0, 0, 1, 0, 0)') flip.classList.remove('gira');
+      });
       const handle = document.getElementById('engHandle');
       const len = ring.getTotalLength ? ring.getTotalLength() : 2*Math.PI*45;
       ring.style.strokeDasharray = len;
@@ -750,6 +774,8 @@
       impulsar(); lanzar();
     }
     star.setAttribute('role', 'button'); star.setAttribute('tabindex', '0'); star.setAttribute('aria-label', 'Estrellita');
+    var tarjeta = star.closest('.tile');                                                 // al acercarse a la estrella ya va prendiendo el audio
+    if(tarjeta) tarjeta.addEventListener('pointerenter', function(){ if(window.estrellaAudio) window.estrellaAudio.preparar(); });
     star.addEventListener('pointerdown', function(e){
       if(e.button > 0) return;
       if(e.pointerType === 'mouse') e.preventDefault();                                 // que no seleccione texto con muchos clics seguidos
@@ -779,7 +805,7 @@
         for(var c = 0; c < 2; c++){ var d = ir.getChannelData(c); for(var i = 0; i < n; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / n, 3); }
         rev.buffer = ir; var wet = ac.createGain(); wet.gain.value = .2; salida.connect(rev); rev.connect(wet); wet.connect(comp);
       }
-      if(ac.state === 'suspended') ac.resume();
+      if(ac.state === 'suspended'){ var r = ac.resume(); if(r && r.catch) r.catch(function(){}); }
       return ac;
     }
     function env(g, t, a, d, v){ g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(v, t + a); g.gain.exponentialRampToValueAtTime(.0001, t + a + d); }
@@ -800,12 +826,27 @@
       vibrato(nota({ f: f * .36, fin: f * .66, dur: .4, t: t, a: .005, d: .55, v: .34 }), t, 14, f * .07, .5);
       vibrato(nota({ f: f * .72, fin: f * 1.32, dur: .4, t: t, a: .005, d: .4, v: .1 }), t, 14, f * .14, .4);
     }
+    function andando(){ return !!ac && ac.state === 'running' && ac.currentTime > .12; }   // el motor de audio ya arrancó del todo
+    // El audio tarda un poco en arrancar la primera vez. Para que el primer toque de la estrella ya suene, se prende
+    // con el primer clic/tecla en cualquier parte de la página, o al pasar el mouse por el Hola Mundo si ya hubo uno
+    var GESTOS = ['pointerdown', 'pointerup', 'keydown', 'touchend'];
+    function primerGesto(){
+      if(navigator.userActivation && !navigator.userActivation.isActive) return;   // sin un gesto real el navegador no lo deja prender
+      try{ ctx(); }catch(e){}
+      if(ac && ac.state === 'running') GESTOS.forEach(function(g){ document.removeEventListener(g, primerGesto, true); });
+    }
+    GESTOS.forEach(function(g){ document.addEventListener(g, primerGesto, true); });
     window.estrellaAudio = {
-      listo: function(){ return !!ac && ac.state === 'running'; },
+      listo: andando,
+      preparar: function(){ if(!ac && navigator.userActivation && navigator.userActivation.hasBeenActive){ try{ ctx(); }catch(e){} } },
       sonar: function(){
         var a = ctx(); if(!a) return;
         var k; do { k = Math.floor(Math.random() * 10) - 5; } while(k === ultimo); ultimo = k;      // tono al azar (de -5 a +4 semitonos)
-        try{ boing(a.currentTime + .01, 700 * Math.pow(2, k / 12)); }catch(e){}
+        var f = 700 * Math.pow(2, k / 12), desde = performance.now();
+        (function cuandoAnde(){                                          // si el audio recién arranca, espera a que ande y ahí suena
+          if(andando()){ try{ boing(a.currentTime + .01, f); }catch(e){} }
+          else if(performance.now() - desde < 2500) setTimeout(cuandoAnde, 10);
+        })();
       }
     };
   })();
@@ -829,19 +870,20 @@
     centrarSueltas();
   })();
 
-  /* Hover estilo "card de Steam": la tarjeta se inclina en 3D hacia donde está el mouse y el brillo lo sigue */
+  /* Hover estilo "card de Steam": la tarjeta se inclina en 3D hacia donde está el mouse y el brillo lo sigue.
+     El movimiento se suaviza acá (y no con transiciones de CSS): así el navegador no vuelve a dibujar la tarjeta
+     a otra resolución a mitad del giro, que era lo que hacía "flashear" los íconos del medio */
   (function(){
     if(!window.matchMedia('(hover:hover)').matches) return;          // en celulares no hay hover
     var quieto = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var MAX = 8;                                                       // grados máximos de inclinación
+    var MAX = 8, CRECE = 1.035, SUAVE = .09;                           // grados máximos, cuánto crece, suavizado (segundos)
     function caja(t){   // posición de la tarjeta sin la inclinación (si no, tiembla)
       var p = t.offsetParent, r = p ? p.getBoundingClientRect() : {left:0, top:0};
       return { x: r.left + (p ? p.clientLeft : 0) + t.offsetLeft, y: r.top + (p ? p.clientTop : 0) + t.offsetTop, w: t.offsetWidth, h: t.offsetHeight };
     }
     document.querySelectorAll('.bento > .tile').forEach(function(t){
-      var raf = 0, ev = null;
-      function mover(){
-        raf = 0;
+      var rx = 0, ry = 0, s = 1, arx = 0, ary = 0, as = 1, dentro = false, ev = null, raf = 0, antes = 0;
+      function apuntar(){
         var c = caja(t);
         var x = Math.min(Math.max((ev.clientX - c.x) / c.w, 0), 1);
         var y = Math.min(Math.max((ev.clientY - c.y) / c.h, 0), 1);
@@ -850,20 +892,35 @@
         // sobre el círculo de inglés la tarjeta queda derecha, así el arrastre del audio es preciso
         var plano = quieto || (ev.target && ev.target.closest && ev.target.closest('.eng-flip'));
         var k = Math.min(1, c.h / c.w);                                // las anchas giran menos de costado
-        t.style.setProperty('--rx', plano ? '0deg' : ((0.5 - y) * 2 * MAX).toFixed(2) + 'deg');
-        t.style.setProperty('--ry', plano ? '0deg' : ((x - 0.5) * 2 * MAX * k).toFixed(2) + 'deg');
+        arx = plano ? 0 : (0.5 - y) * 2 * MAX;
+        ary = plano ? 0 : (x - 0.5) * 2 * MAX * k;
         t.style.setProperty('--sx', plano ? '0px' : ((0.5 - x) * 2 * 16).toFixed(1) + 'px');        // sombra hacia el lado contrario al mouse
         t.style.setProperty('--sy', plano ? '14px' : (14 + (0.5 - y) * 2 * 12).toFixed(1) + 'px');
+        ev = null;
       }
-      t.addEventListener('pointerenter', function(e){ if(e.pointerType !== 'touch') t.classList.add('hov'); });
+      function paso(ts){
+        var dt = Math.max(0, Math.min(.05, (ts - antes) / 1000)); antes = ts;
+        if(ev) apuntar();
+        var f = 1 - Math.exp(-dt / (dentro ? SUAVE : SUAVE * 2));      // al salir vuelve un poco más lento
+        rx += (arx - rx) * f; ry += (ary - ry) * f; s += (as - s) * f;
+        var listo = Math.abs(arx - rx) < .02 && Math.abs(ary - ry) < .02 && Math.abs(as - s) < .0004;
+        if(listo){ rx = arx; ry = ary; s = as; }
+        if(listo && !dentro){ t.style.transform = ''; t.classList.remove('arriba'); raf = 0; return; }   // ya volvió a su lugar
+        t.style.transform = 'perspective(1000px) rotateX(' + rx.toFixed(3) + 'deg) rotateY(' + ry.toFixed(3) + 'deg) scale(' + s.toFixed(4) + ')';
+        raf = listo ? 0 : requestAnimationFrame(paso);
+      }
+      function mover(){ if(!raf){ antes = performance.now(); raf = requestAnimationFrame(paso); } }
+      t.addEventListener('pointerenter', function(e){
+        if(e.pointerType === 'touch') return;
+        dentro = true; as = CRECE; t.classList.add('hov', 'arriba'); ev = e; mover();
+      });
       t.addEventListener('pointermove', function(e){
         if(e.pointerType === 'touch') return;
-        ev = e; if(!raf) raf = requestAnimationFrame(mover);
+        ev = e; mover();
       });
       t.addEventListener('pointerleave', function(){
-        if(raf){ cancelAnimationFrame(raf); raf = 0; }
-        t.classList.remove('hov');
-        t.style.setProperty('--rx', '0deg'); t.style.setProperty('--ry', '0deg');
+        dentro = false; ev = null; arx = ary = 0; as = 1;
+        t.classList.remove('hov'); mover();
       });
     });
   })();
