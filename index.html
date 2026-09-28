@@ -9,7 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet" />
 <style>
   :root{
-    --bg:#0d1117;
+    --bg:#080a0e;
     --text:#e6edf3;
     --dim:#8b949e;
     --faint:#6e7681;
@@ -22,8 +22,7 @@
   body{background:var(--bg);color:var(--text);font-family:'Outfit',system-ui,sans-serif;min-height:100vh}
 
   /* STICKY TITLE */
-  .topbar{position:sticky;top:0;z-index:50;width:100%;background:rgba(8,10,14,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);cursor:pointer;transition:background .2s}
-  .topbar:hover{background:rgba(14,18,24,.95)}
+  .topbar{position:sticky;top:0;z-index:50;width:100%;background:rgba(13,17,23,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);cursor:pointer}
   .topbar-inner{max-width:1040px;margin:0 auto;padding:18px 28px;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:8px 16px;letter-spacing:-.02em}
   .topbar .nm{font-size:clamp(1rem,3vw,1.7rem);font-weight:800}
   .topbar .role{font-size:clamp(1rem,3vw,1.7rem);color:var(--dim);font-weight:600}
@@ -34,9 +33,13 @@
   .bento{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;grid-auto-flow:dense}
   .tile{position:relative;border-radius:20px;padding:22px;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;color:#fff;transition:transform .55s cubic-bezier(.2,.8,.2,1),scale .45s cubic-bezier(.2,.8,.2,1),box-shadow .35s,filter .2s,opacity .3s;aspect-ratio:1}
   /* hover estilo "card de Steam": se inclina en 3D siguiendo al mouse, crece un poco y le pega un brillo (JS al final) */
-  .tile{--rx:0deg;--ry:0deg;--gx:50%;--gy:50%}
+  .tile{--rx:0deg;--ry:0deg;--gx:50%;--gy:50%;--sx:0px;--sy:14px;--glow:120,130,150}
+  /* sombra del hover: toma el color de cada tarjeta (sobre el fondo oscuro una sombra negra no se ve) */
+  .c-hello{--glow:90,82,201}.c-stack{--glow:163,113,247}.c-eng{--glow:43,183,159}.c-simax{--glow:88,166,255}.mateo-tile{--glow:210,160,90}
+  .c-catari{--glow:90,150,230}.c-siacc{--glow:56,139,253}.c-display{--glow:30,184,208}.c-kanu{--glow:86,211,100}.c-gh{--glow:46,160,67}
+  .c-mail{--glow:234,67,53}.c-li{--glow:10,102,194}.c-cv{--glow:240,136,62}.c-loc{--glow:140,150,170}
   .tile::before{content:"";position:absolute;inset:0;z-index:4;pointer-events:none;border-radius:inherit;opacity:0;transition:opacity .35s ease;background:radial-gradient(circle at var(--gx) var(--gy),rgba(255,255,255,.22),rgba(255,255,255,.06) 32%,rgba(255,255,255,0) 62%)}
-  .tile.hov{z-index:10;scale:1.035;transform:perspective(1000px) rotateX(var(--rx)) rotateY(var(--ry));box-shadow:0 26px 50px -22px rgba(0,0,0,.85);transition:transform .12s ease-out,scale .25s ease-out,box-shadow .3s,filter .2s,opacity .3s}
+  .tile.hov{z-index:10;scale:1.035;transform:perspective(1000px) rotateX(var(--rx)) rotateY(var(--ry));box-shadow:var(--sx) var(--sy) 38px -10px rgba(var(--glow),.5),0 10px 28px -14px rgba(0,0,0,.8);transition:transform .12s ease-out,scale .25s ease-out,box-shadow .15s ease-out,filter .2s,opacity .3s}
   .tile.hov::before{opacity:1}
   @media(hover:none){a.tile:active{scale:.97;transition:scale .1s}}
   .col2{grid-column:span 2;aspect-ratio:auto}
@@ -49,7 +52,10 @@
   .t-dates{font-family:'JetBrains Mono',monospace;font-size:.76rem;opacity:.7}
   .ext{position:absolute;top:16px;right:16px;opacity:.6;z-index:3}
   .ext svg{width:18px;height:18px}
-  .proj-desc{font-size:.82rem;line-height:1.42;opacity:.88;margin-top:12px;max-width:46ch}
+  .proj-desc{font-size:.82rem;line-height:1.42;opacity:.88;margin-top:12px}
+  /* texto justificado: cada línea va de borde a borde y las palabras largas se cortan con guion (hyphens usa el idioma de <html lang>).
+     La última línea queda a la izquierda, como en cualquier texto justificado; text-wrap:pretty evita que quede una palabra sola al final */
+  .proj-desc{text-align:justify;-webkit-hyphens:auto;hyphens:auto;text-wrap:pretty}
   /* tarjetas de proyectos: título y bajada arriba a la izquierda, link abajo (todas iguales) */
   .proj-head{padding-right:26px}
   .bento{container-type:inline-size}
@@ -58,10 +64,19 @@
   @media(max-width:600px){.proj{grid-column:span 2;aspect-ratio:auto;min-height:calc((100cqw - 11px) / 2)}}   /* en celular todos los proyectos van a lo ancho */
   .proj-head .t-dates{margin-top:5px}
   .link-hl{color:#fff;text-decoration:underline;text-underline-offset:2px;font-weight:600}
+  .glifo{opacity:.55}   /* letras sueltas del efecto al cambiar de idioma */
 
   /* hello world */
-  .hello-world{font-size:clamp(1.4rem,3vw,1.85rem);font-weight:800;letter-spacing:-.02em;margin-bottom:10px}
-  .hello-world .star{color:#f5c518;margin-left:8px}
+  .hello-world{white-space:nowrap}
+  .hello-world .star{box-sizing:content-box;display:inline-block;width:.86em;height:.86em;padding:7px;margin:-7px -7px -7px 2px;vertical-align:-.1em;color:#f5c518;cursor:pointer;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;will-change:transform}
+  .hello-world .star svg{display:block;width:100%;height:100%;fill:currentColor}
+  .hello-world .star:focus{outline:none}
+  .hello-world .star:focus-visible{outline:2px solid rgba(255,255,255,.75);outline-offset:-2px;border-radius:50%}
+  /* estrellitas que salen al tocar la estrella (las crea el JS y se borran solas) */
+  .estrellas-fx{position:fixed;inset:0;z-index:60;pointer-events:none;overflow:hidden}
+  .fx-star{position:absolute;display:block;will-change:transform,opacity,filter}
+  .fx-star svg{display:block;width:100%;height:100%;fill:currentColor}
+  .fx-star:not(.fx-estela) svg{filter:drop-shadow(0 0 4px rgba(245,197,24,.8))}
   .hello-world .jump{display:inline-block}
   .hello-world.go .jump{animation:jump .55s ease-in-out both}
   @keyframes jump{0%,100%{transform:translateY(0)}40%{transform:translateY(-14px)}}
@@ -72,17 +87,15 @@
 
   /* colors */
   .c-hello{background:linear-gradient(135deg,#434190,#5a52c9)}
-  .c-hello .hello-world{font-size:clamp(1.4rem,3vw,1.85rem)}
-  .c-hello .t-sub{font-size:.9rem;line-height:1.45}
   .c-stack{background:linear-gradient(160deg,#8957e5,#a371f7);justify-content:center;align-items:center;text-align:center;gap:14px}
   .c-stack .t-h{width:100%}
   .c-eng{background:linear-gradient(150deg,#1f9b87,#2bb79f);align-items:center;justify-content:center;text-align:center;gap:14px}
-  .c-simax{--foto:linear-gradient(90deg,rgba(8,11,17,.92),rgba(8,11,17,.55)),url('datos/simax.jpg') center top/cover no-repeat}
+  .c-simax{--foto:linear-gradient(0deg,rgba(8,11,17,.85) 0%,rgba(8,11,17,0) 55%),linear-gradient(90deg,rgba(8,11,17,.92),rgba(8,11,17,.55)),url('datos/simax.jpg') center top/cover no-repeat}
   .c-siacc{background:linear-gradient(150deg,#1f6feb,#388bfd)}
   .c-display{background:linear-gradient(150deg,#0e7490,#1eb8d0)}
   .c-kanu{background:linear-gradient(150deg,#2da44e,#56d364)}
-  .mateo-tile{--foto:linear-gradient(90deg,rgba(8,11,17,.92),rgba(8,11,17,.4)),url('datos/mateo.jpg') center/cover no-repeat}
-  .c-catari{--foto:linear-gradient(90deg,rgba(8,11,17,.88) 0%,rgba(8,11,17,.6) 40%,rgba(8,11,17,.2) 100%),url('datos/catari.jpg') right center/cover no-repeat}
+  .mateo-tile{--foto:linear-gradient(0deg,rgba(8,11,17,.85) 0%,rgba(8,11,17,0) 55%),linear-gradient(90deg,rgba(8,11,17,.92),rgba(8,11,17,.4)),url('datos/mateo.jpg') center/cover no-repeat}
+  .c-catari{--foto:linear-gradient(0deg,rgba(8,11,17,.85) 0%,rgba(8,11,17,0) 55%),linear-gradient(90deg,rgba(8,11,17,.88) 0%,rgba(8,11,17,.6) 40%,rgba(8,11,17,.2) 100%),url('datos/catari.jpg') right center/cover no-repeat}
   /* tarjetas con foto (Simax, Mateo, Catari): la foto va en una capa aparte apenas desenfocada, así el texto queda nítido.
      Para más o menos desenfoque cambiá --blur (0px = sin desenfoque) */
   .foto{background:#0d1117;--blur:1.5px}
@@ -178,7 +191,8 @@
   }
   @media(max-width:600px){
     .bento{gap:11px}
-    .c-stack{grid-column:span 2;aspect-ratio:auto;min-height:150px}
+    .c-hello,.c-stack,.c-eng{grid-column:span 2;aspect-ratio:auto;min-height:calc((100cqw - 11px) / 2)}
+    .c-eng .eng-flip{max-width:100px}
     .bento>.tile.solo{width:calc(50% - 5.5px)}
   }
 </style>
@@ -193,11 +207,11 @@
 
       <!-- HELLO WORLD -->
       <div class="tile c-hello col2">
-        <div>
-          <div class="hello-world" id="hwBox"><span id="helloWorld" data-es="HOLA MUNDO" data-en="HELLO WORLD">HOLA MUNDO</span><span class="star">★</span></div>
-          <div class="t-sub" data-es="Soy Valentino, desarrollador de software full stack de Buenos Aires, con 5 años de experiencia en .NET, C# y JavaScript." data-en="I'm Valentino, a full stack software developer from Buenos Aires with 5 years of experience in .NET, C# and JavaScript.">Soy Valentino, desarrollador de software full stack de Buenos Aires, con 5 años de experiencia en .NET, C# y JavaScript.</div>
-          <div class="t-sub" style="margin-top:10px"><span data-es="Esta página reúne mis " data-en="This page collects my ">Esta página reúne mis </span><strong data-es="trabajos freelance" data-en="freelance work">trabajos freelance</strong><span data-es=": sitios web, sistemas y apps a medida para empresas y clientes." data-en=": websites, systems and custom apps for companies and clients.">: sitios web, sistemas y apps a medida para empresas y clientes.</span></div>
+        <div class="proj-head">
+          <div class="t-h hello-world" id="hwBox"><span id="helloWorld" data-es="HOLA MUNDO" data-en="HELLO WORLD">HOLA MUNDO</span><span class="star"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1 14.59 8.44 22.46 8.6 16.19 13.36 18.47 20.9 12 16.4 5.53 20.9 7.81 13.36 1.54 8.6 9.41 8.44Z"/></svg></span></div>
+          <div class="t-dates" data-es="Desarrollador de software" data-en="Software developer">Desarrollador de software</div>
         </div>
+        <div class="proj-desc"><span data-es="Soy Valentino, programador full stack de Buenos Aires con 5 años de experiencia en .NET, C# y JavaScript. Esta página reúne mis " data-en="I'm Valentino, a full stack programmer from Buenos Aires with 5 years of experience in .NET, C# and JavaScript. This page collects my ">Soy Valentino, programador full stack de Buenos Aires con 5 años de experiencia en .NET, C# y JavaScript. Esta página reúne mis </span><strong data-es="trabajos freelance" data-en="freelance work">trabajos freelance</strong><span data-es=": sitios web, sistemas y apps a medida para empresas y clientes." data-en=": websites, systems and custom apps for companies and clients.">: sitios web, sistemas y apps a medida para empresas y clientes.</span></div>
       </div>
 
       <!-- TECNOLOGÍAS -->
@@ -418,20 +432,53 @@
         hw.appendChild(s);
       });
     }
-    function setLang(lang){
+    // ---- Cambio de idioma con efecto "decodificado": las letras se mezclan y se acomodan en el idioma nuevo ----
+    const GLIFOS = 'abcdefghijklmnopqrstuvwxyz0123456789#%&*+=/<>';
+    const SIN_MOVIMIENTO = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function esc(c){ return c === '<' ? '&lt;' : c === '>' ? '&gt;' : c === '&' ? '&amp;' : c; }
+    function enPantalla(el){ const r = el.getBoundingClientRect(); return r.width > 0 && r.bottom > 0 && r.top < window.innerHeight; }
+    function decodificar(el, to){
+      if(el._dec){ cancelAnimationFrame(el._dec); el._dec = 0; }
+      const from = el.textContent;
+      if(from === to) return;
+      const n = Math.max(from.length, to.length), largo = Math.min(22, 8 + n * 0.2), q = [];
+      for(let i = 0; i < n; i++){
+        const ini = Math.floor(Math.random() * largo);
+        q.push({ a: from[i] || '', b: to[i] || '', ini: ini, fin: ini + 5 + Math.floor(Math.random() * largo), g: '' });
+      }
+      let f = 0;
+      (function paso(){
+        let html = '', listos = 0;
+        for(const c of q){
+          if(f >= c.fin){ listos++; html += esc(c.b); }
+          else if(f >= c.ini && c.b.trim()){
+            if(!c.g || Math.random() < .3) c.g = GLIFOS[Math.floor(Math.random() * GLIFOS.length)];
+            html += '<span class="glifo">' + esc(c.g) + '</span>';
+          }
+          else html += esc(f >= c.ini ? c.b : c.a);
+        }
+        if(listos === q.length){ el.textContent = to; el._dec = 0; return; }
+        el.innerHTML = html;
+        f++; el._dec = requestAnimationFrame(paso);
+      })();
+    }
+    function setLang(lang, animar){
       LANG = lang;
       document.documentElement.lang = lang;
+      const efecto = animar && !SIN_MOVIMIENTO;
       document.querySelectorAll('[data-es]').forEach(el=>{
         if(el.id === 'helloWorld') return; // handled by splitHello
         const t = el.getAttribute('data-'+lang);
-        if(t !== null) el.textContent = t;
+        if(t === null) return;
+        if(efecto && enPantalla(el)) decodificar(el, t);          // lo que se ve se anima
+        else { if(el._dec){ cancelAnimationFrame(el._dec); el._dec = 0; } el.textContent = t; }   // lo demás cambia directo
       });
       splitHello();
       document.querySelectorAll('.langpick button').forEach(b=>b.classList.toggle('active', b.dataset.lang===lang));
       try{ localStorage.setItem('lang', lang); }catch(e){}
     }
     document.querySelectorAll('.langpick button').forEach(b=>{
-      b.addEventListener('click', ()=>setLang(b.dataset.lang));
+      b.addEventListener('click', ()=>setLang(b.dataset.lang, true));
     });
     // detect: english-speaking locale -> EN, else ES
     function detectLang(){
@@ -617,6 +664,163 @@
     if(window.ResizeObserver){ var sq=document.querySelector('.c-stack'); if(sq) new ResizeObserver(eqHero).observe(sq); }
   })();
 
+  /* Estrellita del Hola Mundo: cada toque la hace girar en el plano (hacia la derecha) y le suma impulso:
+     con varios toques seguidos acumula velocidad y, al dejar de tocar, sigue girando unos segundos hasta frenar derecha.
+     Cada toque además larga una estrellita que sube con estela y se desvanece (tipo corazones de Instagram) */
+  (function(){
+    var star = document.querySelector('.hello-world .star');
+    if(!star) return;
+    var quieto = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // ---- giro con impulso (en grados por segundo) ----
+    var IMPULSO = 540, MAX = 1800, ROCE = .8, FRENO = 170, LENTO = 180;   // ROCE y FRENO: cuánto tarda en frenar
+    var ang = 0, vel = 0, raf = 0, antes = 0, frenando = false, meta = 0, desac = 0;
+    function pintar(){
+      var g = Math.min(1, vel / MAX);                                        // más rápido = brilla más y crece un poquito
+      star.style.transform = 'rotate(' + ang.toFixed(2) + 'deg) scale(' + (1 + g * .14).toFixed(3) + ')';
+      star.style.filter = g > .03 ? 'drop-shadow(0 0 ' + (2 + g * 9).toFixed(1) + 'px rgba(245,197,24,' + (.35 + g * .5).toFixed(2) + '))' : '';
+    }
+    function cuadro(ts){
+      var dt = Math.max(0, Math.min(.05, (ts - antes) / 1000)); antes = ts;
+      if(!frenando){
+        vel -= (ROCE * vel + FRENO) * dt;
+        if(vel > LENTO) ang += vel * dt;
+        else {                                                               // ya va lento: frena justo con una punta para arriba
+          vel = Math.max(vel, 20);
+          var d = (72 - ang % 72) % 72; if(d < 30) d += 72;
+          meta = ang + d; desac = vel * vel / (2 * d); frenando = true;
+        }
+      }
+      if(frenando){
+        vel = Math.max(0, vel - desac * dt);
+        ang = meta - vel * vel / (2 * desac);
+        if(vel === 0){ ang = meta % 360; frenando = false; pintar(); raf = 0; return; }
+      }
+      pintar();
+      raf = requestAnimationFrame(cuadro);
+    }
+    function impulsar(){
+      vel = Math.min(MAX, Math.max(vel, 0) + IMPULSO);
+      frenando = false;
+      ang += 5; pintar();                                                    // se mueve en el mismo instante del toque
+      if(!raf){ antes = performance.now(); raf = requestAnimationFrame(cuadro); }
+    }
+
+    // ---- estrellitas que suben con estela ----
+    var capa = null, FORMA = star.innerHTML, COLORES = ['#f5c518', '#ffd84d', '#ffe27a', '#f7b500'];
+    function lanzar(){
+      if(!capa){ capa = document.createElement('div'); capa.className = 'estrellas-fx'; capa.setAttribute('aria-hidden', 'true'); document.body.appendChild(capa); }
+      var r = star.getBoundingClientRect();
+      var x0 = r.left + r.width / 2 + (Math.random() - .5) * r.width * .5,           // no salen todas del mismo punto
+          y0 = r.top + r.height / 2 + (Math.random() - .5) * r.height * .3,
+          dir = (-90 + (Math.random() * 2 - 1) * 30) * Math.PI / 180,                 // para arriba, con un ángulo al azar (±30°)
+          dist = 110 + Math.random() * 80, dur = 1150 + Math.random() * 450,
+          vaiven = (Math.random() < .5 ? -1 : 1) * (6 + Math.random() * 12),
+          giro = (Math.random() * 2 - 1) * 140, tam = 12 + Math.random() * 8,
+          color = COLORES[Math.floor(Math.random() * COLORES.length)], camino = [];
+      for(var i = 0; i <= 12; i++){
+        var p = i / 12, e = 1 - Math.pow(1 - p, 2.2);                                  // sale rápido y va frenando
+        camino.push({ p: p,
+          x: Math.cos(dir) * dist * e + Math.sin(p * Math.PI * 1.7) * vaiven,
+          y: Math.sin(dir) * dist * e,
+          s: p < .12 ? .3 + p / .12 * .8 : 1.1 - (p - .12) * .45,
+          o: p < .08 ? p / .08 : p < .4 ? 1 : 1 - (p - .4) / .6,
+          b: p < .35 ? 0 : (p - .35) / .65 * 4 });                                      // y se va difuminando
+      }
+      var COPIAS = capa.childElementCount > 80 ? 2 : 7;                                  // con muchas en pantalla, estela más corta
+      for(let k = COPIAS; k >= 0; k--){                                                   // k > 0: la estela (copias que siguen el mismo camino, un poco atrasadas)
+        let el = document.createElement('span'), t = tam * (1 - k * .07);
+        el.className = k ? 'fx-star fx-estela' : 'fx-star';
+        el.innerHTML = FORMA;
+        el.style.cssText = 'left:' + x0.toFixed(1) + 'px;top:' + y0.toFixed(1) + 'px;width:' + t.toFixed(1) + 'px;height:' + t.toFixed(1) + 'px;margin:' + (-t / 2).toFixed(1) + 'px 0 0 ' + (-t / 2).toFixed(1) + 'px;color:' + color;
+        capa.appendChild(el);
+        el.animate(camino.map(function(c){ return { offset: c.p,
+            transform: 'translate(' + c.x.toFixed(1) + 'px,' + c.y.toFixed(1) + 'px) rotate(' + (giro * c.p).toFixed(1) + 'deg) scale(' + c.s.toFixed(3) + ')',
+            opacity: +(c.o * (k ? .5 - k * .055 : 1)).toFixed(3), filter: 'blur(' + (c.b + k * .35).toFixed(2) + 'px)' }; }),
+          { duration: dur, delay: k * 20, easing: 'linear', fill: 'both' }).onfinish = function(){ el.remove(); };
+      }
+    }
+
+    // ---- toques ----
+    var pendiente = false;
+    function sonar(){ if(window.estrellaAudio) window.estrellaAudio.sonar(); }
+    function tocar(conSonido){
+      if(conSonido) sonar(); else pendiente = true;
+      if(quieto) return;
+      impulsar(); lanzar();
+    }
+    star.setAttribute('role', 'button'); star.setAttribute('tabindex', '0'); star.setAttribute('aria-label', 'Estrellita');
+    star.addEventListener('pointerdown', function(e){
+      if(e.button > 0) return;
+      if(e.pointerType === 'mouse') e.preventDefault();                                 // que no seleccione texto con muchos clics seguidos
+      else { try{ star.setPointerCapture(e.pointerId); }catch(_){} }
+      tocar(e.pointerType === 'mouse' || !!(window.estrellaAudio && window.estrellaAudio.listo()));   // en el celu el 1er toque activa el audio al soltar
+    });
+    star.addEventListener('pointerup', function(){ if(pendiente){ pendiente = false; sonar(); } });
+    star.addEventListener('pointercancel', function(){ pendiente = false; });
+    star.addEventListener('keydown', function(e){ if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); if(!e.repeat) tocar(true); } });
+    star.addEventListener('click', function(e){ if(e.detail === 0) tocar(true); });  // lectores de pantalla
+  })();
+
+  /* Sonido de la estrellita: mezcla de un "boing" (resorte) con una nota de cajita musical, generado con Web Audio (sin archivos).
+     Cada toque suena en un tono al azar (nunca el mismo dos veces seguidas) */
+  (function(){
+    var ac = null, salida = null, ruidoBuf = null, ultimo = null, VOLUMEN = .9;
+    function ctx(){
+      if(!ac){
+        var AC = window.AudioContext || window.webkitAudioContext; if(!AC) return null;
+        ac = new AC();
+        // limitador suave: hasta 0.6 no toca nada; si se suman muchos toques seguidos, redondea en vez de saturar
+        var lim = ac.createWaveShaper(), curva = new Float32Array(2049), comp = ac.createGain();
+        for(var q = 0; q < 2049; q++){ var x = (q / 1024 - 1) * 3, m = Math.abs(x); curva[q] = (m < .6 ? m : .6 + .4 * Math.tanh((m - .6) / .4)) * (x < 0 ? -1 : 1); }
+        lim.curve = curva; lim.oversample = '2x'; comp.gain.value = 1 / 3; comp.connect(lim); lim.connect(ac.destination);
+        salida = ac.createGain(); salida.gain.value = .9 * VOLUMEN; salida.connect(comp);
+        var rev = ac.createConvolver(), n = Math.floor(ac.sampleRate * 1.2), ir = ac.createBuffer(2, n, ac.sampleRate);   // eco cortito para darle aire
+        for(var c = 0; c < 2; c++){ var d = ir.getChannelData(c); for(var i = 0; i < n; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / n, 3); }
+        rev.buffer = ir; var wet = ac.createGain(); wet.gain.value = .2; salida.connect(rev); rev.connect(wet); wet.connect(comp);
+      }
+      if(ac.state === 'suspended') ac.resume();
+      return ac;
+    }
+    function env(g, t, a, d, v){ g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(v, t + a); g.gain.exponentialRampToValueAtTime(.0001, t + a + d); }
+    function nota(o){
+      var t = o.t, a = o.a || .004, d = o.d || .3, osc = ac.createOscillator(), g = ac.createGain();
+      osc.type = o.tipo || 'sine'; osc.frequency.setValueAtTime(o.f, t);
+      if(o.fin) osc.frequency.exponentialRampToValueAtTime(o.fin, t + (o.dur || a + d));
+      env(g, t, a, d, o.v || .15); osc.connect(g); g.connect(salida);
+      osc.start(t); osc.stop(t + a + d + .05);
+      return osc;
+    }
+    function ruido(o){
+      if(!ruidoBuf){ ruidoBuf = ac.createBuffer(1, ac.sampleRate, ac.sampleRate); var d = ruidoBuf.getChannelData(0); for(var i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1; }
+      var t = o.t, a = o.a || .002, dd = o.d || .1, src = ac.createBufferSource(), fl = ac.createBiquadFilter(), g = ac.createGain();
+      src.buffer = ruidoBuf; fl.type = o.filtro || 'bandpass'; fl.frequency.setValueAtTime(o.f || 2000, t);
+      env(g, t, a, dd, o.v || .3); src.connect(fl); fl.connect(g); g.connect(salida);
+      src.start(t, Math.random() * .4); src.stop(t + a + dd + .05);
+    }
+    function vibrato(osc, t, rapidez, prof, d){
+      var l = ac.createOscillator(), lg = ac.createGain(); l.frequency.value = rapidez;
+      lg.gain.setValueAtTime(prof, t); lg.gain.exponentialRampToValueAtTime(.01, t + d);
+      l.connect(lg); lg.connect(osc.frequency); l.start(t); l.stop(t + d + .05);
+    }
+    function boingCajita(t, f){
+      // el boing (resorte) adelante: la nota más un armónico, así se escucha bien también en parlantes chicos
+      vibrato(nota({ f: f * .36, fin: f * .66, dur: .4, t: t, a: .005, d: .55, v: .34 }), t, 14, f * .07, .5);
+      vibrato(nota({ f: f * .72, fin: f * 1.32, dur: .4, t: t, a: .005, d: .4, v: .1 }), t, 14, f * .14, .4);
+      // la cajita musical de fondo: más grave (una octava arriba de donde termina el boing) y más suave
+      nota({ f: f * 1.32, t: t + .04, a: .002, d: .6, v: .085 });
+      ruido({ t: t + .04, a: .001, d: .01, v: .06, filtro: 'bandpass', f: 3000 });                              // el "tic" del mecanismo, suave
+    }
+    window.estrellaAudio = {
+      listo: function(){ return !!ac && ac.state === 'running'; },
+      sonar: function(){
+        var a = ctx(); if(!a) return;
+        var k; do { k = Math.floor(Math.random() * 10) - 5; } while(k === ultimo); ultimo = k;      // tono al azar (de -5 a +4 semitonos)
+        try{ boingCajita(a.currentTime + .01, 700 * Math.pow(2, k / 12)); }catch(e){}
+      }
+    };
+  })();
+
   /* En celular/tablet (2 columnas): si una tarjeta queda sola en su fila, se centra */
   (function(){
     var grid=document.querySelector('.bento');
@@ -659,6 +863,8 @@
         var k = Math.min(1, c.h / c.w);                                // las anchas giran menos de costado
         t.style.setProperty('--rx', plano ? '0deg' : ((0.5 - y) * 2 * MAX).toFixed(2) + 'deg');
         t.style.setProperty('--ry', plano ? '0deg' : ((x - 0.5) * 2 * MAX * k).toFixed(2) + 'deg');
+        t.style.setProperty('--sx', plano ? '0px' : ((0.5 - x) * 2 * 16).toFixed(1) + 'px');        // sombra hacia el lado contrario al mouse
+        t.style.setProperty('--sy', plano ? '14px' : (14 + (0.5 - y) * 2 * 12).toFixed(1) + 'px');
       }
       t.addEventListener('pointerenter', function(e){ if(e.pointerType !== 'touch') t.classList.add('hov'); });
       t.addEventListener('pointermove', function(e){
