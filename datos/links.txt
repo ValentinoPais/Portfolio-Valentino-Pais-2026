@@ -9,9 +9,10 @@
 #  - El EMAIL actualiza el mail de contacto en todos lados
 #    (boton email, boton copiar y "escribir un mail").
 #
-#  Nota: el CV, la foto de perfil, la voz y la foto de Mateo son
-#  ARCHIVOS: para cambiarlos, reemplaza el archivo dentro de /datos
-#  (cv.pdf, perfil.jpg, voz-ingles.mp3, mateo.jpg) por el nuevo.
+#  Nota: el CV, la foto de perfil, la voz y las fotos de Mateo, Simax y
+#  Catari son ARCHIVOS: para cambiarlos, reemplaza el archivo dentro de
+#  /datos (cv.pdf, perfil.jpg, voz-ingles.mp3, mateo.jpg, simax.jpg,
+#  catari.jpg) por el nuevo.
 # =====================================================================
 
 SMARTG:    https://www.smartg.com.ar/
@@ -19,6 +20,7 @@ XOFT:      https://xoft.com.ar/index.html
 TELESMART: https://www.telesmart.com.ar/
 SIMAX:     https://valentinopais.github.io/simax-demo/
 MATEO:     https://valentinopais.github.io/MATEO-RONN-ABREGU-PORTFOLIO-PROFESIONAL-2026/
+CATARI:    https://catari.com.ar/
 KANUSUR:   https://www.instagram.com/kanusur/
 GITHUB:    https://github.com/valentinopais
 LINKEDIN:  https://www.linkedin.com/in/valentinopais/

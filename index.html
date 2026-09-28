@@ -22,8 +22,8 @@
   body{background:var(--bg);color:var(--text);font-family:'Outfit',system-ui,sans-serif;min-height:100vh}
 
   /* STICKY TITLE */
-  .topbar{position:sticky;top:0;z-index:50;width:100%;background:rgba(13,17,23,.85);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);cursor:pointer;transition:background .2s}
-  .topbar:hover{background:rgba(22,27,34,.92)}
+  .topbar{position:sticky;top:0;z-index:50;width:100%;background:rgba(8,10,14,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);cursor:pointer;transition:background .2s}
+  .topbar:hover{background:rgba(14,18,24,.95)}
   .topbar-inner{max-width:1040px;margin:0 auto;padding:18px 28px;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:8px 16px;letter-spacing:-.02em}
   .topbar .nm{font-size:clamp(1rem,3vw,1.7rem);font-weight:800}
   .topbar .role{font-size:clamp(1rem,3vw,1.7rem);color:var(--dim);font-weight:600}
@@ -32,8 +32,13 @@
 
   /* BENTO GRID */
   .bento{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;grid-auto-flow:dense}
-  .tile{position:relative;border-radius:20px;padding:22px;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;color:#fff;transition:transform .3s,filter .2s,opacity .3s;aspect-ratio:1}
-  a.tile:hover{transform:translateY(-3px);filter:brightness(1.06)}
+  .tile{position:relative;border-radius:20px;padding:22px;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;color:#fff;transition:transform .55s cubic-bezier(.2,.8,.2,1),scale .45s cubic-bezier(.2,.8,.2,1),box-shadow .35s,filter .2s,opacity .3s;aspect-ratio:1}
+  /* hover estilo "card de Steam": se inclina en 3D siguiendo al mouse, crece un poco y le pega un brillo (JS al final) */
+  .tile{--rx:0deg;--ry:0deg;--gx:50%;--gy:50%}
+  .tile::before{content:"";position:absolute;inset:0;z-index:4;pointer-events:none;border-radius:inherit;opacity:0;transition:opacity .35s ease;background:radial-gradient(circle at var(--gx) var(--gy),rgba(255,255,255,.22),rgba(255,255,255,.06) 32%,rgba(255,255,255,0) 62%)}
+  .tile.hov{z-index:10;scale:1.035;transform:perspective(1000px) rotateX(var(--rx)) rotateY(var(--ry));box-shadow:0 26px 50px -22px rgba(0,0,0,.85);transition:transform .12s ease-out,scale .25s ease-out,box-shadow .3s,filter .2s,opacity .3s}
+  .tile.hov::before{opacity:1}
+  @media(hover:none){a.tile:active{scale:.97;transition:scale .1s}}
   .col2{grid-column:span 2;aspect-ratio:auto}
   .loc-center{grid-column:2 / span 2}
   @media(max-width:860px){.loc-center{grid-column:1 / -1}}
@@ -44,8 +49,14 @@
   .t-dates{font-family:'JetBrains Mono',monospace;font-size:.76rem;opacity:.7}
   .ext{position:absolute;top:16px;right:16px;opacity:.6;z-index:3}
   .ext svg{width:18px;height:18px}
-  .demo{display:inline-flex;align-items:center;gap:5px;font-weight:600;font-size:.92rem;margin-top:12px}
-  .demo.soon{opacity:.55}
+  .proj-desc{font-size:.82rem;line-height:1.42;opacity:.88;margin-top:12px;max-width:46ch}
+  /* tarjetas de proyectos: título y bajada arriba a la izquierda, link abajo (todas iguales) */
+  .proj-head{padding-right:26px}
+  .bento{container-type:inline-size}
+  .proj.col2{min-height:calc((100cqw - 42px) / 4)}   /* las anchas miden de alto lo mismo que un cuadrado */
+  @media(max-width:860px){.proj.col2{min-height:calc((100cqw - 14px) / 2)}}
+  @media(max-width:600px){.proj{grid-column:span 2;aspect-ratio:auto;min-height:calc((100cqw - 11px) / 2)}}   /* en celular todos los proyectos van a lo ancho */
+  .proj-head .t-dates{margin-top:5px}
   .link-hl{color:#fff;text-decoration:underline;text-underline-offset:2px;font-weight:600}
 
   /* hello world */
@@ -66,10 +77,16 @@
   .c-stack{background:linear-gradient(160deg,#8957e5,#a371f7);justify-content:center;align-items:center;text-align:center;gap:14px}
   .c-stack .t-h{width:100%}
   .c-eng{background:linear-gradient(150deg,#1f9b87,#2bb79f);align-items:center;justify-content:center;text-align:center;gap:14px}
-  .c-simax{background:linear-gradient(150deg,#1a7f37,#2ea043)}
+  .c-simax{--foto:linear-gradient(90deg,rgba(8,11,17,.92),rgba(8,11,17,.55)),url('datos/simax.jpg') center top/cover no-repeat}
   .c-siacc{background:linear-gradient(150deg,#1f6feb,#388bfd)}
   .c-display{background:linear-gradient(150deg,#0e7490,#1eb8d0)}
   .c-kanu{background:linear-gradient(150deg,#2da44e,#56d364)}
+  .mateo-tile{--foto:linear-gradient(90deg,rgba(8,11,17,.92),rgba(8,11,17,.4)),url('datos/mateo.jpg') center/cover no-repeat}
+  .c-catari{--foto:linear-gradient(90deg,rgba(8,11,17,.88) 0%,rgba(8,11,17,.6) 40%,rgba(8,11,17,.2) 100%),url('datos/catari.jpg') right center/cover no-repeat}
+  /* tarjetas con foto (Simax, Mateo, Catari): la foto va en una capa aparte apenas desenfocada, así el texto queda nítido.
+     Para más o menos desenfoque cambiá --blur (0px = sin desenfoque) */
+  .foto{background:#0d1117;--blur:1.5px}
+  .foto::after{content:"";position:absolute;inset:-12px;z-index:0;pointer-events:none;background:var(--foto);filter:blur(var(--blur))}
   .c-gh{background:#080b11;border:1px solid var(--border)}
   .c-mail{background:linear-gradient(150deg,#c5221f,#ea4335)}
   .c-li{background:linear-gradient(150deg,#004182,#0a66c2)}
@@ -154,23 +171,6 @@
     .cv-modal{height:100vh;max-width:100%;border-radius:0;border:0}
   }
 
-  /* category color-coding + filter */
-  .tile[data-cat]::after{content:"";position:absolute;bottom:14px;right:16px;width:9px;height:9px;border-radius:50%;z-index:5;transition:box-shadow .3s,transform .3s}
-  .tile[data-cat="exp"]::after{background:#f0883e}
-  .tile[data-cat="info"]::after{background:#58a6ff}
-  body.f-exp .tile[data-cat="exp"], body.f-info .tile[data-cat="info"]{transform:translateY(-10px)}
-  body.f-exp .tile[data-cat="info"], body.f-info .tile[data-cat="exp"]{opacity:.25;transform:scale(.985)}
-  body.f-exp .tile[data-cat="exp"]::after{box-shadow:0 0 0 5px rgba(240,136,62,.22);transform:scale(1.2)}
-  body.f-info .tile[data-cat="info"]::after{box-shadow:0 0 0 5px rgba(88,166,255,.22);transform:scale(1.2)}
-
-  .filterbar{display:flex;justify-content:center;gap:10px;margin-bottom:18px;flex-wrap:wrap}
-  .fpill{display:inline-flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--border);color:var(--dim);font-family:inherit;font-weight:600;font-size:.86rem;padding:8px 16px;border-radius:999px;cursor:pointer;transition:all .2s}
-  .fpill::before{content:"";width:9px;height:9px;border-radius:50%;flex:none}
-  .fpill[data-cat="exp"]::before{background:#f0883e}
-  .fpill[data-cat="info"]::before{background:#58a6ff}
-  .fpill[data-cat="exp"].active{border-color:#f0883e;color:#fff;background:rgba(240,136,62,.16)}
-  .fpill[data-cat="info"].active{border-color:#58a6ff;color:#fff;background:rgba(88,166,255,.16)}
-
   @media(max-width:860px){
     .bento{grid-template-columns:repeat(2,1fr)}
     .col2{grid-column:span 2}
@@ -189,23 +189,19 @@
   </header>
 
   <main id="top">
-    <div class="filterbar">
-      <button class="fpill" data-cat="exp" data-es="Experiencia" data-en="Experience">Experiencia</button>
-      <button class="fpill" data-cat="info" data-es="Información" data-en="Information">Información</button>
-    </div>
     <div class="bento">
 
       <!-- HELLO WORLD -->
-      <div class="tile c-hello col2" data-cat="info">
+      <div class="tile c-hello col2">
         <div>
           <div class="hello-world" id="hwBox"><span id="helloWorld" data-es="HOLA MUNDO" data-en="HELLO WORLD">HOLA MUNDO</span><span class="star">★</span></div>
-          <div class="t-sub" data-es="Mi nombre es Valentino, programador full stack de Buenos Aires, Argentina. Mi experiencia va desde integrar una extensión de Chrome con un token de firma digital, hasta desarrollar una plataforma de mesa de ayuda, sistemas de monitoreo de fibra óptica y apps Android con licencias de contenido." data-en="My name is Valentino, a full stack developer from Buenos Aires, Argentina. My experience ranges from integrating a Chrome extension with a digital-signature token, to building a help-desk platform, fiber-optic monitoring systems and Android apps with content licensing.">Mi nombre es Valentino, programador full stack de Buenos Aires, Argentina. Mi experiencia va desde integrar una extensión de Chrome con un token de firma digital, hasta desarrollar una plataforma de mesa de ayuda, sistemas de monitoreo de fibra óptica y apps Android con licencias de contenido.</div>
-          <div class="t-sub" style="margin-top:12px"><span data-es="Ahora estoy metido en visión por computadora, desarrollando Inteliax en " data-en="Right now I'm deep into computer vision, building Inteliax at ">Ahora estoy metido en visión por computadora, desarrollando Inteliax en </span><a class="link-hl" href="https://www.telesmart.com.ar/" target="_blank" data-link="TELESMART">Telesmart</a><span>.</span></div>
+          <div class="t-sub" data-es="Soy Valentino, desarrollador de software full stack de Buenos Aires, con 5 años de experiencia en .NET, C# y JavaScript." data-en="I'm Valentino, a full stack software developer from Buenos Aires with 5 years of experience in .NET, C# and JavaScript.">Soy Valentino, desarrollador de software full stack de Buenos Aires, con 5 años de experiencia en .NET, C# y JavaScript.</div>
+          <div class="t-sub" style="margin-top:10px"><span data-es="Esta página reúne mis " data-en="This page collects my ">Esta página reúne mis </span><strong data-es="trabajos freelance" data-en="freelance work">trabajos freelance</strong><span data-es=": sitios web, sistemas y apps a medida para empresas y clientes." data-en=": websites, systems and custom apps for companies and clients.">: sitios web, sistemas y apps a medida para empresas y clientes.</span></div>
         </div>
       </div>
 
       <!-- TECNOLOGÍAS -->
-      <div class="tile c-stack" data-cat="info">
+      <div class="tile c-stack">
         <div class="t-h" data-es="Tecnologías" data-en="Technologies">Tecnologías</div>
         <div class="stack-pills">
           <span>JavaScript</span><span>C#</span><span>HTML</span><span>CSS</span><span>.NET MVC</span><span>jQuery</span><span>REST APIs</span><span>SQL Server</span><span>MySQL</span><span>Unity</span><span>Android</span>
@@ -213,7 +209,7 @@
       </div>
 
       <!-- INGLÉS -->
-      <div class="tile c-eng" data-cat="info">
+      <div class="tile c-eng">
         <div class="eng-label" data-es="nivel de inglés" data-en="english level">nivel de inglés</div>
         <div class="eng-flip" id="engFlip">
           <div class="flip-inner">
@@ -231,101 +227,102 @@
       </div>
 
       <!-- SIMAX -->
-      <a class="tile c-simax col2" data-cat="exp" href="https://valentinopais.github.io/simax-demo/" target="_blank" rel="noopener" data-link="SIMAX">
+      <a class="tile c-simax col2 foto proj" href="https://valentinopais.github.io/simax-demo/" target="_blank" rel="noopener" data-link="SIMAX">
         <span class="ext"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
-        <div class="t-dates">2022 — 2026</div>
-        <div>
+        <div class="proj-head">
           <div class="t-h">Simax</div>
-          <div class="t-sub" data-es="Plataforma de mesa de ayuda para empresas con arquitectura MVC en .NET y conexión a bases de datos. Incluye SimaxCliente, módulo de gestión y administración de clientes, y herramientas administrativas con foco en UI/UX." data-en="Enterprise help desk platform built on .NET MVC with database connectivity. Includes SimaxCliente, a module for client management and administration, plus admin tools focused on UI/UX.">Plataforma de mesa de ayuda para empresas con arquitectura MVC en .NET y conexión a bases de datos. Incluye SimaxCliente, módulo de gestión y administración de clientes, y herramientas administrativas con foco en UI/UX.</div>
-          <div class="demo" data-es="Ver demo →" data-en="View demo →">Ver demo →</div>
+          <div class="t-dates" data-es="Sistema de mesa de ayuda" data-en="Help desk system">Sistema de mesa de ayuda</div>
         </div>
-      </a>
-
-      <!-- SIACC -->
-      <a class="tile c-siacc col2" data-cat="exp" href="https://xoft.com.ar/index.html" target="_blank" rel="noopener" data-link="XOFT">
-        <span class="ext"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
-        <div class="t-dates">2022 — 2026</div>
-        <div>
-          <div class="t-h">SIACC</div>
-          <div class="t-sub" data-es="Sistema de firma digital para la Obra Social del Ejército Argentino: firma digital con API REST, extensión de Chrome propia e integración con dispositivos de hardware ePass." data-en="Digital signature system for the Argentine Army's health insurance: digital signing with a REST API, a custom Chrome extension and integration with ePass hardware devices.">Sistema de firma digital para la Obra Social del Ejército Argentino: firma digital con API REST, extensión de Chrome propia e integración con dispositivos de hardware ePass.</div>
-          <div class="demo" data-es="Xoftech →" data-en="Xoftech →">Xoftech →</div>
-        </div>
-      </a>
-
-      <!-- DISPLAY -->
-      <a class="tile c-display" data-cat="exp" href="https://www.telesmart.com.ar/" target="_blank" rel="noopener" data-link="TELESMART">
-        <span class="ext"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
-        <div class="t-label">2023</div>
-        <div>
-          <div class="t-h" data-es="Display de Monitoreo" data-en="Monitoring Display">Display de Monitoreo</div>
-          <div class="t-dates" data-es="Fibra óptica" data-en="Fiber optics">Fibra óptica</div>
-          <div class="demo" data-es="Telesmart →" data-en="Telesmart →">Telesmart →</div>
-        </div>
+        <div class="proj-desc" data-es="Desarrollada en Xoftech y adoptada por más de 10 empresas: redujo cerca de un 30% el tiempo de resolución de tickets." data-en="Built at Xoftech and adopted by 10+ companies: it cut ticket resolution time by about 30%.">Desarrollada en Xoftech y adoptada por más de 10 empresas: redujo cerca de un 30% el tiempo de resolución de tickets.</div>
       </a>
 
       <!-- MATEO RONN (proyecto web) -->
-      <a class="tile mateo-tile col2" data-cat="exp" href="https://mateoronnabregu.netlify.app/" target="_blank" data-link="MATEO"
-         style="background:linear-gradient(90deg, rgba(8,11,17,.92), rgba(8,11,17,.25)), url('datos/mateo.jpg') center/cover no-repeat #0a0a0a;">
+      <a class="tile mateo-tile col2 foto proj" href="https://mateoronnabregu.netlify.app/" target="_blank" data-link="MATEO">
         <span class="ext"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
-        <div class="t-label" data-es="proyecto · web" data-en="project · web">proyecto · web</div>
-        <div>
-          <div class="t-h">Mateo Ronn — Fotógrafo</div>
-          <div class="t-dates" data-es="Sitio web · diseño y desarrollo" data-en="Website · design & build">Sitio web · diseño y desarrollo</div>
-          <div class="demo" data-es="Ver sitio →" data-en="View site →">Ver sitio →</div>
+        <div class="proj-head">
+          <div class="t-h" data-es="Portfolio Fotográfico" data-en="Photography Portfolio">Portfolio Fotográfico</div>
+          <div class="t-dates" data-es="para Mateo Ronn Abregu" data-en="for Mateo Ronn Abregu">para Mateo Ronn Abregu</div>
         </div>
+        <div class="proj-desc" data-es="Conectado a Google Drive para que el propio fotógrafo actualice sus fotos. Liviano y de bajo mantenimiento." data-en="Connected to Google Drive so the photographer updates his own photos. Lightweight and low-maintenance.">Conectado a Google Drive para que el propio fotógrafo actualice sus fotos. Liviano y de bajo mantenimiento.</div>
+      </a>
+
+      <!-- CATARI (proyecto web) -->
+      <a class="tile c-catari col2 foto proj" href="https://catari.com.ar/" target="_blank" rel="noopener" data-link="CATARI">
+        <span class="ext"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
+        <div class="proj-head">
+          <div class="t-h">Catari</div>
+          <div class="t-dates" data-es="Sitio web de una constructora" data-en="Website for a construction company">Sitio web de una constructora</div>
+        </div>
+        <div class="proj-desc" data-es="Presenta los departamentos a estrenar de Catari en Villa Lynch, San Martín, con secciones de empresa, proveedores y contacto." data-en="Showcases Catari&#x27;s brand-new apartments in Villa Lynch, San Martín, with company, suppliers and contact sections.">Presenta los departamentos a estrenar de Catari en Villa Lynch, San Martín, con secciones de empresa, proveedores y contacto.</div>
+      </a>
+
+      <!-- SIACC -->
+      <a class="tile c-siacc col2 proj" href="https://xoft.com.ar/index.html" target="_blank" rel="noopener" data-link="XOFT">
+        <span class="ext"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
+        <div class="proj-head">
+          <div class="t-h">SIACC</div>
+          <div class="t-dates" data-es="Sistema de firma digital" data-en="Digital signature system">Sistema de firma digital</div>
+        </div>
+        <div class="proj-desc" data-es="Para la Obra Social del Ejército Argentino: firma de PDFs con token ePass en un solo clic, para cientos de documentos por mes." data-en="For the Argentine Army health insurance: one-click PDF signing with ePass tokens, for hundreds of documents a month.">Para la Obra Social del Ejército Argentino: firma de PDFs con token ePass en un solo clic, para cientos de documentos por mes.</div>
+      </a>
+
+      <!-- DISPLAY -->
+      <a class="tile c-display proj" href="https://www.telesmart.com.ar/" target="_blank" rel="noopener" data-link="TELESMART">
+        <span class="ext"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
+        <div class="proj-head">
+          <div class="t-h" data-es="Display de monitoreo" data-en="Monitoring display">Display de monitoreo</div>
+          <div class="t-dates" data-es="de fibra óptica" data-en="for fiber optics">de fibra óptica</div>
+        </div>
+        <div class="proj-desc" data-es="Para Telesmart: muestra en tiempo real procesos de telecomunicaciones sobre fibra óptica." data-en="For Telesmart: shows telecom processes over fiber optics in real time.">Para Telesmart: muestra en tiempo real procesos de telecomunicaciones sobre fibra óptica.</div>
       </a>
 
       <!-- KANUSUR -->
-      <a class="tile c-kanu" data-cat="exp" href="https://www.instagram.com/kanusur/" target="_blank" rel="noopener" data-link="KANUSUR">
+      <a class="tile c-kanu proj" href="https://www.instagram.com/kanusur/" target="_blank" rel="noopener" data-link="KANUSUR">
         <span class="ext"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
-        <div class="t-label">2021</div>
-        <div>
+        <div class="proj-head">
           <div class="t-h">KanuSur</div>
-          <div class="t-dates" data-es="Licencias + Android" data-en="Licensing + Android">Licencias + Android</div>
-          <div class="demo" data-es="Ver en Instagram →" data-en="View on Instagram →">Ver en Instagram →</div>
+          <div class="t-dates" data-es="Reproductor web" data-en="Web player">Reproductor web</div>
         </div>
+        <div class="proj-desc" data-es="Para Kanusur: licencias para desbloquear su contenido (web y Android) y monetizar el catálogo." data-en="For Kanusur: licenses to unlock its content (web and Android) and monetize the catalog.">Para Kanusur: licencias para desbloquear su contenido (web y Android) y monetizar el catálogo.</div>
       </a>
 
       <!-- GITHUB -->
-      <a class="tile c-gh" data-cat="info" href="https://github.com/valentinopais" target="_blank" data-link="GITHUB">
+      <a class="tile c-gh brandtile" href="https://github.com/valentinopais" target="_blank" data-link="GITHUB">
         <canvas class="matrix" id="ghMatrix"></canvas>
         <span class="ext"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
-        <div class="t-label" data-es="código" data-en="code">código</div>
-        <div>
-          <div class="t-h">GitHub</div>
-          <div class="t-sub" data-es="Mi trabajo y proyectos." data-en="My work & projects.">Mi trabajo y proyectos.</div>
-        </div>
+        <span class="brand-ico"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg></span>
+        <span class="brand-name">github</span>
       </a>
 
       <!-- EMAIL -->
-      <a class="tile c-mail brandtile" data-cat="info" href="mailto:valenpais@gmail.com" id="emailTile" data-link="EMAIL">
+      <a class="tile c-mail brandtile" href="mailto:valenpais@gmail.com" id="emailTile" data-link="EMAIL">
         <span class="ext"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
         <span class="brand-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="4" width="20" height="16" rx="2.5"/><path d="M3 7l9 6 9-6"/></svg></span>
         <span class="brand-name">email</span>
       </a>
 
       <!-- LINKEDIN -->
-      <a class="tile c-li brandtile" data-cat="info" href="https://www.linkedin.com/in/valentinopais/" target="_blank" data-link="LINKEDIN">
+      <a class="tile c-li brandtile" href="https://www.linkedin.com/in/valentinopais/" target="_blank" data-link="LINKEDIN">
         <span class="ext"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
         <span class="brand-ico"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></span>
         <span class="brand-name">linkedin</span>
       </a>
 
-      <!-- CURRÍCULUM -->
-      <a class="tile c-cv brandtile" data-cat="info" href="datos/cv.pdf" id="cvTile" target="_blank">
-        <span class="ext"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v12M7 12l5 5 5-5"/></svg></span>
-        <span class="brand-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h4"/></svg></span>
-        <span class="brand-name" data-es="currículum" data-en="résumé">currículum</span>
-      </a>
-
       <!-- UBICACIÓN · fondo hecho con el Callejero y Espacios verdes de Buenos Aires Data (GCBA), CC BY 4.0: https://data.buenosaires.gob.ar -->
-      <div class="tile c-loc col2 maptile loc-center" data-cat="info" title="Mapa: datos abiertos de la Ciudad de Buenos Aires (BA Data · CC BY 4.0), modificados">
+      <div class="tile c-loc col2 maptile loc-center" title="Mapa: datos abiertos de la Ciudad de Buenos Aires (BA Data · CC BY 4.0), modificados">
         <div class="mapframe" id="locmap"></div>
         <div class="map-overlay">
           <div class="avatar" style="background-image:url('datos/perfil.jpg')"></div>
           <div class="pin"><span class="pdot"></span> Devoto · Buenos Aires</div>
         </div>
       </div>
+
+      <!-- CURRÍCULUM -->
+      <a class="tile c-cv brandtile" href="datos/cv.pdf" id="cvTile" target="_blank">
+        <span class="ext"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v12M7 12l5 5 5-5"/></svg></span>
+        <span class="brand-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h4"/></svg></span>
+        <span class="brand-name" data-es="currículum" data-en="résumé">currículum</span>
+      </a>
 
     </div>
   </main>
@@ -415,7 +412,7 @@
       hw.textContent = '';
       [...t].forEach((ch,i)=>{
         const s = document.createElement('span');
-        s.textContent = ch === ' ' ? ' ' : ch;
+        s.textContent = ch === ' ' ? '\u00a0' : ch;   // espacio duro: si no, el espacio de "HOLA MUNDO" desaparece
         s.className = 'jump';
         s.style.animationDelay = (i*0.07) + 's';
         hw.appendChild(s);
@@ -444,19 +441,6 @@
     }
     setLang(detectLang());
     setTimeout(()=>{ hwBox.classList.add('go'); splitHello(); }, 1000);
-
-    // ---- Category filter (Experiencia / Información) ----
-    const fpills = document.querySelectorAll('.fpill');
-    let activeCat = null;
-    fpills.forEach(p=>{
-      p.addEventListener('click', ()=>{
-        const cat = p.dataset.cat;
-        activeCat = (activeCat === cat) ? null : cat;
-        document.body.classList.toggle('f-exp', activeCat === 'exp');
-        document.body.classList.toggle('f-info', activeCat === 'info');
-        fpills.forEach(x=> x.classList.toggle('active', x.dataset.cat === activeCat));
-      });
-    });
 
     // ---- English level: flip coin + audio with circular progress ----
     (function(){
@@ -650,6 +634,43 @@
     var raf=0;
     window.addEventListener('resize',function(){ cancelAnimationFrame(raf); raf=requestAnimationFrame(centrarSueltas); });
     centrarSueltas();
+  })();
+
+  /* Hover estilo "card de Steam": la tarjeta se inclina en 3D hacia donde está el mouse y el brillo lo sigue */
+  (function(){
+    if(!window.matchMedia('(hover:hover)').matches) return;          // en celulares no hay hover
+    var quieto = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var MAX = 8;                                                       // grados máximos de inclinación
+    function caja(t){   // posición de la tarjeta sin la inclinación (si no, tiembla)
+      var p = t.offsetParent, r = p ? p.getBoundingClientRect() : {left:0, top:0};
+      return { x: r.left + (p ? p.clientLeft : 0) + t.offsetLeft, y: r.top + (p ? p.clientTop : 0) + t.offsetTop, w: t.offsetWidth, h: t.offsetHeight };
+    }
+    document.querySelectorAll('.bento > .tile').forEach(function(t){
+      var raf = 0, ev = null;
+      function mover(){
+        raf = 0;
+        var c = caja(t);
+        var x = Math.min(Math.max((ev.clientX - c.x) / c.w, 0), 1);
+        var y = Math.min(Math.max((ev.clientY - c.y) / c.h, 0), 1);
+        t.style.setProperty('--gx', (x*100).toFixed(1) + '%');
+        t.style.setProperty('--gy', (y*100).toFixed(1) + '%');
+        // sobre el círculo de inglés la tarjeta queda derecha, así el arrastre del audio es preciso
+        var plano = quieto || (ev.target && ev.target.closest && ev.target.closest('.eng-flip'));
+        var k = Math.min(1, c.h / c.w);                                // las anchas giran menos de costado
+        t.style.setProperty('--rx', plano ? '0deg' : ((0.5 - y) * 2 * MAX).toFixed(2) + 'deg');
+        t.style.setProperty('--ry', plano ? '0deg' : ((x - 0.5) * 2 * MAX * k).toFixed(2) + 'deg');
+      }
+      t.addEventListener('pointerenter', function(e){ if(e.pointerType !== 'touch') t.classList.add('hov'); });
+      t.addEventListener('pointermove', function(e){
+        if(e.pointerType === 'touch') return;
+        ev = e; if(!raf) raf = requestAnimationFrame(mover);
+      });
+      t.addEventListener('pointerleave', function(){
+        if(raf){ cancelAnimationFrame(raf); raf = 0; }
+        t.classList.remove('hov');
+        t.style.setProperty('--rx', '0deg'); t.style.setProperty('--ry', '0deg');
+      });
+    });
   })();
   </script>
 </body>
