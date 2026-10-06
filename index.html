@@ -3,13 +3,54 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<!-- MÉTRICAS: Google Analytics 4 + Microsoft Clarity.
+     Pegá tus IDs abajo. Si quedan vacíos no se carga nada, y abriendo la página local tampoco (así no contás tus propias pruebas) -->
+<script>
+  window.METRICAS = {
+    ga4: 'G-KZDW8NVJSG',     // ID de medición de Google Analytics
+    clarity: 'yt8tad591n'    // ID del proyecto de Microsoft Clarity
+  };
+  (function(m){
+    if(location.protocol === 'file:' || /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname)) return;
+    if(/^G-[A-Z0-9]+$/i.test(m.ga4)){
+      var s = document.createElement('script'); s.async = true; s.src = 'https://www.googletagmanager.com/gtag/js?id=' + m.ga4;
+      document.head.appendChild(s);
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = function(){ dataLayer.push(arguments); };
+      gtag('js', new Date()); gtag('config', m.ga4);
+    }
+    if(/^[a-z0-9]{6,}$/i.test(m.clarity)){
+      (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+      })(window, document, "clarity", "script", m.clarity);
+    }
+  })(window.METRICAS);
+  // anota en las dos herramientas las acciones que importan (abrir el mail, el CV...)
+  window.medir = function(evento, datos){
+    try{ if(window.gtag) gtag('event', evento, datos || {}); }catch(e){}
+    try{ if(window.clarity) clarity('event', evento); }catch(e){}
+  };
+</script>
 <title>Valentino Pais · Full Stack Developer</title>
+<!-- favicon "bento" (el SVG lo usan los navegadores nuevos; el .ico es para los viejos; el png es el ícono del celu al guardar la página) -->
+<link rel="icon" href="favicon.ico" sizes="32x32" />
+<link rel="icon" href="favicon.svg" type="image/svg+xml" />
+<link rel="apple-touch-icon" href="apple-touch-icon.png" />
+<meta name="theme-color" content="#0d1117" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet" />
+<!-- las fotos de las tarjetas empiezan a bajar apenas abre la página (si no, el navegador las encuentra recién al aplicar el CSS) -->
+<link rel="preload" as="image" href="datos/simax.jpg" fetchpriority="high" />
+<link rel="preload" as="image" href="datos/mateo.jpg" />
+<link rel="preload" as="image" href="datos/catari.jpg" />
+<!-- sin JavaScript las fotos se muestran directo -->
+<noscript><style>.foto::after,.maptile .mapframe,.avatar::after{opacity:1!important}</style></noscript>
 <style>
   :root{
-    --bg:#080a0e;
+    --bg:#0d1117;   /* mismo color que la topbar */
     --text:#e6edf3;
     --dim:#8b949e;
     --faint:#6e7681;
@@ -91,21 +132,31 @@
   .c-stack{background:linear-gradient(160deg,#8957e5,#a371f7);justify-content:center;align-items:center;text-align:center;gap:14px}
   .c-stack .t-h{width:100%}
   .c-eng{background:linear-gradient(150deg,#1f9b87,#2bb79f);align-items:center;justify-content:center;text-align:center;gap:14px}
-  .c-simax{--foto:linear-gradient(0deg,rgba(8,11,17,.85) 0%,rgba(8,11,17,0) 55%),linear-gradient(90deg,rgba(8,11,17,.92),rgba(8,11,17,.55)),url('datos/simax.jpg') center top/cover no-repeat}
+  .c-simax{--velo:linear-gradient(0deg,rgba(8,11,17,.85) 0%,rgba(8,11,17,0) 55%),linear-gradient(90deg,rgba(8,11,17,.92),rgba(8,11,17,.55));--foto:var(--velo),url('datos/simax.jpg') center top/cover no-repeat}
   .c-siacc{background:linear-gradient(150deg,#1f6feb,#388bfd)}
   .c-display{background:linear-gradient(150deg,#0e7490,#1eb8d0)}
   .c-kanu{background:linear-gradient(150deg,#2da44e,#56d364)}
-  .mateo-tile{--foto:linear-gradient(0deg,rgba(8,11,17,.85) 0%,rgba(8,11,17,0) 55%),linear-gradient(90deg,rgba(8,11,17,.92),rgba(8,11,17,.4)),url('datos/mateo.jpg') center/cover no-repeat}
-  .c-catari{--foto:linear-gradient(0deg,rgba(8,11,17,.85) 0%,rgba(8,11,17,0) 55%),linear-gradient(90deg,rgba(8,11,17,.88) 0%,rgba(8,11,17,.6) 40%,rgba(8,11,17,.2) 100%),url('datos/catari.jpg') right center/cover no-repeat}
+  .mateo-tile{--velo:linear-gradient(0deg,rgba(8,11,17,.85) 0%,rgba(8,11,17,0) 55%),linear-gradient(90deg,rgba(8,11,17,.92),rgba(8,11,17,.4));--foto:var(--velo),url('datos/mateo.jpg') center/cover no-repeat}
+  .c-catari{--velo:linear-gradient(0deg,rgba(8,11,17,.85) 0%,rgba(8,11,17,0) 55%),linear-gradient(90deg,rgba(8,11,17,.88) 0%,rgba(8,11,17,.6) 40%,rgba(8,11,17,.2) 100%);--foto:var(--velo),url('datos/catari.jpg') right center/cover no-repeat}
   /* tarjetas con foto (Simax, Mateo, Catari): la foto va en una capa aparte apenas desenfocada, así el texto queda nítido.
      Para más o menos desenfoque cambiá --blur (0px = sin desenfoque) */
   .foto{background:#0d1117;--blur:1.5px}
   .foto::after{content:"";position:absolute;inset:-12px;z-index:0;pointer-events:none;background:var(--foto);filter:blur(var(--blur))}
+  /* CARGA "DE BORROSO A NÍTIDO": mientras baja cada foto se ve al instante una miniatura borrosa (está acá mismo, ~1 KB)
+     y la foto buena aparece encima con un fundido cuando termina de bajar (la clase .lista la pone el JS) */
+  .tile > .ph{position:absolute;inset:-30px;z-index:0;pointer-events:none;filter:blur(14px)}
+  .c-simax > .ph{background:var(--velo),url(data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA4KCw0LCQ4NDA0QDw4RFiQXFhQUFiwgIRokNC43NjMuMjI6QVNGOj1OPjIySGJJTlZYXV5dOEVmbWVabFNbXVn/2wBDAQ8QEBYTFioXFypZOzI7WVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVn/wAARCAAMABgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDrotH0gtxGu8noJW6/TNB8P6Sh3C1cnrw7/wCNa0fI+hx1p20c8nk561Tk3uyFFLYy00PT1lG21OOpbzG4PpjNFahGMn26UUrh7OHZH//Z) center top/cover no-repeat}
+  .mateo-tile > .ph{background:var(--velo),url(data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA4KCw0LCQ4NDA0QDw4RFiQXFhQUFiwgIRokNC43NjMuMjI6QVNGOj1OPjIySGJJTlZYXV5dOEVmbWVabFNbXVn/2wBDAQ8QEBYTFioXFypZOzI7WVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVn/wAARCAAMABgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDg54JYdodCrEck9KmeF1ZAVcQSkmMY547fnittrCFtEvbyQvJKNm0MflUtjJA9eaqaYZL25t45ZXCxYjULxwev40lJWuaShaVkUoLUPYyzMlwXALLsC7cevPJ96KdqwOn6pNbQuxSFsIW5PI5/nRUpyJtE/9k=) center/cover no-repeat}
+  .c-catari > .ph{background:var(--velo),url(data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA4KCw0LCQ4NDA0QDw4RFiQXFhQUFiwgIRokNC43NjMuMjI6QVNGOj1OPjIySGJJTlZYXV5dOEVmbWVabFNbXVn/2wBDAQ8QEBYTFioXFypZOzI7WVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVn/wAARCAAKABgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDRksENuCFAGcAg/wAxWRdhFuFihAA3YLAjng+tas7HzByelc1MTuj5P3v6GuurNxjoc1OKk9TbshDPcPbSxDzVXI5x+Y/yKKq6GT/aUZyc7SPwxRShUdtQnBX0P//Z) right center/cover no-repeat}
+  .avatar::before{content:"";position:absolute;inset:-8px;background:url(data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA4KCw0LCQ4NDA0QDw4RFiQXFhQUFiwgIRokNC43NjMuMjI6QVNGOj1OPjIySGJJTlZYXV5dOEVmbWVabFNbXVn/2wBDAQ8QEBYTFioXFypZOzI7WVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVn/wAARCAAMAAwDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwC3coTcpG0jRptymyQIS3PXPX+VPEJKKXwWwMkdCaytMkbXb6dbslRbuEURHblT1B9aZBrVyxmUpFiOVkX5SOAeO9Nbsb2R/9k=) center/cover no-repeat;filter:blur(6px)}
+  .avatar::after{content:"";position:absolute;inset:0;background:url('datos/perfil.jpg') center/cover no-repeat}
+  .foto::after,.maptile .mapframe,.avatar::after{opacity:0;transition:opacity .8s ease}
+  .foto.lista::after,.maptile.lista .mapframe,.avatar.lista::after{opacity:1}
   .c-gh{background:#080b11;border:1px solid var(--border)}
   .c-mail{background:linear-gradient(150deg,#c5221f,#ea4335)}
   .c-li{background:linear-gradient(150deg,#004182,#0a66c2)}
   .c-cv{background:linear-gradient(150deg,#bc4c00,#f0883e)}
-  .c-loc{background:#0d1117}
+  .c-loc{background:#0f1012}   /* el color de base del mapa, mientras baja */
 
   .stack-pills{display:flex;flex-wrap:wrap;justify-content:center;align-content:center;gap:6px;width:100%}
   .stack-pills span{font-family:'JetBrains Mono',monospace;font-size:.7rem;background:rgba(255,255,255,.17);border-radius:7px;padding:4px 8px}
@@ -147,7 +198,7 @@
      Esa licencia solo pide citar la fuente: va en el tooltip de la tarjeta y dentro del SVG, sin leyenda visible */
   .maptile .mapframe{position:absolute;inset:0;width:100%;height:100%;z-index:1;background:#0f1012 url('datos/mapa.svg') center/cover no-repeat}
   .maptile .map-overlay{position:absolute;inset:0;z-index:3;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;pointer-events:none}
-  .avatar{width:86px;height:86px;border-radius:50%;border:4px solid rgba(255,255,255,.9);background:#3a4150 center/cover no-repeat;box-shadow:0 6px 20px rgba(0,0,0,.55)}
+  .avatar{position:relative;overflow:hidden;width:86px;height:86px;border-radius:50%;border:4px solid rgba(255,255,255,.9);background:#3a4150;box-shadow:0 6px 20px rgba(0,0,0,.55)}
   .pin{display:inline-flex;align-items:center;gap:6px;background:rgba(13,17,23,.82);border:1px solid var(--border);color:#fff;font-size:.8rem;font-weight:600;padding:5px 11px;border-radius:999px}
   .pin .pdot{width:7px;height:7px;border-radius:50%;background:#ff5a5f;box-shadow:0 0 8px #ff5a5f}
 
@@ -256,6 +307,7 @@
 
       <!-- SIMAX -->
       <a class="tile c-simax col2 foto proj" href="https://valentinopais.github.io/simax-demo/" target="_blank" rel="noopener" data-link="SIMAX">
+        <span class="ph" aria-hidden="true"></span>
         <span class="ext"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
         <div class="proj-head">
           <div class="t-h">Simax</div>
@@ -266,6 +318,7 @@
 
       <!-- MATEO RONN (proyecto web) -->
       <a class="tile mateo-tile col2 foto proj" href="https://mateoronnabregu.netlify.app/" target="_blank" data-link="MATEO">
+        <span class="ph" aria-hidden="true"></span>
         <span class="ext"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
         <div class="proj-head">
           <div class="t-h" data-es="Portfolio Fotográfico" data-en="Photography Portfolio">Portfolio Fotográfico</div>
@@ -276,6 +329,7 @@
 
       <!-- CATARI (proyecto web) -->
       <a class="tile c-catari col2 foto proj" href="https://catari.com.ar/" target="_blank" rel="noopener" data-link="CATARI">
+        <span class="ph" aria-hidden="true"></span>
         <span class="ext"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
         <div class="proj-head">
           <div class="t-h">Catari</div>
@@ -340,7 +394,7 @@
       <div class="tile c-loc col2 maptile loc-center" title="Mapa: datos abiertos de la Ciudad de Buenos Aires (BA Data · CC BY 4.0), modificados">
         <div class="mapframe" id="locmap"></div>
         <div class="map-overlay">
-          <div class="avatar" style="background-image:url('datos/perfil.jpg')"></div>
+          <div class="avatar"></div>
           <div class="pin"><span class="pdot"></span> Devoto · Buenos Aires</div>
         </div>
       </div>
@@ -391,6 +445,16 @@
   </div>
 
   <script>
+    // ---- Fotos "de borroso a nítido": cada foto aparece con un fundido sobre su miniatura borrosa apenas termina de bajar ----
+    (function(){
+      [['.c-simax', 'datos/simax.jpg'], ['.mateo-tile', 'datos/mateo.jpg'], ['.c-catari', 'datos/catari.jpg'], ['.maptile', 'datos/mapa.svg'], ['.avatar', 'datos/perfil.jpg']].forEach(function(f){
+        var el = document.querySelector(f[0]); if(!el) return;
+        var im = new Image(), lista = function(){ el.classList.add('lista'); };
+        if(im.decode){ im.src = f[1]; im.decode().then(lista, function(){}); }
+        else { im.onload = lista; im.src = f[1]; }
+      });
+    })();
+
     // ---- Links dinámicos: lee datos/links.txt al cargar (si falla, quedan los links del HTML) ----
     (function(){
       fetch('datos/links.txt', {cache:'no-store'})
@@ -618,13 +682,16 @@
       const closeBtn = document.getElementById('emailClose');
       const copyBtn = document.getElementById('copyEmail');
       if(!tile || !modal) return;
-      const openM = ()=>{ modal.classList.add('open'); modal.setAttribute('aria-hidden','false'); };
+      const openM = ()=>{ modal.classList.add('open'); modal.setAttribute('aria-hidden','false'); medir('email_abierto'); };
       const closeM = ()=>{ modal.classList.remove('open'); modal.setAttribute('aria-hidden','true'); };
       tile.addEventListener('click', (e)=>{ e.preventDefault(); openM(); });
       closeBtn.addEventListener('click', closeM);
       modal.addEventListener('click', (e)=>{ if(e.target === modal) closeM(); });
       document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeM(); });
+      const redactar = modal.querySelector('[data-link="EMAIL_COMPOSE"]');
+      if(redactar) redactar.addEventListener('click', ()=> medir('email_redactar'));
       copyBtn.addEventListener('click', async ()=>{
+        medir('email_copiado');
         const addr = ((document.querySelector('[data-email-addr]')||{}).textContent || 'valenpais@gmail.com').trim();
         try{ await navigator.clipboard.writeText(addr); }catch(_){}
         const lang = document.documentElement.lang || 'es';
@@ -640,12 +707,14 @@
       const closeBtn = document.getElementById('cvClose');
       const frame = document.getElementById('cvFrame');
       if(!tile || !modal) return;
-      const openM = ()=>{ if(!frame.src) frame.src = 'datos/cv.pdf#toolbar=0&navpanes=0&scrollbar=0&view=FitH'; modal.classList.add('open'); modal.setAttribute('aria-hidden','false'); };
+      const openM = ()=>{ if(!frame.src) frame.src = 'datos/cv.pdf#toolbar=0&navpanes=0&scrollbar=0&view=FitH'; modal.classList.add('open'); modal.setAttribute('aria-hidden','false'); medir('cv_abierto'); };
       const closeM = ()=>{ modal.classList.remove('open'); modal.setAttribute('aria-hidden','true'); };
       tile.addEventListener('click', (e)=>{ e.preventDefault(); openM(); });
       closeBtn.addEventListener('click', closeM);
       modal.addEventListener('click', (e)=>{ if(e.target === modal) closeM(); });
       document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeM(); });
+      const bajar = modal.querySelector('.cv-download');
+      if(bajar) bajar.addEventListener('click', ()=> medir('cv_descargado'));
     })();
 
     // ---- GitHub matrix ----
