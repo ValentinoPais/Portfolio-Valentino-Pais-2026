@@ -33,7 +33,7 @@
     try{ if(window.clarity) clarity('event', evento); }catch(e){}
   };
 </script>
-<title>Valentino Pais · Full Stack Developer</title>
+<title data-es="Valentino Pais · Trabajos" data-en="Valentino Pais · Work">Valentino Pais · Trabajos</title>
 <!-- favicon "bento" (el SVG lo usan los navegadores nuevos; el .ico es para los viejos; el png es el ícono del celu al guardar la página) -->
 <link rel="icon" href="favicon.ico" sizes="32x32" />
 <link rel="icon" href="favicon.svg" type="image/svg+xml" />
@@ -43,9 +43,10 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet" />
 <!-- las fotos de las tarjetas empiezan a bajar apenas abre la página (si no, el navegador las encuentra recién al aplicar el CSS) -->
-<link rel="preload" as="image" href="datos/simax.jpg" fetchpriority="high" />
-<link rel="preload" as="image" href="datos/mateo.jpg" />
+<link rel="preload" as="image" href="datos/sanguchito.jpg" fetchpriority="high" />
+<link rel="preload" as="image" href="datos/mateo.jpg" fetchpriority="high" />
 <link rel="preload" as="image" href="datos/catari.jpg" />
+<link rel="preload" as="image" href="datos/simax.jpg" />
 <!-- sin JavaScript las fotos se muestran directo -->
 <noscript><style>.foto::after,.maptile .mapframe,.avatar::after{opacity:1!important}</style></noscript>
 <style>
@@ -77,7 +78,7 @@
   .tile{--rx:0deg;--ry:0deg;--gx:50%;--gy:50%;--sx:0px;--sy:14px;--glow:120,130,150}
   /* sombra del hover: toma el color de cada tarjeta (sobre el fondo oscuro una sombra negra no se ve) */
   .c-hello{--glow:90,82,201}.c-stack{--glow:163,113,247}.c-eng{--glow:43,183,159}.c-simax{--glow:88,166,255}.mateo-tile{--glow:210,160,90}
-  .c-catari{--glow:90,150,230}.c-siacc{--glow:56,139,253}.c-display{--glow:30,184,208}.c-kanu{--glow:86,211,100}.c-gh{--glow:46,160,67}
+  .c-lil{--glow:150,120,255}.c-catari{--glow:90,150,230}.c-siacc{--glow:56,139,253}.c-display{--glow:30,184,208}.c-kanu{--glow:86,211,100}.c-gh{--glow:46,160,67}
   .c-mail{--glow:234,67,53}.c-li{--glow:10,102,194}.c-cv{--glow:240,136,62}.c-loc{--glow:140,150,170}
   .tile::before{content:"";position:absolute;inset:0;z-index:4;pointer-events:none;border-radius:inherit;opacity:0;transition:opacity .35s ease;background:radial-gradient(circle at var(--gx) var(--gy),rgba(255,255,255,.22),rgba(255,255,255,.06) 32%,rgba(255,255,255,0) 62%)}
   .tile.arriba{z-index:10}   /* la que está en hover (o volviendo a su lugar) queda por encima de las vecinas */
@@ -85,6 +86,7 @@
   .tile.hov::before{opacity:1}
   @media(hover:none){a.tile:active{scale:.97;transition:scale .1s}}
   .col2{grid-column:span 2;aspect-ratio:auto}
+  .tile.oculto{display:none}   /* tarjetas guardadas pero escondidas: para mostrarlas, sacales la clase "oculto" */
   .loc-center{grid-column:2 / span 2}
   @media(max-width:860px){.loc-center{grid-column:1 / -1}}
   .tile>*{position:relative;z-index:2}
@@ -101,8 +103,8 @@
   /* tarjetas de proyectos: título y bajada arriba a la izquierda, link abajo (todas iguales) */
   .proj-head{padding-right:26px}
   .bento{container-type:inline-size}
-  .proj.col2{min-height:calc((100cqw - 42px) / 4)}   /* las anchas miden de alto lo mismo que un cuadrado */
-  @media(max-width:860px){.proj.col2{min-height:calc((100cqw - 14px) / 2)}}
+  .proj.col2,.c-hello{min-height:calc((100cqw - 42px) / 4)}   /* las anchas miden de alto lo mismo que un cuadrado */
+  @media(max-width:860px){.proj.col2,.c-hello{min-height:calc((100cqw - 14px) / 2)}}
   @media(max-width:600px){.proj{grid-column:span 2;aspect-ratio:auto;min-height:calc((100cqw - 11px) / 2)}}   /* en celular todos los proyectos van a lo ancho */
   .proj-head .t-dates{margin-top:5px}
   .link-hl{color:#fff;text-decoration:underline;text-underline-offset:2px;font-weight:600}
@@ -132,6 +134,7 @@
   .c-stack{background:linear-gradient(160deg,#8957e5,#a371f7);justify-content:center;align-items:center;text-align:center;gap:14px}
   .c-stack .t-h{width:100%}
   .c-eng{background:linear-gradient(150deg,#1f9b87,#2bb79f);align-items:center;justify-content:center;text-align:center;gap:14px}
+  .c-lil{--velo:linear-gradient(0deg,rgba(8,11,17,.85) 0%,rgba(8,11,17,0) 55%),linear-gradient(90deg,rgba(8,11,17,.92),rgba(8,11,17,.45));--foto:var(--velo),url('datos/sanguchito.jpg') center top/cover no-repeat}
   .c-simax{--velo:linear-gradient(0deg,rgba(8,11,17,.85) 0%,rgba(8,11,17,0) 55%),linear-gradient(90deg,rgba(8,11,17,.92),rgba(8,11,17,.55));--foto:var(--velo),url('datos/simax.jpg') center top/cover no-repeat}
   .c-siacc{background:linear-gradient(150deg,#1f6feb,#388bfd)}
   .c-display{background:linear-gradient(150deg,#0e7490,#1eb8d0)}
@@ -148,6 +151,7 @@
   .c-simax > .ph{background:var(--velo),url(data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA4KCw0LCQ4NDA0QDw4RFiQXFhQUFiwgIRokNC43NjMuMjI6QVNGOj1OPjIySGJJTlZYXV5dOEVmbWVabFNbXVn/2wBDAQ8QEBYTFioXFypZOzI7WVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVn/wAARCAAMABgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDrotH0gtxGu8noJW6/TNB8P6Sh3C1cnrw7/wCNa0fI+hx1p20c8nk561Tk3uyFFLYy00PT1lG21OOpbzG4PpjNFahGMn26UUrh7OHZH//Z) center top/cover no-repeat}
   .mateo-tile > .ph{background:var(--velo),url(data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA4KCw0LCQ4NDA0QDw4RFiQXFhQUFiwgIRokNC43NjMuMjI6QVNGOj1OPjIySGJJTlZYXV5dOEVmbWVabFNbXVn/2wBDAQ8QEBYTFioXFypZOzI7WVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVn/wAARCAAMABgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDg54JYdodCrEck9KmeF1ZAVcQSkmMY547fnittrCFtEvbyQvJKNm0MflUtjJA9eaqaYZL25t45ZXCxYjULxwev40lJWuaShaVkUoLUPYyzMlwXALLsC7cevPJ96KdqwOn6pNbQuxSFsIW5PI5/nRUpyJtE/9k=) center/cover no-repeat}
   .c-catari > .ph{background:var(--velo),url(data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA4KCw0LCQ4NDA0QDw4RFiQXFhQUFiwgIRokNC43NjMuMjI6QVNGOj1OPjIySGJJTlZYXV5dOEVmbWVabFNbXVn/2wBDAQ8QEBYTFioXFypZOzI7WVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVn/wAARCAAKABgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDRksENuCFAGcAg/wAxWRdhFuFihAA3YLAjng+tas7HzByelc1MTuj5P3v6GuurNxjoc1OKk9TbshDPcPbSxDzVXI5x+Y/yKKq6GT/aUZyc7SPwxRShUdtQnBX0P//Z) right center/cover no-repeat}
+  .c-lil > .ph{background:var(--velo),url(data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA4KCw0LCQ4NDA0QDw4RFiQXFhQUFiwgIRokNC43NjMuMjI6QVNGOj1OPjIySGJJTlZYXV5dOEVmbWVabFNbXVn/2wBDAQ8QEBYTFioXFypZOzI7WVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVn/wAARCAAMABgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDDWPTpfMkuU2t1+UkHP0rOWK0VYiXkD+XmQSDGGz249K2vD+lWN3p/m3FssjeXu5J65b39hUI0uz/soSmEF1iL5J6ksBz7VmpI0cbKxfW08ORsqStAQF+ZxcN1xnp+lFWBoumxbo/sUT4jV8sCTkrRS9qkN029j//Z) center top/cover no-repeat}
   .avatar::before{content:"";position:absolute;inset:-8px;background:url(data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA4KCw0LCQ4NDA0QDw4RFiQXFhQUFiwgIRokNC43NjMuMjI6QVNGOj1OPjIySGJJTlZYXV5dOEVmbWVabFNbXVn/2wBDAQ8QEBYTFioXFypZOzI7WVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVn/wAARCAAMAAwDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwC3coTcpG0jRptymyQIS3PXPX+VPEJKKXwWwMkdCaytMkbXb6dbslRbuEURHblT1B9aZBrVyxmUpFiOVkX5SOAeO9Nbsb2R/9k=) center/cover no-repeat;filter:blur(6px)}
   .avatar::after{content:"";position:absolute;inset:0;background:url('datos/perfil.jpg') center/cover no-repeat}
   .foto::after,.maptile .mapframe,.avatar::after{opacity:0;transition:opacity .8s ease}
@@ -195,7 +199,7 @@
   /* map tile */
   .maptile{padding:0;overflow:hidden;aspect-ratio:2/1;min-height:200px;width:100%;min-width:0}
   /* fondo: mapa de Villa Devoto (datos/mapa.svg) hecho con datos abiertos de la Ciudad (BA Data, CC BY 4.0).
-     Esa licencia solo pide citar la fuente: va en el tooltip de la tarjeta y dentro del SVG, sin leyenda visible */
+     Esa licencia solo pide citar la fuente: va como texto oculto en la tarjeta y dentro del SVG, sin leyenda visible */
   .maptile .mapframe{position:absolute;inset:0;width:100%;height:100%;z-index:1;background:#0f1012 url('datos/mapa.svg') center/cover no-repeat}
   .maptile .map-overlay{position:absolute;inset:0;z-index:3;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;pointer-events:none}
   .avatar{position:relative;overflow:hidden;width:86px;height:86px;border-radius:50%;border:4px solid rgba(255,255,255,.9);background:#3a4150;box-shadow:0 6px 20px rgba(0,0,0,.55)}
@@ -203,9 +207,30 @@
   .pin .pdot{width:7px;height:7px;border-radius:50%;background:#ff5a5f;box-shadow:0 0 8px #ff5a5f}
 
   /* language toggle */
-  .langpick{position:fixed;bottom:16px;right:16px;z-index:80;display:flex;border:1px solid var(--border);border-radius:999px;overflow:hidden;background:var(--surface);box-shadow:0 8px 24px rgba(0,0,0,.4)}
-  .langpick button{background:transparent;color:var(--faint);border:none;cursor:pointer;padding:7px 13px;font-family:inherit;font-weight:700;font-size:.78rem;transition:all .2s}
-  .langpick button.active{background:var(--blue);color:#04101f}
+  /* botones flotantes de abajo: idioma (izquierda) y WhatsApp (derecha), dos circulitos iguales */
+  .langpick,.wsp{--gx:50%;--gy:50%;--glow:88,166,255;position:fixed;bottom:16px;z-index:80;width:46px;height:46px;border-radius:50%;box-shadow:0 4px 10px rgba(0,0,0,.35);transition:box-shadow .25s ease,scale .15s ease}
+  .wsp{--glow:37,211,102}
+  /* hover como el de las tarjetas: se inclinan hacia el mouse (lo mueve el JS), con un brillo que sigue al cursor
+     y una sombra del color del botón; el teléfono de WhatsApp además "suena" */
+  .langpick::before,.wsp::before{content:"";position:absolute;inset:0;z-index:2;border-radius:50%;pointer-events:none;opacity:0;transition:opacity .3s ease;background:radial-gradient(circle at var(--gx) var(--gy),rgba(255,255,255,.32),rgba(255,255,255,0) 62%)}
+  .langpick.hov::before,.wsp.hov::before{opacity:1}
+  .langpick.hov,.wsp.hov{box-shadow:0 8px 18px -4px rgba(var(--glow),.6),0 4px 10px rgba(0,0,0,.35)}
+  .langpick:active,.wsp:active{scale:.92}
+  .wsp.hov svg{animation:timbre .7s ease-in-out}
+  @keyframes timbre{0%,100%{transform:rotate(0)}15%{transform:rotate(-14deg)}30%{transform:rotate(12deg)}45%{transform:rotate(-9deg)}60%{transform:rotate(6deg)}75%{transform:rotate(-3deg)}}
+  @media(prefers-reduced-motion:reduce){.wsp.hov svg{animation:none}}
+  .langpick{left:16px;display:grid;place-items:center;overflow:hidden;background:var(--surface);border:1px solid var(--border)}
+  .langpick button{width:100%;height:100%;padding:0;background:transparent;color:var(--text);border:none;cursor:pointer;font-family:inherit;font-weight:700;font-size:.8rem;letter-spacing:.02em}
+  .langpick button:focus-visible{outline:2px solid var(--blue);outline-offset:-5px;border-radius:50%}
+  /* botón de WhatsApp (abajo a la derecha): el número y el mensaje se cambian en datos/links.txt (WHATSAPP) */
+  .wsp{right:16px;display:grid;place-items:center;background:#25d366;color:#fff}
+  .wsp:focus-visible{outline:2px solid #fff;outline-offset:3px}
+  .wsp svg{width:24px;height:24px}
+  .wsp::after{content:"";position:absolute;inset:0;border-radius:50%;box-shadow:0 0 0 0 rgba(37,211,102,.55);animation:latido 1.8s ease-out 2.5s 3;pointer-events:none}
+  @keyframes latido{to{box-shadow:0 0 0 16px rgba(37,211,102,0)}}
+  @media(prefers-reduced-motion:reduce){.wsp::after{animation:none}}
+  .solo-lector{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  .langpick button.active{display:none}   /* se ve solo el idioma al que cambia: en español muestra EN */
 
   /* email modal */
   .modal-overlay{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;padding:24px;background:rgba(3,6,12,.62);backdrop-filter:blur(6px);opacity:0;visibility:hidden;transition:opacity .25s,visibility .25s}
@@ -245,6 +270,7 @@
     .bento{grid-template-columns:repeat(2,1fr)}
     .col2{grid-column:span 2}
     .bento>.tile.solo{grid-column:1 / -1;justify-self:center;width:calc(50% - 7px)}
+    .c-gh,.c-mail,.c-li,.c-loc,.c-cv{order:1}   /* en 2 columnas los contactos van al final, después de los proyectos */
   }
   @media(max-width:600px){
     .bento{gap:11px}
@@ -263,7 +289,7 @@
 </style>
 </head>
 <body>
-  <header class="topbar" id="topbar" title="Volver arriba / Back to top">
+  <header class="topbar" id="topbar">
     <div class="topbar-inner"><span class="nm">Valentino Pais</span><span class="role" data-es="Desarrollador Full Stack" data-en="Full Stack Developer">Desarrollador Full Stack</span></div>
   </header>
 
@@ -279,16 +305,16 @@
         <div class="proj-desc"><span data-es="Soy Valentino, programador full stack de Buenos Aires con 5 años de experiencia en .NET, C# y JavaScript. Esta página reúne mis " data-en="I'm Valentino, a full stack programmer from Buenos Aires with 5 years of experience in .NET, C# and JavaScript. This page collects my ">Soy Valentino, programador full stack de Buenos Aires con 5 años de experiencia en .NET, C# y JavaScript. Esta página reúne mis </span><strong data-es="trabajos freelance" data-en="freelance work">trabajos freelance</strong><span data-es=": sitios web, sistemas y apps a medida para empresas y clientes." data-en=": websites, systems and custom apps for companies and clients.">: sitios web, sistemas y apps a medida para empresas y clientes.</span></div>
       </div>
 
-      <!-- TECNOLOGÍAS -->
-      <div class="tile c-stack">
+      <!-- TECNOLOGÍAS (escondida: para que vuelva a verse, sacale la clase "oculto") -->
+      <div class="tile c-stack oculto">
         <div class="t-h" data-es="Tecnologías" data-en="Technologies">Tecnologías</div>
         <div class="stack-pills">
           <span>JavaScript</span><span>C#</span><span>HTML</span><span>CSS</span><span>.NET MVC</span><span>jQuery</span><span>REST APIs</span><span>SQL Server</span><span>MySQL</span><span>Unity</span><span>Android</span>
         </div>
       </div>
 
-      <!-- INGLÉS -->
-      <div class="tile c-eng">
+      <!-- INGLÉS (escondida: para que vuelva a verse, sacale la clase "oculto") -->
+      <div class="tile c-eng oculto">
         <div class="eng-label" data-es="nivel de inglés" data-en="english level">nivel de inglés</div>
         <div class="eng-flip" id="engFlip">
           <div class="flip-inner">
@@ -305,15 +331,15 @@
         </div>
       </div>
 
-      <!-- SIMAX -->
-      <a class="tile c-simax col2 foto proj" href="https://valentinopais.github.io/simax-demo/" target="_blank" rel="noopener" data-link="SIMAX">
+      <!-- LIL SANGUCHITO (proyecto web) -->
+      <a class="tile c-lil col2 foto proj" href="https://lilsanguchito.netlify.app/" target="_blank" rel="noopener" data-link="LILSANGUCHITO">
         <span class="ph" aria-hidden="true"></span>
         <span class="ext"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
         <div class="proj-head">
-          <div class="t-h">Simax</div>
-          <div class="t-dates" data-es="Sistema de mesa de ayuda" data-en="Help desk system">Sistema de mesa de ayuda</div>
+          <div class="t-h">Lil Sanguchito</div>
+          <div class="t-dates" data-es="Portfolio de un editor de video" data-en="Portfolio for a video editor">Portfolio de un editor de video</div>
         </div>
-        <div class="proj-desc" data-es="Desarrollada en Xoftech y adoptada por más de 10 empresas: redujo cerca de un 30% el tiempo de resolución de tickets." data-en="Built at Xoftech and adopted by 10+ companies: it cut ticket resolution time by about 30%.">Desarrollada en Xoftech y adoptada por más de 10 empresas: redujo cerca de un 30% el tiempo de resolución de tickets.</div>
+        <div class="proj-desc" data-es="Con estética de canal de YouTube: carga sus trabajos en una planilla de Google y la web trae sola los videos, las vistas y las miniaturas." data-en="Styled like a YouTube channel: he adds his work to a Google Sheet and the site pulls in the videos, views and thumbnails on its own.">Con estética de canal de YouTube: carga sus trabajos en una planilla de Google y la web trae sola los videos, las vistas y las miniaturas.</div>
       </a>
 
       <!-- MATEO RONN (proyecto web) -->
@@ -338,6 +364,17 @@
         <div class="proj-desc" data-es="Presenta los departamentos a estrenar de Catari en Villa Lynch, San Martín, con secciones de empresa, proveedores y contacto." data-en="Showcases Catari&#x27;s brand-new apartments in Villa Lynch, San Martín, with company, suppliers and contact sections.">Presenta los departamentos a estrenar de Catari en Villa Lynch, San Martín, con secciones de empresa, proveedores y contacto.</div>
       </a>
 
+      <!-- SIMAX -->
+      <a class="tile c-simax col2 foto proj" href="https://valentinopais.github.io/simax-demo/" target="_blank" rel="noopener" data-link="SIMAX">
+        <span class="ph" aria-hidden="true"></span>
+        <span class="ext"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
+        <div class="proj-head">
+          <div class="t-h">Simax</div>
+          <div class="t-dates" data-es="Sistema de mesa de ayuda" data-en="Help desk system">Sistema de mesa de ayuda</div>
+        </div>
+        <div class="proj-desc" data-es="Desarrollada en Xoftech y adoptada por más de 10 empresas: redujo cerca de un 30% el tiempo de resolución de tickets." data-en="Built at Xoftech and adopted by 10+ companies: it cut ticket resolution time by about 30%.">Desarrollada en Xoftech y adoptada por más de 10 empresas: redujo cerca de un 30% el tiempo de resolución de tickets.</div>
+      </a>
+
       <!-- SIACC -->
       <a class="tile c-siacc col2 proj" href="https://xoft.com.ar/index.html" target="_blank" rel="noopener" data-link="XOFT">
         <span class="ext"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
@@ -346,6 +383,14 @@
           <div class="t-dates" data-es="Sistema de firma digital" data-en="Digital signature system">Sistema de firma digital</div>
         </div>
         <div class="proj-desc" data-es="Para la Obra Social del Ejército Argentino: firma de PDFs con token ePass en un solo clic, para cientos de documentos por mes." data-en="For the Argentine Army health insurance: one-click PDF signing with ePass tokens, for hundreds of documents a month.">Para la Obra Social del Ejército Argentino: firma de PDFs con token ePass en un solo clic, para cientos de documentos por mes.</div>
+      </a>
+
+      <!-- GITHUB -->
+      <a class="tile c-gh brandtile" href="https://github.com/valentinopais" target="_blank" data-link="GITHUB">
+        <canvas class="matrix" id="ghMatrix"></canvas>
+        <span class="ext"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
+        <span class="brand-ico"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg></span>
+        <span class="brand-name">github</span>
       </a>
 
       <!-- DISPLAY -->
@@ -368,14 +413,6 @@
         <div class="proj-desc" data-es="Para Kanusur: licencias para desbloquear su contenido (web y Android) y monetizar el catálogo." data-en="For Kanusur: licenses to unlock its content (web and Android) and monetize the catalog.">Para Kanusur: licencias para desbloquear su contenido (web y Android) y monetizar el catálogo.</div>
       </a>
 
-      <!-- GITHUB -->
-      <a class="tile c-gh brandtile" href="https://github.com/valentinopais" target="_blank" data-link="GITHUB">
-        <canvas class="matrix" id="ghMatrix"></canvas>
-        <span class="ext"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
-        <span class="brand-ico"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg></span>
-        <span class="brand-name">github</span>
-      </a>
-
       <!-- EMAIL -->
       <a class="tile c-mail brandtile" href="mailto:valenpais@gmail.com" id="emailTile" data-link="EMAIL">
         <span class="ext"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
@@ -391,7 +428,8 @@
       </a>
 
       <!-- UBICACIÓN · fondo hecho con el Callejero y Espacios verdes de Buenos Aires Data (GCBA), CC BY 4.0: https://data.buenosaires.gob.ar -->
-      <div class="tile c-loc col2 maptile loc-center" title="Mapa: datos abiertos de la Ciudad de Buenos Aires (BA Data · CC BY 4.0), modificados">
+      <div class="tile c-loc col2 maptile loc-center">
+        <span class="solo-lector">Mapa: datos abiertos de la Ciudad de Buenos Aires (BA Data · CC BY 4.0), modificados</span>
         <div class="mapframe" id="locmap"></div>
         <div class="map-overlay">
           <div class="avatar"></div>
@@ -411,9 +449,15 @@
 
   <!-- LANGUAGE TOGGLE -->
   <div class="langpick">
-    <button data-lang="es">ES</button>
-    <button data-lang="en">EN</button>
+    <button data-lang="es" aria-label="Ver en español">ES</button>
+    <button data-lang="en" aria-label="View in English">EN</button>
   </div>
+
+  <!-- WHATSAPP (botón flotante) -->
+  <a class="wsp" href="https://wa.me/5491124580224?text=Hola%20Valentino%2C%20vi%20tu%20portfolio%20y%20te%20quer%C3%ADa%20consultar%20por%20una%20p%C3%A1gina%20web." target="_blank" rel="noopener" data-link="WHATSAPP">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.9a9.1 9.1 0 0 0-7.86 13.7L2.9 21.1l4.62-1.21A9.1 9.1 0 1 0 12 2.9z" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/><path fill="currentColor" d="M9.3 7.4c.27-.05.53.07.67.3l1.05 1.8c.15.26.1.58-.1.8l-.65.64a5.6 5.6 0 0 0 2.6 2.6l.64-.65c.21-.21.54-.26.8-.1l1.8 1.05c.23.14.35.4.3.67-.15.86-.8 1.55-1.66 1.67-1 .14-2-.07-3-.65a9 9 0 0 1-3.08-3.08c-.58-1-.79-2-.65-3 .12-.86.81-1.51 1.67-1.66z"/></svg>
+    <span class="solo-lector" data-es="Escribime por WhatsApp" data-en="Message me on WhatsApp">Escribime por WhatsApp</span>
+  </a>
 
   <!-- EMAIL MODAL -->
   <div class="modal-overlay" id="emailModal" aria-hidden="true">
@@ -440,14 +484,14 @@
           <button class="cv-close" id="cvClose" aria-label="Cerrar">×</button>
         </div>
       </div>
-      <iframe class="cv-frame" id="cvFrame" title="CV Valentino Pais"></iframe>
+      <iframe class="cv-frame" id="cvFrame" aria-label="CV Valentino Pais"></iframe>
     </div>
   </div>
 
   <script>
     // ---- Fotos "de borroso a nítido": cada foto aparece con un fundido sobre su miniatura borrosa apenas termina de bajar ----
     (function(){
-      [['.c-simax', 'datos/simax.jpg'], ['.mateo-tile', 'datos/mateo.jpg'], ['.c-catari', 'datos/catari.jpg'], ['.maptile', 'datos/mapa.svg'], ['.avatar', 'datos/perfil.jpg']].forEach(function(f){
+      [['.c-lil', 'datos/sanguchito.jpg'], ['.c-simax', 'datos/simax.jpg'], ['.mateo-tile', 'datos/mateo.jpg'], ['.c-catari', 'datos/catari.jpg'], ['.maptile', 'datos/mapa.svg'], ['.avatar', 'datos/perfil.jpg']].forEach(function(f){
         var el = document.querySelector(f[0]); if(!el) return;
         var im = new Image(), lista = function(){ el.classList.add('lista'); };
         if(im.decode){ im.src = f[1]; im.decode().then(lista, function(){}); }
@@ -555,8 +599,22 @@
       document.querySelectorAll('.langpick button').forEach(b=>b.classList.toggle('active', b.dataset.lang===lang));
       try{ localStorage.setItem('lang', lang); }catch(e){}
     }
+    // al cambiar, el circulito gira como la moneda de AVANZADO: a mitad del giro (de canto) cambia el idioma
+    let girandoIdioma = false;
+    function girarIdioma(boton, cambiar){
+      if(SIN_MOVIMIENTO || !boton.animate){ cambiar(); return; }
+      if(girandoIdioma) return;
+      girandoIdioma = true;
+      document.querySelector('.langpick').animate([{ scale: 1 }, { scale: .88, offset: .45 }, { scale: 1 }], { duration: 440, easing: 'cubic-bezier(.2,.8,.2,1)' });
+      boton.animate([{ transform: 'perspective(200px) rotateY(0deg)' }, { transform: 'perspective(200px) rotateY(90deg)' }], { duration: 170, easing: 'cubic-bezier(.4,0,1,1)' }).onfinish = ()=>{
+        cambiar();
+        const nuevo = document.querySelector('.langpick button:not(.active)');
+        if(nuevo) nuevo.animate([{ transform: 'perspective(200px) rotateY(-90deg)' }, { transform: 'perspective(200px) rotateY(0deg)' }], { duration: 240, easing: 'cubic-bezier(0,0,.2,1)' });
+        girandoIdioma = false;
+      };
+    }
     document.querySelectorAll('.langpick button').forEach(b=>{
-      b.addEventListener('click', ()=>setLang(b.dataset.lang, true));
+      b.addEventListener('click', ()=>girarIdioma(b, ()=>setLang(b.dataset.lang, true)));
     });
     // detect: english-speaking locale -> EN, else ES
     function detectLang(){
@@ -585,7 +643,8 @@
         if(m === 'none' || m === 'matrix(1, 0, 0, 1, 0, 0)') flip.classList.remove('gira');
       });
       const handle = document.getElementById('engHandle');
-      const len = ring.getTotalLength ? ring.getTotalLength() : 2*Math.PI*45;
+      let len = 2*Math.PI*45;                                  // largo del aro (con la tarjeta escondida el navegador no lo puede medir)
+      try{ if(ring.getTotalLength) len = ring.getTotalLength() || len; }catch(e){}
       ring.style.strokeDasharray = len;
       ring.style.strokeDashoffset = len;
 
@@ -717,6 +776,9 @@
       if(bajar) bajar.addEventListener('click', ()=> medir('cv_descargado'));
     })();
 
+    // ---- WhatsApp: anota cada clic en las métricas ----
+    (function(){ var w = document.querySelector('.wsp'); if(w) w.addEventListener('click', function(){ medir('whatsapp'); }); })();
+
     // ---- GitHub matrix ----
     (function(){
       const canvas = document.getElementById('ghMatrix');
@@ -747,7 +809,7 @@
     function eqHero(){
       var hello=document.querySelector('.c-hello'), sq=document.querySelector('.c-stack');
       if(!hello||!sq) return;
-      if(window.matchMedia('(max-width:600px)').matches){ hello.style.height=''; return; }
+      if(window.matchMedia('(max-width:600px)').matches || !sq.offsetParent){ hello.style.height=''; return; }   // celu, o Tecnologías escondida
       hello.style.height='';                 // reset para medir el cuadrado
       hello.style.height=sq.offsetHeight+'px';
     }
@@ -925,7 +987,7 @@
     var grid=document.querySelector('.bento');
     if(!grid) return;
     function centrarSueltas(){
-      var tiles=[].slice.call(grid.children), filas={};
+      var tiles=[].slice.call(grid.children).filter(function(t){ return t.offsetParent !== null; }), filas={};   // las escondidas no cuentan
       tiles.forEach(function(t){ t.classList.remove('solo'); });
       if(!window.matchMedia('(max-width:860px)').matches) return;
       tiles.forEach(function(t){ (filas[t.offsetTop]=filas[t.offsetTop]||[]).push(t); });
@@ -991,6 +1053,35 @@
         dentro = false; ev = null; arx = ary = 0; as = 1;
         t.classList.remove('hov'); mover();
       });
+    });
+  })();
+
+  /* Botones flotantes (idioma y WhatsApp): al pasar el mouse se inclinan hacia el cursor, se levantan un poquito
+     y se prende el brillo, igual que las tarjetas (suavizado acá, sin transiciones de CSS en el giro) */
+  (function(){
+    if(!window.matchMedia('(hover:hover)').matches || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    document.querySelectorAll('.langpick, .wsp').forEach(function(btn){
+      var rx = 0, ry = 0, s = 1, arx = 0, ary = 0, as = 1, dentro = false, raf = 0, antes = 0;
+      function paso(ts){
+        var dt = Math.max(0, Math.min(.05, (ts - antes) / 1000)); antes = ts;
+        var f = 1 - Math.exp(-dt / .08);
+        rx += (arx - rx) * f; ry += (ary - ry) * f; s += (as - s) * f;
+        var listo = Math.abs(arx - rx) < .05 && Math.abs(ary - ry) < .05 && Math.abs(as - s) < .001;
+        if(listo){ rx = arx; ry = ary; s = as; }
+        if(listo && !dentro){ btn.style.transform = ''; raf = 0; return; }
+        btn.style.transform = 'perspective(240px) translateY(' + ((1 - s) * 25).toFixed(2) + 'px) rotateX(' + rx.toFixed(2) + 'deg) rotateY(' + ry.toFixed(2) + 'deg) scale(' + s.toFixed(3) + ')';
+        raf = listo ? 0 : requestAnimationFrame(paso);
+      }
+      function mover(){ if(!raf){ antes = performance.now(); raf = requestAnimationFrame(paso); } }
+      btn.addEventListener('pointerenter', function(e){ if(e.pointerType === 'touch') return; dentro = true; as = 1.1; btn.classList.add('hov'); mover(); });
+      btn.addEventListener('pointermove', function(e){
+        if(e.pointerType === 'touch') return;
+        var x = (e.clientX - btn.offsetLeft) / btn.offsetWidth, y = (e.clientY - btn.offsetTop) / btn.offsetHeight;   // medidas sin la inclinación
+        x = Math.min(Math.max(x, 0), 1); y = Math.min(Math.max(y, 0), 1);
+        btn.style.setProperty('--gx', (x * 100).toFixed(0) + '%'); btn.style.setProperty('--gy', (y * 100).toFixed(0) + '%');
+        arx = (.5 - y) * 30; ary = (x - .5) * 30; mover();
+      });
+      btn.addEventListener('pointerleave', function(){ dentro = false; arx = ary = 0; as = 1; btn.classList.remove('hov'); mover(); });
     });
   })();
   </script>
