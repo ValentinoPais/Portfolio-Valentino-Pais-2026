@@ -134,16 +134,16 @@
   .c-stack{background:linear-gradient(160deg,#8957e5,#a371f7);justify-content:center;align-items:center;text-align:center;gap:14px}
   .c-stack .t-h{width:100%}
   .c-eng{background:linear-gradient(150deg,#1f9b87,#2bb79f);align-items:center;justify-content:center;text-align:center;gap:14px}
-  .c-lil{--velo:linear-gradient(0deg,rgba(8,11,17,.85) 0%,rgba(8,11,17,0) 55%),linear-gradient(90deg,rgba(8,11,17,.92),rgba(8,11,17,.45));--foto:var(--velo),url('datos/sanguchito.jpg') center top/cover no-repeat}
-  .c-simax{--velo:linear-gradient(0deg,rgba(8,11,17,.85) 0%,rgba(8,11,17,0) 55%),linear-gradient(90deg,rgba(8,11,17,.92),rgba(8,11,17,.55));--foto:var(--velo),url('datos/simax.jpg') center top/cover no-repeat}
+  .c-lil{--velo:linear-gradient(180deg,rgba(0,0,0,.75) 0%,rgba(0,0,0,0) 50%),linear-gradient(0deg,rgba(8,11,17,.85) 0%,rgba(8,11,17,0) 55%),linear-gradient(90deg,rgba(8,11,17,.92),rgba(8,11,17,.45));--foto:var(--velo),url('datos/sanguchito.jpg') center top/cover no-repeat}
+  .c-simax{--velo:linear-gradient(180deg,rgba(0,0,0,.75) 0%,rgba(0,0,0,0) 50%),linear-gradient(0deg,rgba(8,11,17,.85) 0%,rgba(8,11,17,0) 55%),linear-gradient(90deg,rgba(8,11,17,.92),rgba(8,11,17,.55));--foto:var(--velo),url('datos/simax.jpg') center top/cover no-repeat}
   .c-siacc{background:linear-gradient(150deg,#1f6feb,#388bfd)}
   .c-display{background:linear-gradient(150deg,#0e7490,#1eb8d0)}
   .c-kanu{background:linear-gradient(150deg,#2da44e,#56d364)}
-  .mateo-tile{--velo:linear-gradient(0deg,rgba(8,11,17,.85) 0%,rgba(8,11,17,0) 55%),linear-gradient(90deg,rgba(8,11,17,.92),rgba(8,11,17,.4));--foto:var(--velo),url('datos/mateo.jpg') center/cover no-repeat}
-  .c-catari{--velo:linear-gradient(0deg,rgba(8,11,17,.85) 0%,rgba(8,11,17,0) 55%),linear-gradient(90deg,rgba(8,11,17,.88) 0%,rgba(8,11,17,.6) 40%,rgba(8,11,17,.2) 100%);--foto:var(--velo),url('datos/catari.jpg') right center/cover no-repeat}
+  .mateo-tile{--velo:linear-gradient(180deg,rgba(0,0,0,.75) 0%,rgba(0,0,0,0) 50%),linear-gradient(0deg,rgba(8,11,17,.85) 0%,rgba(8,11,17,0) 55%),linear-gradient(90deg,rgba(8,11,17,.92),rgba(8,11,17,.4));--foto:var(--velo),url('datos/mateo.jpg') center/cover no-repeat}
+  .c-catari{--velo:linear-gradient(180deg,rgba(0,0,0,.75) 0%,rgba(0,0,0,0) 50%),linear-gradient(0deg,rgba(8,11,17,.85) 0%,rgba(8,11,17,0) 55%),linear-gradient(90deg,rgba(8,11,17,.88) 0%,rgba(8,11,17,.6) 40%,rgba(8,11,17,.2) 100%);--foto:var(--velo),url('datos/catari.jpg') right center/cover no-repeat}
   /* tarjetas con foto (Simax, Mateo, Catari): la foto va en una capa aparte apenas desenfocada, así el texto queda nítido.
      Para más o menos desenfoque cambiá --blur (0px = sin desenfoque) */
-  .foto{background:#0d1117;--blur:1.5px}
+  .foto{background:#0d1117;--blur:3.5px}
   .foto::after{content:"";position:absolute;inset:-12px;z-index:0;pointer-events:none;background:var(--foto);filter:blur(var(--blur))}
   /* CARGA "DE BORROSO A NÍTIDO": mientras baja cada foto se ve al instante una miniatura borrosa (está acá mismo, ~1 KB)
      y la foto buena aparece encima con un fundido cuando termina de bajar (la clase .lista la pone el JS) */
@@ -206,6 +206,34 @@
   .pin{display:inline-flex;align-items:center;gap:6px;background:rgba(13,17,23,.82);border:1px solid var(--border);color:#fff;font-size:.8rem;font-weight:600;padding:5px 11px;border-radius:999px}
   .pin .pdot{width:7px;height:7px;border-radius:50%;background:#ff5a5f;box-shadow:0 0 8px #ff5a5f}
 
+  /* PRECIOS: una fila a lo ancho con los 4 paquetes. Cada paquete es un link que abre WhatsApp con su propio mensaje
+     (los montos y los textos se cambian en el HTML, en la tarjeta PRECIOS) */
+  .c-precios{grid-column:1 / -1;aspect-ratio:auto;justify-content:flex-start;gap:16px;--glow:96,80,220;background:linear-gradient(135deg,#352f8a,#5546c8)}
+  /* los 4 paquetes comparten filas (subgrid): nombre, precio y descripción quedan a la misma altura en todos */
+  .planes{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  .plan{--gx:50%;--gy:50%;--sx:0px;--sy:14px;position:relative;display:grid;grid-row:span 3;grid-template-rows:subgrid;grid-template-columns:minmax(0,1fr);row-gap:6px;align-content:start;min-width:0;padding:16px 16px 15px;border-radius:14px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);overflow:hidden;transition:background .25s ease,box-shadow .35s ease}
+  .plan::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .35s ease;background:radial-gradient(circle at var(--gx) var(--gy),rgba(255,255,255,.22),rgba(255,255,255,.06) 32%,rgba(255,255,255,0) 62%)}
+  .plan.hov{background:rgba(255,255,255,.12);box-shadow:var(--sx) var(--sy) 30px -12px rgba(10,6,40,.7);transition:background .25s ease,box-shadow .15s ease-out}
+  .plan.hov::before{opacity:1}
+  .plan.arriba{z-index:3}
+  .plan .ext{top:13px;right:13px}
+  .plan .ext svg{width:16px;height:16px}
+  .plan-nombre{font-weight:700;font-size:1.02rem;line-height:1.2;letter-spacing:-.01em;-webkit-hyphens:auto;hyphens:auto;overflow-wrap:break-word}
+  .plan-nombre::before{content:"";float:right;width:20px;height:1.1em}   /* deja lugar para la flechita solo en la primera línea */
+  .plan-precio{font-size:1.5rem;font-weight:800;line-height:1.1;letter-spacing:-.01em;margin-top:4px;white-space:nowrap}
+  .plan-precio small{display:block;font-family:'JetBrains Mono',monospace;font-size:.66rem;font-weight:500;letter-spacing:.06em;text-transform:uppercase;opacity:.9;margin-bottom:3px}
+  .plan-desc{align-self:end;font-size:.8rem;line-height:1.4;opacity:.92;padding-top:10px;text-wrap:pretty}
+  @media(hover:none){.plan:active{scale:.97;transition:scale .1s}}
+  @media(max-width:860px){.planes{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:600px){   /* en el celu: uno abajo del otro; el nombre arriba y abajo la descripción con el precio a la derecha */
+    .planes{grid-template-columns:1fr;gap:10px}
+    .plan{grid-row:auto;grid-template-rows:auto auto;grid-template-columns:minmax(0,1fr) auto;column-gap:14px;row-gap:5px;padding:14px 15px}
+    .plan .ext{display:none}
+    .plan-nombre{grid-column:1 / -1;grid-row:1}
+    .plan-nombre::before{display:none}
+    .plan-desc{grid-column:1;grid-row:2;align-self:end;padding-top:0}
+    .plan-precio{grid-column:2;grid-row:2;align-self:end;text-align:right;margin-top:0;font-size:1.3rem}
+  }
   /* language toggle */
   /* botones flotantes de abajo: idioma (izquierda) y WhatsApp (derecha), dos circulitos iguales */
   .langpick,.wsp{--gx:50%;--gy:50%;--glow:88,166,255;position:fixed;bottom:16px;z-index:80;width:46px;height:46px;border-radius:50%;box-shadow:0 4px 10px rgba(0,0,0,.35);transition:box-shadow .25s ease,scale .15s ease}
@@ -220,10 +248,10 @@
   @keyframes timbre{0%,100%{transform:rotate(0)}15%{transform:rotate(-14deg)}30%{transform:rotate(12deg)}45%{transform:rotate(-9deg)}60%{transform:rotate(6deg)}75%{transform:rotate(-3deg)}}
   @media(prefers-reduced-motion:reduce){.wsp.hov svg{animation:none}}
   .langpick{left:16px;display:grid;place-items:center;overflow:hidden;background:var(--surface);border:1px solid var(--border)}
-  .langpick button{width:100%;height:100%;padding:0;background:transparent;color:var(--text);border:none;cursor:pointer;font-family:inherit;font-weight:700;font-size:.8rem;letter-spacing:.02em}
+  .langpick button{width:100%;height:100%;padding:0;background:transparent;color:var(--text);border:none;cursor:pointer;font-family:inherit;font-weight:700;font-size:.8rem;letter-spacing:.02em;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
   .langpick button:focus-visible{outline:2px solid var(--blue);outline-offset:-5px;border-radius:50%}
   /* botón de WhatsApp (abajo a la derecha): el número y el mensaje se cambian en datos/links.txt (WHATSAPP) */
-  .wsp{right:16px;display:grid;place-items:center;background:#25d366;color:#fff}
+  .wsp{right:16px;display:grid;place-items:center;background:#25d366;color:#fff;-webkit-tap-highlight-color:transparent}
   .wsp:focus-visible{outline:2px solid #fff;outline-offset:3px}
   .wsp svg{width:24px;height:24px}
   .wsp::after{content:"";position:absolute;inset:0;border-radius:50%;box-shadow:0 0 0 0 rgba(37,211,102,.55);animation:latido 1.8s ease-out 2.5s 3;pointer-events:none}
@@ -300,9 +328,8 @@
       <div class="tile c-hello col2">
         <div class="proj-head">
           <div class="t-h hello-world" id="hwBox"><span id="helloWorld" data-es="HOLA MUNDO" data-en="HELLO WORLD">HOLA MUNDO</span><span class="star"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1 14.59 8.44 22.46 8.6 16.19 13.36 18.47 20.9 12 16.4 5.53 20.9 7.81 13.36 1.54 8.6 9.41 8.44Z"/></svg></span></div>
-          <div class="t-dates" data-es="Desarrollador de software" data-en="Software developer">Desarrollador de software</div>
         </div>
-        <div class="proj-desc"><span data-es="Soy Valentino, programador full stack de Buenos Aires con 5 años de experiencia en .NET, C# y JavaScript. Esta página reúne mis " data-en="I'm Valentino, a full stack programmer from Buenos Aires with 5 years of experience in .NET, C# and JavaScript. This page collects my ">Soy Valentino, programador full stack de Buenos Aires con 5 años de experiencia en .NET, C# y JavaScript. Esta página reúne mis </span><strong data-es="trabajos freelance" data-en="freelance work">trabajos freelance</strong><span data-es=": sitios web, sistemas y apps a medida para empresas y clientes." data-en=": websites, systems and custom apps for companies and clients.">: sitios web, sistemas y apps a medida para empresas y clientes.</span></div>
+        <div class="proj-desc"><span data-es="Soy Valentino, programador de Buenos Aires. Hago " data-en="I'm Valentino, a programmer from Buenos Aires. I build ">Soy Valentino, programador de Buenos Aires. Hago </span><strong data-es="páginas web" data-en="websites">páginas web</strong><span data-es=" para negocios y emprendimientos, y si querés te dejo todo listo para que la puedas actualizar vos. Abajo tenés algunas que hice. Si necesitás una, " data-en=" for businesses and entrepreneurs, and if you want, I'll set everything up so you can update it yourself. Below are a few I've made. If you need one, "> para negocios y emprendimientos, y si querés te dejo todo listo para que la puedas actualizar vos. Abajo tenés algunas que hice. Si necesitás una, </span><a class="link-hl hola-wsp" href="https://wa.me/5491124580224?text=Hola%20Valentino%2C%20vi%20tu%20portfolio%20y%20te%20quer%C3%ADa%20consultar%20por%20una%20p%C3%A1gina%20web." target="_blank" rel="noopener" data-link="WHATSAPP" data-es="escribime por WhatsApp" data-en="message me on WhatsApp">escribime por WhatsApp</a><span data-es=" y lo charlamos." data-en=" and let's talk."> y lo charlamos.</span></div>
       </div>
 
       <!-- TECNOLOGÍAS (escondida: para que vuelva a verse, sacale la clase "oculto") -->
@@ -337,9 +364,8 @@
         <span class="ext"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
         <div class="proj-head">
           <div class="t-h">Lil Sanguchito</div>
-          <div class="t-dates" data-es="Portfolio de un editor de video" data-en="Portfolio for a video editor">Portfolio de un editor de video</div>
         </div>
-        <div class="proj-desc" data-es="Con estética de canal de YouTube: carga sus trabajos en una planilla de Google y la web trae sola los videos, las vistas y las miniaturas." data-en="Styled like a YouTube channel: he adds his work to a Google Sheet and the site pulls in the videos, views and thumbnails on its own.">Con estética de canal de YouTube: carga sus trabajos en una planilla de Google y la web trae sola los videos, las vistas y las miniaturas.</div>
+        <div class="proj-desc" data-es="Portfolio de un editor de video, con estética de canal de YouTube. Carga sus trabajos en una planilla de Google y la web trae sola los videos y las vistas." data-en="Portfolio for a video editor, styled like a YouTube channel. He adds his work to a Google Sheet and the site pulls in the videos and views on its own.">Portfolio de un editor de video, con estética de canal de YouTube. Carga sus trabajos en una planilla de Google y la web trae sola los videos y las vistas.</div>
       </a>
 
       <!-- MATEO RONN (proyecto web) -->
@@ -348,9 +374,8 @@
         <span class="ext"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
         <div class="proj-head">
           <div class="t-h" data-es="Portfolio Fotográfico" data-en="Photography Portfolio">Portfolio Fotográfico</div>
-          <div class="t-dates" data-es="para Mateo Ronn Abregu" data-en="for Mateo Ronn Abregu">para Mateo Ronn Abregu</div>
         </div>
-        <div class="proj-desc" data-es="Conectado a Google Drive para que el propio fotógrafo actualice sus fotos. Liviano y de bajo mantenimiento." data-en="Connected to Google Drive so the photographer updates his own photos. Lightweight and low-maintenance.">Conectado a Google Drive para que el propio fotógrafo actualice sus fotos. Liviano y de bajo mantenimiento.</div>
+        <div class="proj-desc" data-es="Para Mateo Ronn Abregu. Está conectado a Google Drive para que él mismo actualice sus fotos. Liviano y de bajo mantenimiento." data-en="For Mateo Ronn Abregu, connected to Google Drive so he can update his own photos. Lightweight and low-maintenance.">Para Mateo Ronn Abregu. Está conectado a Google Drive para que él mismo actualice sus fotos. Liviano y de bajo mantenimiento.</div>
       </a>
 
       <!-- CATARI (proyecto web) -->
@@ -359,10 +384,40 @@
         <span class="ext"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
         <div class="proj-head">
           <div class="t-h">Catari</div>
-          <div class="t-dates" data-es="Sitio web de una constructora" data-en="Website for a construction company">Sitio web de una constructora</div>
         </div>
-        <div class="proj-desc" data-es="Presenta los departamentos a estrenar de Catari en Villa Lynch, San Martín, con secciones de empresa, proveedores y contacto." data-en="Showcases Catari&#x27;s brand-new apartments in Villa Lynch, San Martín, with company, suppliers and contact sections.">Presenta los departamentos a estrenar de Catari en Villa Lynch, San Martín, con secciones de empresa, proveedores y contacto.</div>
+        <div class="proj-desc" data-es="Sitio de la constructora Catari. Presenta sus departamentos a estrenar en Villa Lynch, San Martín, con secciones de empresa, proveedores y contacto." data-en="Website for the Catari construction company. It showcases their brand-new apartments in Villa Lynch, San Martín, with company, suppliers and contact sections.">Sitio de la constructora Catari. Presenta sus departamentos a estrenar en Villa Lynch, San Martín, con secciones de empresa, proveedores y contacto.</div>
       </a>
+
+      <!-- PRECIOS (fila a lo ancho): cada paquete abre WhatsApp con su mensaje; el número sale del botón de WhatsApp (datos/links.txt) -->
+      <div class="tile c-precios">
+        <div class="t-h" data-es="Precios" data-en="Pricing">Precios</div>
+        <div class="planes">
+          <a class="plan" href="https://wa.me/5491124580224?text=Hola%20Valentino%2C%20vi%20tu%20portfolio%20y%20me%20interesa%20una%20landing." target="_blank" rel="noopener" data-plan="landing" data-msg-es="Hola Valentino, vi tu portfolio y me interesa una landing." data-msg-en="Hi Valentino, I saw your portfolio and I'm interested in a landing page.">
+            <span class="ext"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
+            <span class="plan-nombre" data-es="Landing" data-en="Landing page">Landing</span>
+            <span class="plan-precio"><small data-es="desde" data-en="from">desde</small> USD 300</span>
+            <span class="plan-desc" data-es="Una sola página con tus servicios, botón de WhatsApp y contacto." data-en="One page with your services, a WhatsApp button and contact info.">Una sola página con tus servicios, botón de WhatsApp y contacto.</span>
+          </a>
+          <a class="plan" href="https://wa.me/5491124580224?text=Hola%20Valentino%2C%20vi%20tu%20portfolio%20y%20me%20interesa%20un%20sitio%20autoadministrable." target="_blank" rel="noopener" data-plan="autoadministrable" data-msg-es="Hola Valentino, vi tu portfolio y me interesa un sitio autoadministrable." data-msg-en="Hi Valentino, I saw your portfolio and I'm interested in a self-managed site.">
+            <span class="ext"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
+            <span class="plan-nombre" data-es="Sitio autoadministrable" data-en="Self-managed site">Sitio autoadministrable</span>
+            <span class="plan-precio"><small data-es="desde" data-en="from">desde</small> USD 600</span>
+            <span class="plan-desc" data-es="Varias secciones que actualizás vos desde Google Drive o una planilla." data-en="Several sections you update yourself from Google Drive or a spreadsheet.">Varias secciones que actualizás vos desde Google Drive o una planilla.</span>
+          </a>
+          <a class="plan" href="https://wa.me/5491124580224?text=Hola%20Valentino%2C%20vi%20tu%20portfolio%20y%20me%20interesa%20una%20tienda%20online." target="_blank" rel="noopener" data-plan="tienda" data-msg-es="Hola Valentino, vi tu portfolio y me interesa una tienda online." data-msg-en="Hi Valentino, I saw your portfolio and I'm interested in an online store.">
+            <span class="ext"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
+            <span class="plan-nombre" data-es="Tienda online" data-en="Online store">Tienda online</span>
+            <span class="plan-precio"><small data-es="desde" data-en="from">desde</small> <span data-es="USD 1.000" data-en="USD 1,000">USD 1.000</span></span>
+            <span class="plan-desc" data-es="Catálogo de productos con carrito y cobro con Mercado Pago." data-en="Product catalog with a cart and Mercado Pago payments.">Catálogo de productos con carrito y cobro con Mercado Pago.</span>
+          </a>
+          <a class="plan" href="https://wa.me/5491124580224?text=Hola%20Valentino%2C%20vi%20tu%20portfolio%20y%20me%20interesa%20un%20sistema%20a%20medida." target="_blank" rel="noopener" data-plan="a-medida" data-msg-es="Hola Valentino, vi tu portfolio y me interesa un sistema a medida." data-msg-en="Hi Valentino, I saw your portfolio and I'm interested in a custom system.">
+            <span class="ext"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
+            <span class="plan-nombre" data-es="Sistema a medida" data-en="Custom system">Sistema a medida</span>
+            <span class="plan-precio"><small data-es="precio" data-en="price">precio</small> <span data-es="A consultar" data-en="On request">A consultar</span></span>
+            <span class="plan-desc" data-es="Turnos, paneles o gestión interna para tu negocio." data-en="Bookings, dashboards or internal tools for your business.">Turnos, paneles o gestión interna para tu negocio.</span>
+          </a>
+        </div>
+      </div>
 
       <!-- SIMAX -->
       <a class="tile c-simax col2 foto proj" href="https://valentinopais.github.io/simax-demo/" target="_blank" rel="noopener" data-link="SIMAX">
@@ -370,9 +425,8 @@
         <span class="ext"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
         <div class="proj-head">
           <div class="t-h">Simax</div>
-          <div class="t-dates" data-es="Sistema de mesa de ayuda" data-en="Help desk system">Sistema de mesa de ayuda</div>
         </div>
-        <div class="proj-desc" data-es="Desarrollada en Xoftech y adoptada por más de 10 empresas: redujo cerca de un 30% el tiempo de resolución de tickets." data-en="Built at Xoftech and adopted by 10+ companies: it cut ticket resolution time by about 30%.">Desarrollada en Xoftech y adoptada por más de 10 empresas: redujo cerca de un 30% el tiempo de resolución de tickets.</div>
+        <div class="proj-desc" data-es="Mesa de ayuda desarrollada en Xoftech y adoptada por más de 10 empresas: redujo cerca de un 30% el tiempo de resolución de tickets." data-en="Help desk built at Xoftech and adopted by 10+ companies: it cut ticket resolution time by about 30%.">Mesa de ayuda desarrollada en Xoftech y adoptada por más de 10 empresas: redujo cerca de un 30% el tiempo de resolución de tickets.</div>
       </a>
 
       <!-- SIACC -->
@@ -380,9 +434,8 @@
         <span class="ext"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
         <div class="proj-head">
           <div class="t-h">SIACC</div>
-          <div class="t-dates" data-es="Sistema de firma digital" data-en="Digital signature system">Sistema de firma digital</div>
         </div>
-        <div class="proj-desc" data-es="Para la Obra Social del Ejército Argentino: firma de PDFs con token ePass en un solo clic, para cientos de documentos por mes." data-en="For the Argentine Army health insurance: one-click PDF signing with ePass tokens, for hundreds of documents a month.">Para la Obra Social del Ejército Argentino: firma de PDFs con token ePass en un solo clic, para cientos de documentos por mes.</div>
+        <div class="proj-desc" data-es="Firma digital para la Obra Social del Ejército Argentino: firma PDFs con token ePass en un solo clic, para cientos de documentos por mes." data-en="Digital signing for the Argentine Army health insurance: one-click PDF signing with ePass tokens, for hundreds of documents a month.">Firma digital para la Obra Social del Ejército Argentino: firma PDFs con token ePass en un solo clic, para cientos de documentos por mes.</div>
       </a>
 
       <!-- GITHUB -->
@@ -398,7 +451,6 @@
         <span class="ext"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
         <div class="proj-head">
           <div class="t-h" data-es="Display de monitoreo" data-en="Monitoring display">Display de monitoreo</div>
-          <div class="t-dates" data-es="de fibra óptica" data-en="for fiber optics">de fibra óptica</div>
         </div>
         <div class="proj-desc" data-es="Para Telesmart: muestra en tiempo real procesos de telecomunicaciones sobre fibra óptica." data-en="For Telesmart: shows telecom processes over fiber optics in real time.">Para Telesmart: muestra en tiempo real procesos de telecomunicaciones sobre fibra óptica.</div>
       </a>
@@ -408,9 +460,8 @@
         <span class="ext"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
         <div class="proj-head">
           <div class="t-h">KanuSur</div>
-          <div class="t-dates" data-es="Reproductor web" data-en="Web player">Reproductor web</div>
         </div>
-        <div class="proj-desc" data-es="Para Kanusur: licencias para desbloquear su contenido (web y Android) y monetizar el catálogo." data-en="For Kanusur: licenses to unlock its content (web and Android) and monetize the catalog.">Para Kanusur: licencias para desbloquear su contenido (web y Android) y monetizar el catálogo.</div>
+        <div class="proj-desc" data-es="Reproductor web y Android para Kanusur, con licencias para desbloquear su contenido y monetizar el catálogo." data-en="Web and Android player for Kanusur, with licenses to unlock its content and monetize the catalog.">Reproductor web y Android para Kanusur, con licencias para desbloquear su contenido y monetizar el catálogo.</div>
       </a>
 
       <!-- EMAIL -->
@@ -557,6 +608,7 @@
     // ---- Cambio de idioma con efecto "decodificado": las letras se mezclan y se acomodan en el idioma nuevo ----
     const GLIFOS = 'abcdefghijklmnopqrstuvwxyz0123456789#%&*+=/<>';
     const SIN_MOVIMIENTO = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const TACTIL = window.matchMedia('(hover: none)').matches;   // celu o tablet
     function esc(c){ return c === '<' ? '&lt;' : c === '>' ? '&gt;' : c === '&' ? '&amp;' : c; }
     function enPantalla(el){ const r = el.getBoundingClientRect(); return r.width > 0 && r.bottom > 0 && r.top < window.innerHeight; }
     function decodificar(el, to){
@@ -587,12 +639,13 @@
     function setLang(lang, animar){
       LANG = lang;
       document.documentElement.lang = lang;
-      const efecto = animar && !SIN_MOVIMIENTO;
-      document.querySelectorAll('[data-es]').forEach(el=>{
-        if(el.id === 'helloWorld') return; // handled by splitHello
+      const efecto = animar && !SIN_MOVIMIENTO && !TACTIL;      // en el celu cambia al toque, sin el efecto de letras
+      const textos = [...document.querySelectorAll('[data-es]')].filter(el => el.id !== 'helloWorld');   // el saludo lo maneja splitHello
+      const visibles = efecto ? textos.map(enPantalla) : [];   // se mide todo junto antes de cambiar nada (si no, la página se recalcula una vez por texto)
+      textos.forEach((el, i)=>{
         const t = el.getAttribute('data-'+lang);
         if(t === null) return;
-        if(efecto && enPantalla(el)) decodificar(el, t);          // lo que se ve se anima
+        if(efecto && visibles[i]) decodificar(el, t);             // lo que se ve se anima
         else { if(el._dec){ cancelAnimationFrame(el._dec); el._dec = 0; } el.textContent = t; }   // lo demás cambia directo
       });
       splitHello();
@@ -601,8 +654,14 @@
     }
     // al cambiar, el circulito gira como la moneda de AVANZADO: a mitad del giro (de canto) cambia el idioma
     let girandoIdioma = false;
-    function girarIdioma(boton, cambiar){
+    function girarIdioma(boton, cambiar, tactil){
       if(SIN_MOVIMIENTO || !boton.animate){ cambiar(); return; }
+      if(tactil){                                                 // en el celu el idioma cambia en el acto y el botón solo da la vuelta
+        cambiar();
+        const nuevo = document.querySelector('.langpick button:not(.active)');
+        if(nuevo) nuevo.animate([{ transform: 'perspective(200px) rotateY(-90deg)' }, { transform: 'perspective(200px) rotateY(0deg)' }], { duration: 220, easing: 'cubic-bezier(0,0,.2,1)' });
+        return;
+      }
       if(girandoIdioma) return;
       girandoIdioma = true;
       document.querySelector('.langpick').animate([{ scale: 1 }, { scale: .88, offset: .45 }, { scale: 1 }], { duration: 440, easing: 'cubic-bezier(.2,.8,.2,1)' });
@@ -613,8 +672,13 @@
         girandoIdioma = false;
       };
     }
+    let toqueIdioma = false;   // si el botón se tocó con el dedo, cambia directo aunque el celu diga que tiene mouse
     document.querySelectorAll('.langpick button').forEach(b=>{
-      b.addEventListener('click', ()=>girarIdioma(b, ()=>setLang(b.dataset.lang, true)));
+      b.addEventListener('pointerdown', e=>{ toqueIdioma = e.pointerType === 'touch' || e.pointerType === 'pen'; });
+      b.addEventListener('click', ()=>{
+        const tactil = TACTIL || toqueIdioma; toqueIdioma = false;
+        girarIdioma(b, ()=>setLang(b.dataset.lang, !tactil), tactil);
+      });
     });
     // detect: english-speaking locale -> EN, else ES
     function detectLang(){
@@ -776,8 +840,20 @@
       if(bajar) bajar.addEventListener('click', ()=> medir('cv_descargado'));
     })();
 
-    // ---- WhatsApp: anota cada clic en las métricas ----
-    (function(){ var w = document.querySelector('.wsp'); if(w) w.addEventListener('click', function(){ medir('whatsapp'); }); })();
+    // ---- WhatsApp: anota cada clic en las métricas (el botón flotante y el link del Hola Mundo) ----
+    document.querySelectorAll('.wsp, .hola-wsp').forEach(function(w){ w.addEventListener('click', function(){ medir('whatsapp', { desde: w.classList.contains('wsp') ? 'boton' : 'texto' }); }); });
+    // ---- Precios: cada paquete abre WhatsApp con su propio mensaje, en el idioma de la página.
+    //      El número lo toma del botón de WhatsApp, así se cambia en un solo lugar (datos/links.txt) ----
+    document.querySelectorAll('.plan').forEach(function(a){
+      function armar(){
+        var w = document.querySelector('.wsp'), num = (w && w.href.match(/wa\.me\/(\d+)/)) || [0, '5491124580224'];
+        a.href = 'https://wa.me/' + num[1] + '?text=' + encodeURIComponent(a.getAttribute(document.documentElement.lang === 'en' ? 'data-msg-en' : 'data-msg-es'));
+      }
+      armar();
+      a.addEventListener('pointerdown', armar);
+      a.addEventListener('focus', armar);
+      a.addEventListener('click', function(){ armar(); medir('precio', { plan: a.getAttribute('data-plan') }); });
+    });
 
     // ---- GitHub matrix ----
     (function(){
@@ -1012,7 +1088,7 @@
       var p = t.offsetParent, r = p ? p.getBoundingClientRect() : {left:0, top:0};
       return { x: r.left + (p ? p.clientLeft : 0) + t.offsetLeft, y: r.top + (p ? p.clientTop : 0) + t.offsetTop, w: t.offsetWidth, h: t.offsetHeight };
     }
-    document.querySelectorAll('.bento > .tile').forEach(function(t){
+    document.querySelectorAll('.bento > .tile:not(.c-precios), .c-precios .plan').forEach(function(t){
       var rx = 0, ry = 0, s = 1, arx = 0, ary = 0, as = 1, dentro = false, ev = null, raf = 0, antes = 0;
       function apuntar(){
         var c = caja(t);
