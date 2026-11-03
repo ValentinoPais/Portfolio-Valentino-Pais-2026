@@ -274,6 +274,11 @@
   /* email modal */
   .modal-overlay{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;padding:24px;background:rgba(3,6,12,.62);backdrop-filter:blur(6px);opacity:0;visibility:hidden;transition:opacity .25s,visibility .25s}
   .modal-overlay.open{opacity:1;visibility:visible}
+  /* con una ventana abierta el resto de la página queda quieto (la clase la pone el JS);
+     el lugar de la barra de scroll queda reservado para que la página no se corra al trabarla */
+  html{scrollbar-gutter:stable}
+  html.trabada,html.trabada body{overflow:hidden}
+  .modal{overscroll-behavior:contain}
   .modal{position:relative;width:100%;max-width:380px;background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:32px 26px 26px;text-align:center;transform:translateY(12px) scale(.98);transition:transform .25s}
   .modal-overlay.open .modal{transform:none}
   .modal-close{position:absolute;top:12px;right:14px;background:none;border:none;color:var(--dim);font-size:1.6rem;line-height:1;cursor:pointer;font-family:inherit}
@@ -869,6 +874,26 @@
       closeBtn.addEventListener('click', closeM);
       modal.addEventListener('click', (e)=>{ if(e.target === modal) closeM(); });
       document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeM(); });
+    })();
+
+    // ---- Con una ventana abierta (mail, currículum o precios) el resto de la página no se mueve ----
+    (function(){
+      const ventanas = [...document.querySelectorAll('.modal-overlay')];
+      const raiz = document.documentElement;
+      // algunos iPhone viejos ignoran el overflow:hidden: mientras está trabada se frena el arrastre con el dedo
+      // (adentro de la ventana se deja si tiene contenido para scrollear)
+      const frenar = (e)=>{ const m = e.target.closest && e.target.closest('.modal'); if(!m || m.scrollHeight <= m.clientHeight) e.preventDefault(); };
+      let trabada = false;
+      const revisar = ()=>{
+        const ahora = ventanas.some(v => v.classList.contains('open'));
+        if(ahora === trabada) return;
+        trabada = ahora;
+        raiz.classList.toggle('trabada', ahora);
+        if(ahora) document.addEventListener('touchmove', frenar, { passive: false });
+        else document.removeEventListener('touchmove', frenar);
+      };
+      const mo = new MutationObserver(revisar);
+      ventanas.forEach(v => mo.observe(v, { attributes: true, attributeFilter: ['class'] }));
     })();
 
     // ---- WhatsApp: anota cada clic en las métricas (el botón flotante y el link del Hola Mundo) ----
