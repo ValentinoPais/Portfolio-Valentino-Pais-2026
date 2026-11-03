@@ -206,33 +206,44 @@
   .pin{display:inline-flex;align-items:center;gap:6px;background:rgba(13,17,23,.82);border:1px solid var(--border);color:#fff;font-size:.8rem;font-weight:600;padding:5px 11px;border-radius:999px}
   .pin .pdot{width:7px;height:7px;border-radius:50%;background:#ff5a5f;box-shadow:0 0 8px #ff5a5f}
 
-  /* PRECIOS: una fila a lo ancho con los 4 paquetes. Cada paquete es un link que abre WhatsApp con su propio mensaje
-     (los montos y los textos se cambian en el HTML, en la tarjeta PRECIOS) */
-  .c-precios{grid-column:1 / -1;aspect-ratio:auto;justify-content:flex-start;gap:16px;--glow:96,80,220;background:linear-gradient(135deg,#352f8a,#5546c8)}
-  /* los 4 paquetes comparten filas (subgrid): nombre, precio y descripción quedan a la misma altura en todos */
-  .planes{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
-  .plan{--gx:50%;--gy:50%;--sx:0px;--sy:14px;position:relative;display:grid;grid-row:span 3;grid-template-rows:subgrid;grid-template-columns:minmax(0,1fr);row-gap:6px;align-content:start;min-width:0;padding:16px 16px 15px;border-radius:14px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);overflow:hidden;transition:background .25s ease,box-shadow .35s ease}
+  /* PRECIOS: botón en el Hola Mundo que abre una ventana con los paquetes (los montos y textos se cambian en el HTML, en PRECIOS MODAL) */
+  .btn-precios{position:absolute;top:17px;right:17px;z-index:3;display:inline-flex;align-items:center;gap:6px;padding:7px 13px 7px 11px;border-radius:999px;border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.14);color:#fff;font-family:inherit;font-size:.82rem;font-weight:600;line-height:1;cursor:pointer;transition:background .2s ease,scale .15s ease;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+  .btn-precios svg{width:15px;height:15px;flex:none}
+  .btn-precios:hover{background:rgba(255,255,255,.25)}
+  .btn-precios:active{scale:.94}
+  .btn-precios:focus-visible{outline:2px solid #fff;outline-offset:2px}
+  @media(max-width:380px){.btn-precios{padding:8px}.btn-precios span{display:none}}   /* pantallas muy angostas: solo el ícono */
+  .modal.precios-modal{max-width:620px;max-height:100%;overflow-y:auto;text-align:left;padding:28px 24px 24px}
+  .modal.precios-modal h3{font-size:1.45rem;text-align:center}
+  .modal.precios-modal > p{margin-bottom:18px;text-align:center}
+  .planes{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+  .plan{--gx:50%;--gy:50%;--sx:0px;--sy:14px;--glow:245,197,24;position:relative;display:flex;flex-direction:column;min-width:0;padding:16px 16px 15px;border-radius:16px;color:#fff;background:linear-gradient(160deg,#1b212a,#0f1318);border:1px solid var(--border);overflow:hidden;transition:box-shadow .35s ease,border-color .25s ease}
   .plan::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .35s ease;background:radial-gradient(circle at var(--gx) var(--gy),rgba(255,255,255,.22),rgba(255,255,255,.06) 32%,rgba(255,255,255,0) 62%)}
-  .plan.hov{background:rgba(255,255,255,.12);box-shadow:var(--sx) var(--sy) 30px -12px rgba(10,6,40,.7);transition:background .25s ease,box-shadow .15s ease-out}
+  .plan.hov{border-color:#444c56;box-shadow:var(--sx) var(--sy) 30px -12px rgba(var(--glow),.35);transition:box-shadow .15s ease-out,border-color .25s ease}
   .plan.hov::before{opacity:1}
   .plan.arriba{z-index:3}
-  .plan .ext{top:13px;right:13px}
+  .plan .ext{top:13px;right:13px;color:var(--dim);opacity:1}
   .plan .ext svg{width:16px;height:16px}
-  .plan-nombre{font-weight:700;font-size:1.02rem;line-height:1.2;letter-spacing:-.01em;-webkit-hyphens:auto;hyphens:auto;overflow-wrap:break-word}
-  .plan-nombre::before{content:"";float:right;width:20px;height:1.1em}   /* deja lugar para la flechita solo en la primera línea */
-  .plan-precio{font-size:1.5rem;font-weight:800;line-height:1.1;letter-spacing:-.01em;margin-top:4px;white-space:nowrap}
-  .plan-precio small{display:block;font-family:'JetBrains Mono',monospace;font-size:.66rem;font-weight:500;letter-spacing:.06em;text-transform:uppercase;opacity:.9;margin-bottom:3px}
-  .plan-desc{align-self:end;font-size:.8rem;line-height:1.4;opacity:.92;padding-top:10px;text-wrap:pretty}
+  .plan-nombre{font-weight:700;font-size:1.05rem;line-height:1.2;letter-spacing:-.01em}
+  .plan-nombre::before{content:"";float:right;width:20px;height:1.1em}   /* lugar para la flechita, solo en la primera línea */
+  .plan-precio{margin-top:8px;font-size:1.55rem;font-weight:800;line-height:1.1;letter-spacing:-.01em;white-space:nowrap;color:#f5c518}
+  .plan-precio small{display:block;margin-bottom:3px;font-family:'JetBrains Mono',monospace;font-size:.66rem;font-weight:500;letter-spacing:.07em;text-transform:uppercase;color:var(--dim)}
+  .plan-desc{margin-top:auto;padding-top:12px;font-size:.82rem;line-height:1.42;color:#b1bac4;text-wrap:pretty}
   @media(hover:none){.plan:active{scale:.97;transition:scale .1s}}
-  @media(max-width:860px){.planes{grid-template-columns:repeat(2,1fr)}}
-  @media(max-width:600px){   /* en el celu: uno abajo del otro; el nombre arriba y abajo la descripción con el precio a la derecha */
+  @media(max-width:600px){
+    #preciosModal{padding:12px}
+    .modal.precios-modal{padding:24px 16px 16px}
     .planes{grid-template-columns:1fr;gap:10px}
-    .plan{grid-row:auto;grid-template-rows:auto auto;grid-template-columns:minmax(0,1fr) auto;column-gap:14px;row-gap:5px;padding:14px 15px}
+    .plan{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:14px;row-gap:5px;padding:14px 15px}
     .plan .ext{display:none}
-    .plan-nombre{grid-column:1 / -1;grid-row:1}
+    .plan-nombre{grid-column:1 / -1}
     .plan-nombre::before{display:none}
-    .plan-desc{grid-column:1;grid-row:2;align-self:end;padding-top:0}
+    .plan-desc{grid-column:1;grid-row:2;align-self:end;margin-top:0;padding-top:0}
     .plan-precio{grid-column:2;grid-row:2;align-self:end;text-align:right;margin-top:0;font-size:1.3rem}
+  }
+  @media(max-width:380px){
+    .plan-precio{grid-column:1 / -1;grid-row:2;text-align:left}
+    .plan-desc{grid-column:1 / -1;grid-row:3;padding-top:4px}
   }
   /* language toggle */
   /* botones flotantes de abajo: idioma (izquierda) y WhatsApp (derecha), dos circulitos iguales */
@@ -326,6 +337,7 @@
 
       <!-- HELLO WORLD -->
       <div class="tile c-hello col2">
+        <button class="btn-precios" type="button" id="preciosBtn" aria-haspopup="dialog"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8z"/><circle cx="7.5" cy="7.5" r="1.5"/></svg><span data-es="Precios" data-en="Pricing">Precios</span></button>
         <div class="proj-head">
           <div class="t-h hello-world" id="hwBox"><span id="helloWorld" data-es="HOLA MUNDO" data-en="HELLO WORLD">HOLA MUNDO</span><span class="star"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1 14.59 8.44 22.46 8.6 16.19 13.36 18.47 20.9 12 16.4 5.53 20.9 7.81 13.36 1.54 8.6 9.41 8.44Z"/></svg></span></div>
         </div>
@@ -387,37 +399,6 @@
         </div>
         <div class="proj-desc" data-es="Sitio de la constructora Catari. Presenta sus departamentos a estrenar en Villa Lynch, San Martín, con secciones de empresa, proveedores y contacto." data-en="Website for the Catari construction company. It showcases their brand-new apartments in Villa Lynch, San Martín, with company, suppliers and contact sections.">Sitio de la constructora Catari. Presenta sus departamentos a estrenar en Villa Lynch, San Martín, con secciones de empresa, proveedores y contacto.</div>
       </a>
-
-      <!-- PRECIOS (fila a lo ancho): cada paquete abre WhatsApp con su mensaje; el número sale del botón de WhatsApp (datos/links.txt) -->
-      <div class="tile c-precios">
-        <div class="t-h" data-es="Precios" data-en="Pricing">Precios</div>
-        <div class="planes">
-          <a class="plan" href="https://wa.me/5491124580224?text=Hola%20Valentino%2C%20vi%20tu%20portfolio%20y%20me%20interesa%20una%20landing." target="_blank" rel="noopener" data-plan="landing" data-msg-es="Hola Valentino, vi tu portfolio y me interesa una landing." data-msg-en="Hi Valentino, I saw your portfolio and I'm interested in a landing page.">
-            <span class="ext"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
-            <span class="plan-nombre" data-es="Landing" data-en="Landing page">Landing</span>
-            <span class="plan-precio"><small data-es="desde" data-en="from">desde</small> USD 300</span>
-            <span class="plan-desc" data-es="Una sola página con tus servicios, botón de WhatsApp y contacto." data-en="One page with your services, a WhatsApp button and contact info.">Una sola página con tus servicios, botón de WhatsApp y contacto.</span>
-          </a>
-          <a class="plan" href="https://wa.me/5491124580224?text=Hola%20Valentino%2C%20vi%20tu%20portfolio%20y%20me%20interesa%20un%20sitio%20autoadministrable." target="_blank" rel="noopener" data-plan="autoadministrable" data-msg-es="Hola Valentino, vi tu portfolio y me interesa un sitio autoadministrable." data-msg-en="Hi Valentino, I saw your portfolio and I'm interested in a self-managed site.">
-            <span class="ext"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
-            <span class="plan-nombre" data-es="Sitio autoadministrable" data-en="Self-managed site">Sitio autoadministrable</span>
-            <span class="plan-precio"><small data-es="desde" data-en="from">desde</small> USD 600</span>
-            <span class="plan-desc" data-es="Varias secciones que actualizás vos desde Google Drive o una planilla." data-en="Several sections you update yourself from Google Drive or a spreadsheet.">Varias secciones que actualizás vos desde Google Drive o una planilla.</span>
-          </a>
-          <a class="plan" href="https://wa.me/5491124580224?text=Hola%20Valentino%2C%20vi%20tu%20portfolio%20y%20me%20interesa%20una%20tienda%20online." target="_blank" rel="noopener" data-plan="tienda" data-msg-es="Hola Valentino, vi tu portfolio y me interesa una tienda online." data-msg-en="Hi Valentino, I saw your portfolio and I'm interested in an online store.">
-            <span class="ext"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
-            <span class="plan-nombre" data-es="Tienda online" data-en="Online store">Tienda online</span>
-            <span class="plan-precio"><small data-es="desde" data-en="from">desde</small> <span data-es="USD 1.000" data-en="USD 1,000">USD 1.000</span></span>
-            <span class="plan-desc" data-es="Catálogo de productos con carrito y cobro con Mercado Pago." data-en="Product catalog with a cart and Mercado Pago payments.">Catálogo de productos con carrito y cobro con Mercado Pago.</span>
-          </a>
-          <a class="plan" href="https://wa.me/5491124580224?text=Hola%20Valentino%2C%20vi%20tu%20portfolio%20y%20me%20interesa%20un%20sistema%20a%20medida." target="_blank" rel="noopener" data-plan="a-medida" data-msg-es="Hola Valentino, vi tu portfolio y me interesa un sistema a medida." data-msg-en="Hi Valentino, I saw your portfolio and I'm interested in a custom system.">
-            <span class="ext"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
-            <span class="plan-nombre" data-es="Sistema a medida" data-en="Custom system">Sistema a medida</span>
-            <span class="plan-precio"><small data-es="precio" data-en="price">precio</small> <span data-es="A consultar" data-en="On request">A consultar</span></span>
-            <span class="plan-desc" data-es="Turnos, paneles o gestión interna para tu negocio." data-en="Bookings, dashboards or internal tools for your business.">Turnos, paneles o gestión interna para tu negocio.</span>
-          </a>
-        </div>
-      </div>
 
       <!-- SIMAX -->
       <a class="tile c-simax col2 foto proj" href="https://valentinopais.github.io/simax-demo/" target="_blank" rel="noopener" data-link="SIMAX">
@@ -509,6 +490,42 @@
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.9a9.1 9.1 0 0 0-7.86 13.7L2.9 21.1l4.62-1.21A9.1 9.1 0 1 0 12 2.9z" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/><path fill="currentColor" d="M9.3 7.4c.27-.05.53.07.67.3l1.05 1.8c.15.26.1.58-.1.8l-.65.64a5.6 5.6 0 0 0 2.6 2.6l.64-.65c.21-.21.54-.26.8-.1l1.8 1.05c.23.14.35.4.3.67-.15.86-.8 1.55-1.66 1.67-1 .14-2-.07-3-.65a9 9 0 0 1-3.08-3.08c-.58-1-.79-2-.65-3 .12-.86.81-1.51 1.67-1.66z"/></svg>
     <span class="solo-lector" data-es="Escribime por WhatsApp" data-en="Message me on WhatsApp">Escribime por WhatsApp</span>
   </a>
+
+  <!-- PRECIOS MODAL: se abre con el botón "Precios" del Hola Mundo. Cada paquete abre WhatsApp con su mensaje;
+       el número sale del botón de WhatsApp (datos/links.txt) -->
+  <div class="modal-overlay" id="preciosModal" aria-hidden="true">
+    <div class="modal precios-modal" role="dialog" aria-modal="true" aria-labelledby="preciosTitulo">
+      <button class="modal-close" id="preciosClose" aria-label="Cerrar">×</button>
+      <h3 id="preciosTitulo" data-es="Precios" data-en="Pricing">Precios</h3>
+      <p data-es="Elegí un paquete y me escribís por WhatsApp." data-en="Pick a package and message me on WhatsApp.">Elegí un paquete y me escribís por WhatsApp.</p>
+      <div class="planes">
+        <a class="plan plan-landing" href="https://wa.me/5491124580224?text=Hola%20Valentino%2C%20vi%20tu%20portfolio%20y%20me%20interesa%20una%20landing." target="_blank" rel="noopener" data-plan="landing" data-msg-es="Hola Valentino, vi tu portfolio y me interesa una landing." data-msg-en="Hi Valentino, I saw your portfolio and I'm interested in a landing page.">
+          <span class="ext"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
+          <span class="plan-nombre" data-es="Landing" data-en="Landing page">Landing</span>
+          <span class="plan-precio"><small data-es="desde" data-en="from">desde</small> USD 300</span>
+          <span class="plan-desc" data-es="Una sola página con tus servicios, botón de WhatsApp y contacto." data-en="One page with your services, a WhatsApp button and contact info.">Una sola página con tus servicios, botón de WhatsApp y contacto.</span>
+        </a>
+        <a class="plan plan-autoadministrable" href="https://wa.me/5491124580224?text=Hola%20Valentino%2C%20vi%20tu%20portfolio%20y%20me%20interesa%20un%20sitio%20autoadministrable." target="_blank" rel="noopener" data-plan="autoadministrable" data-msg-es="Hola Valentino, vi tu portfolio y me interesa un sitio autoadministrable." data-msg-en="Hi Valentino, I saw your portfolio and I'm interested in a self-managed site.">
+          <span class="ext"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
+          <span class="plan-nombre" data-es="Sitio autoadministrable" data-en="Self-managed site">Sitio autoadministrable</span>
+          <span class="plan-precio"><small data-es="desde" data-en="from">desde</small> USD 600</span>
+          <span class="plan-desc" data-es="Varias secciones que actualizás vos desde Google Drive o una planilla." data-en="Several sections you update yourself from Google Drive or a spreadsheet.">Varias secciones que actualizás vos desde Google Drive o una planilla.</span>
+        </a>
+        <a class="plan plan-tienda" href="https://wa.me/5491124580224?text=Hola%20Valentino%2C%20vi%20tu%20portfolio%20y%20me%20interesa%20una%20tienda%20online." target="_blank" rel="noopener" data-plan="tienda" data-msg-es="Hola Valentino, vi tu portfolio y me interesa una tienda online." data-msg-en="Hi Valentino, I saw your portfolio and I'm interested in an online store.">
+          <span class="ext"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
+          <span class="plan-nombre" data-es="Tienda online" data-en="Online store">Tienda online</span>
+          <span class="plan-precio"><small data-es="desde" data-en="from">desde</small> <span data-es="USD 1.000" data-en="USD 1,000">USD 1.000</span></span>
+          <span class="plan-desc" data-es="Catálogo de productos con carrito y cobro con Mercado Pago." data-en="Product catalog with a cart and Mercado Pago payments.">Catálogo de productos con carrito y cobro con Mercado Pago.</span>
+        </a>
+        <a class="plan plan-a-medida" href="https://wa.me/5491124580224?text=Hola%20Valentino%2C%20vi%20tu%20portfolio%20y%20me%20interesa%20un%20sistema%20a%20medida." target="_blank" rel="noopener" data-plan="a-medida" data-msg-es="Hola Valentino, vi tu portfolio y me interesa un sistema a medida." data-msg-en="Hi Valentino, I saw your portfolio and I'm interested in a custom system.">
+          <span class="ext"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
+          <span class="plan-nombre" data-es="Sistema a medida" data-en="Custom system">Sistema a medida</span>
+          <span class="plan-precio"><small data-es="precio" data-en="price">precio</small> <span data-es="A consultar" data-en="On request">A consultar</span></span>
+          <span class="plan-desc" data-es="Turnos, paneles o gestión interna para tu negocio." data-en="Bookings, dashboards or internal tools for your business.">Turnos, paneles o gestión interna para tu negocio.</span>
+        </a>
+      </div>
+    </div>
+  </div>
 
   <!-- EMAIL MODAL -->
   <div class="modal-overlay" id="emailModal" aria-hidden="true">
@@ -610,7 +627,7 @@
     const SIN_MOVIMIENTO = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const TACTIL = window.matchMedia('(hover: none)').matches;   // celu o tablet
     function esc(c){ return c === '<' ? '&lt;' : c === '>' ? '&gt;' : c === '&' ? '&amp;' : c; }
-    function enPantalla(el){ const r = el.getBoundingClientRect(); return r.width > 0 && r.bottom > 0 && r.top < window.innerHeight; }
+    function enPantalla(el){ if(el.closest('.modal-overlay:not(.open)')) return false; const r = el.getBoundingClientRect(); return r.width > 0 && r.bottom > 0 && r.top < window.innerHeight; }
     function decodificar(el, to){
       if(el._dec){ cancelAnimationFrame(el._dec); el._dec = 0; }
       const from = el.textContent;
@@ -838,6 +855,20 @@
       document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeM(); });
       const bajar = modal.querySelector('.cv-download');
       if(bajar) bajar.addEventListener('click', ()=> medir('cv_descargado'));
+    })();
+
+    // ---- Precios (ventana): se abre con el botón del Hola Mundo ----
+    (function(){
+      const btn = document.getElementById('preciosBtn');
+      const modal = document.getElementById('preciosModal');
+      const closeBtn = document.getElementById('preciosClose');
+      if(!btn || !modal) return;
+      const openM = ()=>{ modal.classList.add('open'); modal.setAttribute('aria-hidden','false'); medir('precios_abierto'); };
+      const closeM = ()=>{ modal.classList.remove('open'); modal.setAttribute('aria-hidden','true'); };
+      btn.addEventListener('click', openM);
+      closeBtn.addEventListener('click', closeM);
+      modal.addEventListener('click', (e)=>{ if(e.target === modal) closeM(); });
+      document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeM(); });
     })();
 
     // ---- WhatsApp: anota cada clic en las métricas (el botón flotante y el link del Hola Mundo) ----
@@ -1088,7 +1119,7 @@
       var p = t.offsetParent, r = p ? p.getBoundingClientRect() : {left:0, top:0};
       return { x: r.left + (p ? p.clientLeft : 0) + t.offsetLeft, y: r.top + (p ? p.clientTop : 0) + t.offsetTop, w: t.offsetWidth, h: t.offsetHeight };
     }
-    document.querySelectorAll('.bento > .tile:not(.c-precios), .c-precios .plan').forEach(function(t){
+    document.querySelectorAll('.bento > .tile, .precios-modal .plan').forEach(function(t){
       var rx = 0, ry = 0, s = 1, arx = 0, ary = 0, as = 1, dentro = false, ev = null, raf = 0, antes = 0;
       function apuntar(){
         var c = caja(t);
